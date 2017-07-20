@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Vue Example</title>
+	<link rel="stylesheet" href="src/style/aeris-metadata-shared-style.css">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/document-register-element/1.4.1/document-register-element.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment-with-locales.min.js"></script>
+	<style>
+	body {
+        font-family: 'Open Sans', sans-serif;
+        margin: 0;
+      }
+	
+	</style>
+  </head>
+  <body>
+  
+  <div id="aeris-wc">
+  	<h2>Aeris cartouche</h2>
+    <aeris-cartouche>Coucou</aeris-cartouche>
+	<aeris-cartouche icon="bath">Coucou bath</aeris-cartouche>
+	<aeris-cartouche >Coucou</aeris-cartouche>
+	<aeris-cartouche edit=true >Coucou_edit</aeris-cartouche>
+    <aeris-cartouche >Coucou</aeris-cartouche>
+	<aeris-cartouche >Coucou</aeris-cartouche>
+	<h2>Aeris spinner</h2>
+	<aeris-spinner ref="spin1" size="small" id="sp1"></aeris-spinner>
+	<aeris-spinner id="spin2">Texte</aeris-spinner>
+  </div>
+    <script src="dist/build.js"></script>
+    <script>
+    	/* var obj = {fr: 'le petit <b>html</b>', en: ''};
+    	singletonVue.$refs.if1.setValue(obj);
+    	
+    	var contact = {name: 'jean dupont', organisation:"nasa", email:"toto@gmail.com", comment:{fr: 'Un gars sympa', en: ''}};
+    	singletonVue.$refs.contact1.setValue(contact); */
+    	
+    </script>
+  </body>
+</html>
