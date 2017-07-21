@@ -1,7 +1,7 @@
 {
   "name": "aeris-commons-components-vjs",
   "description": "Aeris commons components. ",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "author": "Aeris",
   "private": false,
   "scripts": {
@@ -22,7 +22,9 @@
     "clean-webpack-plugin": "^0.1.16",
     "cross-env": "^3.0.0",
     "css-loader": "^0.25.0",
+    "exports-loader": "^0.6.4",
     "file-loader": "^0.9.0",
+    "style-loader": "^0.18.2",
     "vue-loader": "^12.1.0",
     "vue-template-compiler": "^2.3.3",
     "webpack": "^2.6.1",
