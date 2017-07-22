@@ -1,7 +1,7 @@
 {
   "name": "aeris-commons-components-vjs",
   "description": "Aeris commons components. ",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "author": "Aeris",
   "private": false,
   "scripts": {
