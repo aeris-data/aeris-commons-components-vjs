@@ -14,7 +14,6 @@
   </head>
   <body>
   
-  <div id="aeris-wc">
   	<h2>Aeris cartouche</h2>
     <aeris-cartouche>Coucou</aeris-cartouche>
 	<aeris-cartouche icon="bath">Coucou bath</aeris-cartouche>
@@ -22,18 +21,34 @@
 	<aeris-cartouche edit=true >Coucou_edit</aeris-cartouche>
     <aeris-cartouche >Coucou</aeris-cartouche>
 	<aeris-cartouche >Coucou</aeris-cartouche>
+	<h3>Test suppression</h3>
+	<span id="container1" style="background-color:red;padding:10px;">
+	<aeris-cartouche edit=true itemref="item1" >Item 1</aeris-cartouche>
+	<aeris-cartouche edit=true itemref="item2" >Item 2</aeris-cartouche>
+	</span>
+	<span id="container2" style="background-color:pink	;padding:10px;">
+	<aeris-cartouche edit=true itemref="item3" >Item 3</aeris-cartouche>
+	<aeris-cartouche edit=true itemref="item4" >Item 4</aeris-cartouche>
+	</span>
 	<h2>Aeris spinner</h2>
 	<aeris-spinner ref="spin1" size="small" id="sp1"></aeris-spinner>
 	<aeris-spinner id="spin2">Texte</aeris-spinner>
-  </div>
+	<h2>Aeris Orcid</h2>
+	<aeris-orcid orcid="tittititititi"></aeris-orcid>
     <script src="dist/build.js"></script>
     <script>
-    	/* var obj = {fr: 'le petit <b>html</b>', en: ''};
-    	singletonVue.$refs.if1.setValue(obj);
-    	
-    	var contact = {name: 'jean dupont', organisation:"nasa", email:"toto@gmail.com", comment:{fr: 'Un gars sympa', en: ''}};
-    	singletonVue.$refs.contact1.setValue(contact); */
-    	
+    document.querySelector('#container1').addEventListener("aerisCartoucheItemDeleted", function(e){
+       console.log("capté container 1: "+e.detail.itemref);
+       e.stopPropagation()
+    });
+    
+    document.querySelector('#container2').addEventListener("aerisCartoucheItemDeleted", function(e){
+        console.log("capté container 2: "+e.detail.itemref);
+     });
+    
+    document.addEventListener("aerisCartoucheItemDeleted", function(e){
+        console.log("capté haut "+e.detail.itemref);
+     });
     </script>
   </body>
 </html>
