@@ -4,7 +4,7 @@
 
 <template>
 <span class="aeris-cartouche-host">
-   <span class="aeris-cartouche-container" v-if="visible">
+   <span class="aeris-cartouche-container" v-if="isvisible">
       <span v-if="icon">
         <i v-bind:class="_getIconStyle"></i>
       </span>
@@ -38,8 +38,14 @@ export default {
 },
   data () {
     return {
+    	isvisible: null
     }
   },
+  
+  created: function () {
+	   this.isvisible = this.visible
+	  },
+  
   computed: {
   _getIconStyle: function() {
         if (this.icon) {
@@ -50,10 +56,9 @@ export default {
   methods: {
     _handleClick: function() {
 	    console.log("_handleClick "+this.itemref);
-		var reference = this.itemref;
-		this.visible = false;
-        this.$emit('itemDeleted', {data: reference});
-        //this.parentNode.removeChild(this);
+		var itemref = this.itemref;
+		this.isvisible = false;
+		this.$el.dispatchEvent(new CustomEvent("aerisCartoucheItemDeleted", { bubbles: true,   cancelable: true,  detail: {'itemref': itemref}}));
       }   
   }
 }
