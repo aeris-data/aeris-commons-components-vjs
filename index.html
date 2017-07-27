@@ -14,6 +14,32 @@
   </head>
   <body>
   
+  	<h2>Aeris notification</h2>
+  	<div style="padding:5px">
+  	
+  	<div style="margin-bottom:5px">
+  	<aeris-notification  message="un message de <b>succes</b>" spinner="true" closable="true"></aeris-notification>
+  	</div>
+  	<div style="margin-bottom:5px">
+  	<aeris-notification  message="un message de <b>notification</b>" spinner="true"  type="notification" closable="true"></aeris-notification>
+  	</div>
+  	<div style="margin-bottom:5px">
+  	<aeris-notification  message="un message d'<b>attente</b>" spinner="true"  type="wait" closable="true"></aeris-notification>
+  	</div>
+  	<aeris-notification type="error" message="un message d'<b>erreur</b>" closable="true"></aeris-notification>
+  	<div style="margin-bottom:5px">
+  	<aeris-notification  message="un message de <b>succes</b> non fermable et sans progression" ></aeris-notification>
+  	</div>
+  	<div style="margin-bottom:5px">
+  	<aeris-notification type="wait" message="un message d'<b>attente</b> qui va bientôt disparaitre" auto-hide="true" ></aeris-notification>
+  	</div>
+  	<div style="margin-bottom:5px">
+  	<aeris-notification type="wait" message="un message d'<b>attente</b> qui disparaitra plus tard" auto-hide="true" auto-hide-delay="10000" ></aeris-notification>
+  	</div>
+  	</div>
+  	<h2>Aeris notifier</h2>
+  	<aeris-notifier></aeris-notifier>
+  	<button onclick="document.dispatchEvent(new CustomEvent('aerisNotificationMessageEvent', { 'detail': {message: 'un message'}}))">Click</button>
   	<h2>Aeris cartouche</h2>
     <aeris-cartouche>Coucou</aeris-cartouche>
 	<aeris-cartouche icon="bath">Coucou bath</aeris-cartouche>

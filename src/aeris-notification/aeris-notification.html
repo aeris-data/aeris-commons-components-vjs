@@ -1,0 +1,159 @@
+<dom-module id="aeris-notification">
+
+  <style>
+  
+  :host {
+	display: inline-block;
+	transform-origin: 50% 0;
+}
+
+:host.show {
+	animation-name: show;
+	animation-duration: 0.3s;
+}
+
+:host.hide {
+	animation-name: hide;
+	animation-duration: 0.3s;
+}
+
+.notify-container {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: center;
+	border-radius: 3px;
+	padding: 10px 15px;
+	min-width: 300px;
+	max-width: 90vw;
+	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.notify-container .fa {
+	margin: 0 5px;
+}
+
+.notify-container .close-icon {
+	cursor: pointer;
+	opacity: 0.6;
+}
+
+.notify-container .close-icon:hover {
+	opacity: 1;
+}
+
+.notify-container .notification-close-button {
+	align-self: flex-start;
+}
+
+.notify-container .notification-text {
+	padding-right: 10px;
+}
+
+.notify-container .notification-message {
+	font-weight: 400;
+}
+
+.aeris-notification-notification {
+	background-color: #3395B9;
+	color: white;
+}
+
+.aeris-notification-success {
+	background-color: #2EB872;
+	color: white;
+}
+
+.aeris-notification-error {
+	background-color: #b22222;
+	color: white;
+}
+
+.aeris-notification-wait {
+	background-color: #FCE38A;
+	height: 40px;
+	color: #333;
+}
+
+@keyframes show {
+	0% {
+		transform: scale(0);
+		opacity: 0;
+	}
+
+	70% {
+		transform: scale(1.05);
+		opacity: 1;
+	}
+
+	100% {
+		transform: scale(1);
+	}
+}
+
+@keyframes hide {
+	from {
+		transform: scale(1);
+		opacity: 1;
+	}
+
+	to {
+		transform: scale(0);
+		opacity: 0;
+	}
+}
+</style>
+
+  <template>
+
+    <div class$="notify-container aeris-notification-[[type]]">
+      <div class="notification-text">
+        <span hidden$="[[!spinner]]">
+          <i class="fa fa-circle-o-notch fa-spin fa-fw"></i>
+        </span>
+        <span class="notification-message" inner-h-t-m-l="[[message]]"></span>
+      </div>
+      <div class="notification-close-button" hidden$="[[!closeButton]]">
+        <i class="fa fa-times close-icon" on-click="close"></i>
+      </div>
+    </div>
+
+  </template>
+
+  <script>
+
+    Polymer({
+
+      is: 'aeris-notification',
+
+      properties: {
+        autoHide: {type: Boolean, value: false},
+        autoHideDelay: {type: String, value: '4000'},
+        closeButton: {type: Boolean, value: false},
+        spinner: {type: Boolean, value: false}
+      },
+
+      close: function() {
+        var _this = this;
+        try {
+          if(this.parentNode) {
+            this.classList.add('hide');
+            window.setTimeout(function() {
+              _this.parentNode.removeChild(_this);
+              _this.fire('closeAerisNotification', _this.params);
+            }, 250);
+          }
+        } catch (e) {
+          // Do nothing
+        }
+      },
+
+      attached: function() {
+        this.classList.add('show');
+        if(this.autoHide) window.setTimeout(this.close.bind(this), Number(this.autoHideDelay));
+      }
+
+    });
+
+  </script>
+</dom-module>

@@ -6,6 +6,8 @@ import vueCustomElement from 'vue-custom-element'
 Vue.use(vueCustomElement);
 
 import AerisTheme from './aeris-theme/aeris-theme.vue'
+import AerisNotification from './aeris-notification/aeris-notification.vue'
+import AerisNotifier from './aeris-notification/aeris-notifier.vue'
 import AerisCartouche from './aeris-cartouche/aeris-cartouche.vue'
 import AerisSpinner from './aeris-spinner/aeris-spinner.vue'
 import AerisBrowserAlert from './aeris-browser-alert/aeris-browser-alert.vue'
@@ -18,6 +20,8 @@ ljs.addAliases({
 })
 ljs.load('dep', function() {
 	Vue.customElement('aeris-theme', AerisTheme);
+	Vue.customElement('aeris-notification', AerisNotification);
+	Vue.customElement('aeris-notifier', AerisNotifier);
 	Vue.customElement('aeris-cartouche', AerisCartouche);
 	Vue.customElement('aeris-spinner', AerisSpinner);
 	Vue.customElement('aeris-browser-alert', AerisBrowserAlert);
