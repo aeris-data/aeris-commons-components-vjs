@@ -2,7 +2,7 @@
 <span class="aeris-notifier-host">
 <div class="aeris-notifier-container">
 <li v-for="notification in notifications" class="notification">
-<aeris-notification :id="notification.id" :type="notification.type" :message="notification.message" :closable="notification.closable" :auto-hide="notification.autoHide"></aeris-notification>
+<aeris-notification  :type="notification.type" :message="notification.message" :spinner="notification.spinner" :closable="notification.closable" :auto-hide="notification.autoHide"></aeris-notification>
 </li>
 </div>
 </span>
@@ -14,9 +14,11 @@ props: {
   data () {
     return {
     	notifications: [],
-    	aerisNotificatioDestroyedEventListener: null,
-    	aerisNotificationMessageEventListener: null
-    	
+    	aerisNotificationDestroyedEventListener: null,
+    	aerisNotificationMessageEventListener: null,
+    	errorErrorNotificationMessageEventListener: null,
+    	aerisLongActionStartEventListener: null,
+    	aerisLongActionStopEventListener: null
     }
   },
   
@@ -24,39 +26,49 @@ props: {
   },
   
   created: function () {
+	  
+	  this.errorNotificationMessageEventListener = this.handleErrorNotificationMessageEvent.bind(this)
+	  document.addEventListener('aerisErrorNotificationMessageEvent', this.errorNotificationMessageEventListener);
+	  
 	  this.aerisNotificationMessageEventListener = this.handleNotificationMessageEvent.bind(this)
 	  document.addEventListener('aerisNotificationMessageEvent', this.aerisNotificationMessageEventListener);
 	  
-	  this.aerisNotificatioDestroyedEventListener = this.handleNotificationDestroyed.bind(this)
-	  document.addEventListener('aerisNotificationDestroyed', this.aerisNotificatioDestroyedEventListener);
+	  this.aerisNotificationDestroyedEventListener = this.handleNotificationDestroyed.bind(this)
+	  document.addEventListener('aerisNotificationDestroyed', this.aerisNotificationDestroyedEventListener);
+	  
+	  this.aerisLongActionStartEventListener = this.handleLongActionStartEvent.bind(this)
+	  document.addEventListener('aerisLongActionStartEvent', this.aerisLongActionStartEventListener);
+	  
+	  this.aerisLongActionStopEventListener = this.handleLongActionStopEvent.bind(this)
+	  document.addEventListener('aerisLongActionStopEvent', this.aerisLongActionStopEventListener);
   },
   
   destroyed: function() {
 	  	document.removeEventListener('aerisNotificationMessageEvent', this.aerisNotificationMessageEventListener);
 	  	this.aerisNotificationMessageEventListener = null;
 	  	
-	  	document.removeEventListener('aerisNotificationDestroyed', this.aerisNotificatioDestroyedEventListener);
-	  	this.aerisNotificatioDestroyedEventListener = null;
+	  	document.removeEventListener('aerisErrorNotificationMessageEvent', this.aerisErrorNotificationMessageEventListener);
+	  	this.aerisErrorNotificationMessageEventListener = null;
+	  	
+	  	document.removeEventListener('aerisNotificationDestroyed', this.aerisNotificationDestroyedEventListener);
+	  	this.aerisNotificationDestroyedEventListener = null;
+	  	
+	  	document.removeEventListener('aerisLongActionStartEvent', this.aerisLongActionStartEventListener);
+	  	this.aerisLongActionStartEventListener = null;
+
+	  	document.removeEventListener('aerisLongActionStopEvent', this.aerisLongActionStopEventListener);
+	  	this.aerisLongActionStopEventListener = null;
+		 
   },
   
   computed: {
   },
   methods: {
-	  
-	  guid: function() {
-	      function s4() {
-	        return Math.floor((1 + Math.random()) * 0x10000)
-	          .toString(16)
-	          .substring(1);
-	      }
 
-	      return s4() + s4();
-	    },
 	    
       handleNotificationMessageEvent: function(e) {
     	  console.log("handleNotificationMessageEvent")
     	  var notification = {
-    	          id:this.guid(),
     	          message: e.detail.message,
     	          type: 'notification',
     	          autoHide: true,
@@ -67,16 +79,54 @@ props: {
     	  this.notifications.push(notification)
       },
       
-      handleNotificationDestroyed: function (e) {
-    	  console.log("Demande Destruction notif "+e.detail.id)
+      handleLongActionStartEvent: function(e) {
+          var notification = {
+            message: e.detail.message,
+            type: 'wait',
+            autoHide: false,
+            spinner: true,
+            closable: true
+          };
+
+          this.notifications.push(notification)
+        },
+      
+      handleErrorNotificationMessageEvent: function(e) {
+    	  console.log("handleErrorNotificationMessageEvent")
+    	  var notification = {
+              message: e.detail.message,
+              type: 'error',
+              autoHide: false,
+              autoHideDelay: 5000,
+              closable	: true,
+              spinner: false
+            };
+    	  this.notifications.push(notification)
     	  
-    	  var index = this.notifications.findIndex(i => i.id === e.detail.id);
+      },
+      
+      handleNotificationDestroyed: function (e) {
+    	  console.log("Demande Destruction notif "+e.detail.message)
+    	  
+    	  var index = this.notifications.findIndex(i => i.message === e.detail.message);
     	  if (index > -1) {
    		   this.notifications.splice(index, 1);
-   		   console.log("Destruction notif "+e.detail.id)
+   		   console.log("Destruction notif "+e.detail.message)
     	  }
    		   console.log(this.notifications.length)
-      }
+      },
+      
+      handleLongActionStopEvent: function(e) {
+    	  var message= e.detail.message
+    	  console.log("Demande Destruction notif "+e.detail.message)
+    	  
+    	  var index = this.notifications.findIndex(i => i.message === e.detail.message);
+    	  if (index > -1) {
+   		   this.notifications.splice(index, 1);
+   		   console.log("Destruction notif "+e.detail.message)
+    	  }
+   		   console.log(this.notifications.length)
+        }
       
   }
 }

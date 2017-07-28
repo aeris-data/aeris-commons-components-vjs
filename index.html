@@ -39,7 +39,10 @@
   	</div>
   	<h2>Aeris notifier</h2>
   	<aeris-notifier></aeris-notifier>
-  	<button onclick="document.dispatchEvent(new CustomEvent('aerisNotificationMessageEvent', { 'detail': {message: 'un message'}}))">Click</button>
+  	<button onclick="document.dispatchEvent(new CustomEvent('aerisNotificationMessageEvent', { 'detail': {message: 'un message de notif'}}))">Click Notif</button>
+  	<button onclick="document.dispatchEvent(new CustomEvent('aerisErrorNotificationMessageEvent', { 'detail': {message: 'un message d erreur'}}))">Click Error</button>
+  	<button onclick="document.dispatchEvent(new CustomEvent('aerisLongActionStartEvent', { 'detail': {message: 'un message d action longue'}}))">Click Debut longue</button>
+  	<button onclick="document.dispatchEvent(new CustomEvent('aerisLongActionStopEvent', { 'detail': {message: 'un message d action longue'}}))">Click Fin longue</button>
   	<h2>Aeris cartouche</h2>
     <aeris-cartouche>Coucou</aeris-cartouche>
 	<aeris-cartouche icon="bath">Coucou bath</aeris-cartouche>

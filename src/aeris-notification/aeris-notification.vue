@@ -55,7 +55,7 @@ props: {
 	  close: function() {
 	        try {
 	            this.visibilityclass='hide'
-	            document.dispatchEvent(new CustomEvent('aerisNotificationDestroyed', { 'detail': {id: this.id}}))
+	            document.dispatchEvent(new CustomEvent('aerisNotificationDestroyed', { 'detail': {message: this.message}}))
 	        } catch (e) {
 	          // Do nothing
 	        }
