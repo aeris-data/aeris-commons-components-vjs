@@ -23,6 +23,7 @@ module.exports = {
         loader: 'vue-loader',
         options: {
           loaders: {
+        	  i18n: '@kazupon/vue-i18n-loader'
           }
           // other vue-loader options go here
         }
@@ -32,6 +33,7 @@ module.exports = {
         loader: 'babel-loader',
         exclude: /node_modules/
       },
+     
       {
         test: /\.(png|jpg|gif|svg)$/,
         loader: 'file-loader',
@@ -69,10 +71,9 @@ if (process.env.NODE_ENV === 'production') {
     }),
     new CleanWebpackPlugin(pathsToClean),
     new webpack.optimize.UglifyJsPlugin({
-      sourceMap: false,
+      sourceMap: true,
       compress: {
-        warnings: false,
-        drop_console: true
+        warnings: false
       }
     }),
     new webpack.LoaderOptionsPlugin({

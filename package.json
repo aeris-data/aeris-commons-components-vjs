@@ -1,7 +1,7 @@
 {
   "name": "aeris-commons-components-vjs",
   "description": "Aeris commons components. ",
-  "version": "0.1.9",
+  "version": "0.1.10",
   "author": "Aeris",
   "private": false,
   "scripts": {
@@ -10,7 +10,8 @@
   },
   "dependencies": {
     "vue": "^2.3.4",
-    "vue-custom-element": "^1.2.1"
+    "vue-custom-element": "^1.2.1",
+    "vue-i18n": "^7.0.5"
   },
   "devDependencies": {
     "@kazupon/vue-i18n-loader": "^0.1.1",

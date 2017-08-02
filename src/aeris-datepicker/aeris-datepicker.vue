@@ -1,0 +1,595 @@
+<i18n>
+{
+  "en": {
+    "january": "January",
+    "february": "February",
+    "march": "March",
+    "april": "April",
+    "may": "May",
+    "june": "June",
+    "july": "July",
+    "august": "August",
+    "september": "September",
+    "october": "October",
+    "november": "November",
+    "december": "December",
+    "today": "Today"
+  },
+  "fr": {
+	  	"january": "Janvier",
+	    "february": "Février",
+	    "march": "Mars",
+	    "april": "Avril",
+	    "may": "Mai",
+	    "june": "Juin",
+	    "july": "Juillet",
+	    "august": "Août",
+	    "september": "Septembre",
+	    "october": "Octobre",
+	    "november": "Novembre",
+	    "december": "Decembre",
+	    "today": "Aujourd'hui"
+  }
+}
+</i18n>
+<template>
+<span class="aeris-datepicker-host" v-if="visible">
+
+<div class="dp-container unselectable">
+
+<header class="dp-header">
+			<div class="dp-header-left dp-header-button" @click="prevMonth">
+				<i class="fa fa-chevron-left"></i>
+			</div>
+			<div class="dp-header-central">
+				<div class="dp-current-date">
+					<h5>{{currentSelectedYear}}</h5>
+					<h2>{{currentSelectedMonth}}</h2>
+				</div>
+			</div>
+			<div class="dp-header-right dp-header-button" @click="nextMonth">
+				<i class="fa fa-chevron-right"></i>
+			</div>
+</header>
+
+<main class="dp-main">
+<div class="dp-title-line">
+  <span class="dp-day" v-for="item in allDays">{{$t(item)}} </span>
+</div>
+<div class="dp-main-calendar">
+   <div class="dp-day" v-for="item in offsetBefore"></div>
+	<div class="dp-day " :class="computeDayClass(item)" v-for="item in monthDays" @click="clickDay">{{item.date()}}</div>
+</div>
+</main>
+
+<footer class="dp-footer">
+<div class="today-button" @click="setToToday">{{$t('today')}}</div>
+<div class="dp-selectors" >
+<select id="monthSelect" v-model="selectedMonth" @change="refresh">
+	<option :value="id" v-for="id in allMonthId">{{$t(allMonths[id])}}</option>
+</select>
+<select id="yearSelect" v-model="selectedYear" @change="refresh">
+	<option :value="item" v-for="item in allYears">{{item}}</option>
+</select>
+</div>
+</footer>
+
+
+</div>
+
+</span>
+</template>
+
+<script>
+export default {
+  props: {
+  format:  {
+	  type: String,
+	  default: 'DD/MM/YYYY'  
+  },
+  for: {
+	type: String,
+	default:''
+  },
+  after: {
+  default: false,
+  type: Boolean
+},
+},
+  data () {
+    return {
+    	currentDate: moment(),
+    	selected: null,
+    	allDays: ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'],
+        allMonths:  ['january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december'],
+        allMonthId: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
+        calendarElement: null,
+        selectedYear: moment().year(),
+        selectedMonth: moment().month(),
+        targetElement: null,
+        visible: true
+        
+        
+    }
+  },
+  
+  mounted: function () {
+	  var el = document.querySelector(this.for);
+
+      if(!el) {
+        console.log('invalid target in the datepicker: '+ this.for);
+      } else {
+       this.targetElement = el;
+
+        el.addEventListener('focus', this.show.bind(this));
+      }
+	  
+	  },
+  
+  computed: {
+	  
+	  allYears: function() {
+      var minYear = 1970;
+      var maxYear = this.currentSelectedYear + 10;
+	  var result = [];
+
+      for(var i = maxYear; i >= minYear; i--) {
+        result.push(i);
+      }
+      return result;
+	  },
+	  
+	
+	  start: function() {return this.currentDate.date(1)},
+	  end: function() { return this.currentDate.clone().endOf('month')},
+	  monthDays: function() {
+		  var range = window.moment.range(this.start, this.end)
+		  var result = []
+		  for (let day of range.by('days')) {
+			 result.push(day);
+		  }
+		  return result;
+	  },
+	  
+	  offsetBefore: function() {
+		  var weekDay = this.start.day() - 1;
+		  if(weekDay === -1) weekDay = 6;
+		  var result = []
+		  for(var i = 0; i < weekDay; i++) {
+			  result.push('blank');
+		  }
+		  return result 
+	  },
+	  
+	  
+	  currentSelectedYear: function() {
+		  return this.currentDate.year();
+	  },
+	  
+	  currentSelectedMonth: function() {
+		  var ind = this.currentDate.month();
+		  return this.$t(this.allMonths[ind]);
+	  }
+  },
+  methods: {
+	  
+	  show: function() {
+		  this.visible = true;
+	  },
+	  
+	  refresh: function() {
+		  var date = this.currentDate.clone();
+	        date.month(this.selectedMonth);
+	        date.year(this.selectedYear);
+	        this.setCurrentDate(date);
+	  },
+	  
+	  computeDayClass: function(day) {
+			var classes = '';
+			if(this.after) {
+				var notBefore = window.moment(this.after, this.format);
+  	classes += day.isBefore(notBefore) ? 'disabled' : 'clickable';
+			} else {
+				classes += 'clickable';
+			}
+
+  classes += moment().isSame(day, 'days') ? ' is-today' : '';
+  classes += day.isSame(this._selected, 'days') ? ' day-selected' : '';
+  return classes;
+	  	},    
+	  
+	  setCurrentDate: function(date) {
+	        if(date && date.isValid()) {
+	          this.currentDate = moment(date);
+	        } else {
+	          this.currentDate = moment();
+	        }
+	      },
+	      
+	      setToToday: function() {
+	          this.selected = moment();
+	          this.setCurrentDate(this.selected);
+	          this.setTarget();
+	        },
+	        
+	        setTarget : function() {
+	        	this.targetElement.value = this.selected.format(this.format);
+	        	this.visible=false;
+	        },
+	        
+	        clickDay: function(e) {
+	        	var isClickable = [].slice.call(e.target.classList).indexOf('clickable') >= 0 ? true : false;
+				if(isClickable) {
+					var ele = e.currentTarget || e.srcElement;
+					var day = ele.innerText;
+					var date = moment({ year :this.currentDate.year(), month :this.currentDate.month(), day :parseInt(day)})
+					this.selected = date;
+					this.setCurrentDate(date);
+					this.setTarget();
+				}
+	        },
+	  
+	  prevMonth: function() {
+	        var titleEl = this.$el.querySelector('.dp-current-date');
+	        var calendarEl = this.$el.querySelector('.dp-main-calendar');
+
+	        titleEl.classList.add('slideOutRight');
+	        calendarEl.classList.add('slideOutTop');
+
+	        window.setTimeout(function() {
+	          titleEl.classList.remove('slideOutRight');
+	          calendarEl.classList.remove('slideOutTop');
+	          this._setCurrentDate(this._currentDate.subtract(1, 'months'));
+	          titleEl.classList.add('slideInLeft');
+	          calendarEl.classList.add('slideInBottom');
+	        }.bind(this), 200);
+
+	        window.setTimeout(function() {
+	          titleEl.classList.remove('slideInLeft');
+	          calendarEl.classList.remove('slideInBottom');
+	        }.bind(this), 600);
+	      },
+
+	      nextMonth: function() {
+	        var titleEl = this.$el.querySelector('.dp-current-date');
+	        var calendarEl = this.$el.querySelector('.dp-main-calendar');
+
+	        titleEl.classList.add('slideOutLeft');
+	        calendarEl.classList.add('slideOutBottom');
+
+	        window.setTimeout(function() {
+	          titleEl.classList.remove('slideOutLeft');
+	          calendarEl.classList.remove('slideOutBottom');
+	          this.setCurrentDate(this.currentDate.add(1, 'months'));
+	          titleEl.classList.add('slideInRight');
+	          calendarEl.classList.add('slideInTop');
+	        }.bind(this), 200);
+
+	        window.setTimeout(function() {
+	          titleEl.classList.remove('slideInRight');
+	          calendarEl.classList.remove('slideInTop');
+	        }.bind(this), 600);
+	      },
+
+	  
+	  
+  }
+}
+</script>
+
+<style>
+.aeris-datepicker-host {
+	display: block;
+	position: absolute;
+	z-index: 999;
+	font-family: 'Open Sans', sans-serif;
+	transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+	transform: scale(1);
+	opacity: 1;
+	transform-origin: top left;
+}
+
+.aeris-datepicker-host div {
+	box-sizing: border-box;
+}
+
+.aeris-datepicker-host.hidden {
+	transform: scale(0);
+	opacity: 0;
+}
+
+.unselectable {
+	-moz-user-select: -moz-none;
+	-khtml-user-select: none;
+	-webkit-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+
+.dp-container {
+	display: flex;
+	flex-flow: column nowrap;
+	min-width: 17em;
+	border: #4765A0;
+	box-shadow: 0 2px 10px 2px rgba(0, 0, 0, 0.1);
+}
+
+.dp-header {
+	display: flex;
+	flex-flow: row nowrap;
+	justify-content: space-between;
+	align-items: center;
+	padding: 10px;
+	background-color: #4765A0;
+	color: #fff;
+}
+
+.dp-header .dp-header-button {
+	cursor: pointer;
+}
+
+.dp-header .dp-header-button:hover {
+	opacity: 0.6;
+}
+
+.dp-header .dp-current-date {
+	padding: 0 10px;
+	transition: 0.3s;
+}
+
+.dp-header .dp-current-date h2,
+.dp-header .dp-current-date h5 {
+	margin: 5px 0;
+	font-weight: normal;
+}
+
+.dp-header .dp-current-date h2 {
+	font-size: 30px;
+	opacity: 1;
+}
+
+.dp-header .dp-current-date h5 {
+	opacity: 0.7;
+}
+
+.dp-main {
+	padding: 10px;
+	background-color: #FFF;
+}
+
+.dp-main .dp-title-line,
+.dp-main .dp-main-calendar {
+	display: flex;
+	justify-content: flex-start;
+	flex-flow: row nowrap;
+	width: 210px;
+	margin: 0 auto;
+}
+
+.dp-main .dp-title-line {
+	font-size: 12px;
+}
+
+.dp-main .dp-main-calendar {
+	flex-wrap: wrap;
+	align-items: flex-start;
+	font-size: 14px;
+}
+
+.dp-main .dp-day {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 30px;
+	height: 30px;
+}
+
+.dp-main .disabled {
+	color: #bbb;
+}
+
+.dp-main .clickable {
+	position: relative;
+}
+
+.dp-main .clickable:hover {
+	cursor: pointer;
+}
+
+.dp-main .clickable:hover:after {
+	content: '';
+	position: absolute;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
+	background-color: #4765A0;
+	border-radius: 50%;
+	opacity: 0.1;
+}
+
+.dp-main .is-today {
+	color: #4765A0;
+	font-weight: 600;
+}
+
+.dp-main .day-selected {
+	border: 2px solid #4765A0;
+	border-radius: 50%;
+}
+
+.dp-footer {
+	padding: 10px;
+	background-color: #FFF;
+}
+
+.dp-footer .today-button {
+	padding: 5px 10px;
+	border: 1px solid;
+	text-align: center;
+	color: #4765A0;
+}
+
+.dp-footer .today-button:hover {
+	cursor: pointer;
+}
+
+.dp-selectors {
+	display: flex;
+	flex-flow: row nowrap;
+	justify-content: center;
+	text-align: center;
+	margin-top: 10px;
+}
+
+.dp-selectors select {
+	display: block;
+	margin: 2px;
+	padding: 5px 10px;
+	font-size: 14px;
+	background-color: transparent;
+	border: 1px solid;
+	color: #4765A0;
+	outline: none;
+}
+
+.dp-selectors select option {
+	color: #333;
+}
+
+.slideInRight {
+	animation-name: slideInRight;
+	animation-duration: 0.3s;
+}
+
+@keyframes slideInRight {
+	from {
+		transform: translate(50px);
+		opacity: 0;
+	}
+
+	to {
+		transform: translate(0);
+		opacity: 1;
+	}
+}
+
+.slideOutRight {
+	animation-name: slideOutRight;
+	animation-duration: 0.3s;
+}
+
+@keyframes slideOutRight {
+	from {
+		transform: translate(0);
+		opacity: 1;
+	}
+
+	to {
+		transform: translate(50px);
+		opacity: 0;
+	}
+}
+
+.slideInLeft {
+	animation-name: slideInLeft;
+	animation-duration: 0.3s;
+}
+
+@keyframes slideInLeft {
+	from {
+		transform: translate(-50px);
+		opacity: 0;
+	}
+
+	to {
+		transform: translate(0);
+		opacity: 1;
+	}
+}
+
+.slideOutLeft {
+	animation-name: slideOutLeft;
+	animation-duration: 0.3s;
+}
+
+@keyframes slideOutLeft {
+	from {
+		transform: translate(0);
+		opacity: 1;
+	}
+
+	to {
+		transform: translate(-50px);
+		opacity: 0;
+	}
+}
+
+.slideInBottom {
+	animation-name: slideInBottom;
+	animation-duration: 0.6s;
+}
+
+@keyframes slideInBottom {
+	from {
+		transform: translateY(10px);
+		opacity: 0;
+	}
+
+	to {
+		transform: translateY(0);
+		opacity: 1;
+	}
+}
+
+.slideOutBottom {
+	animation-name: slideOutBottom;
+	animation-duration: 0.6s;
+}
+
+@keyframes slideOutBottom {
+	from {
+		transform: translateY(0);
+		opacity: 1;
+	}
+
+	to {
+		transform: translateY(10px);
+		opacity: 0;
+	}
+}
+
+.slideInTop {
+	animation-name: slideInTop;
+	animation-duration: 0.6s;
+}
+
+@keyframes slideInTop {
+	from {
+		transform: translateY(-10px);
+		opacity: 0;
+	}
+
+	to {
+		transform: translateY(0);
+		opacity: 1;
+	}
+}
+
+.slideOutTop {
+	animation-name: slideOutTop;
+	animation-duration: 0.6s;
+}
+
+@keyframes slideOutTop {
+	from {
+		transform: translateY(0);
+		opacity: 1;
+	}
+
+	to {
+		transform: translateY(-10px);
+		opacity: 0;
+	}
+}
+</style>
