@@ -35,7 +35,7 @@
 	    "october": "Octobre",
 	    "november": "Novembre",
 	    "december": "Decembre",
-	    "today": "Aujourd'hui",
+	    "today": "Aujourdhui",
 	    "mon": "Lun",
 	    "tue": "Mar",
 	    "wed": "Mer",
