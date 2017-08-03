@@ -13,7 +13,14 @@
     "october": "October",
     "november": "November",
     "december": "December",
-    "today": "Today"
+    "today": "Today",
+    "mon": "Mon",
+    "tue": "Tue",
+    "wed": "Wed",
+    "thu": "Thu",
+    "fri": "Fri",
+    "sat": "Sat",
+    "sun": "Sun"
   },
   "fr": {
 	  	"january": "Janvier",
@@ -28,7 +35,14 @@
 	    "october": "Octobre",
 	    "november": "Novembre",
 	    "december": "Decembre",
-	    "today": "Aujourd'hui"
+	    "today": "Aujourd'hui",
+	    "mon": "Lun",
+	    "tue": "Mar",
+	    "wed": "Mer",
+	    "thu": "Jeu",
+	    "fri": "Ven",
+	    "sat": "Sam",
+	    "sun": "Dim"
   }
 }
 </i18n>
@@ -83,7 +97,13 @@
 <script>
 export default {
   props: {
-  format:  {
+	
+	  lang:  {
+	      type: String,
+	      default: 'fr'
+	    },	  
+
+   format:  {
 	  type: String,
 	  default: 'DD/MM/YYYY'  
   },
@@ -119,6 +139,9 @@ export default {
 		  if (val) {
 			  this.ensureTheme();
 		  }
+	  },
+	  lang (value) {
+	      this.$i18n.locale = value
 	  }
   },
   
@@ -130,6 +153,7 @@ export default {
   },
   
   created: function() {
+	  this.$i18n.locale = this.lang
 	  this.clickListener = this.closeOnClick.bind(this)
       document.addEventListener('mousedown', this.clickListener);
 	  this.aerisThemeListener = this.handleTheme.bind(this) 
