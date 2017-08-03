@@ -17,6 +17,9 @@
   <h2>Aeris Datepicker</h2>
 	<input type="text" id="date">
 	<aeris-datepicker for="input#date" format="DD-MM-YYYY"></aeris-datepicker>
+	<div id="myslot"></div>
+	<aeris-datepicker for="input#date2" format="DD-MM-YYYY"></aeris-datepicker>
+	<button onclick="addInput2()">Ajouter input 2</button>
   
   	<h2>Aeris notification</h2>
   	<div style="padding:5px">
@@ -69,12 +72,17 @@
 	<h2>Aeris Orcid</h2>
 	<aeris-orcid orcid="tittititititi"></aeris-orcid>
 	
-	<h2>Aeris Datepicker</h2>
-	<input type="text" id="date">
-	<aeris-datepicker for="input#date" format="DD-MM-YYYY"></aeris-datepicker>
-	
+	<aeris-theme active="true" primary="red" emphasis="blue" />
     <script src="dist/build.js"></script>
     <script>
+    
+    function addInput2() {
+    	var newInput = document.createElement("input");
+    	newInput.setAttribute("id", "date2");
+    	newInput.setAttribute("type", "text");
+    	document.querySelector('#myslot').appendChild(newInput)
+    }
+    
     document.querySelector('#container1').addEventListener("aerisCartoucheItemDeleted", function(e){
        console.log("capté container 1: "+e.detail.itemref);
        e.stopPropagation()

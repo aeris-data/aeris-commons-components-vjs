@@ -33,7 +33,7 @@
 }
 </i18n>
 <template>
-<span class="aeris-datepicker-host" v-if="visible">
+<span class="aeris-datepicker-host" v-show="visible">
 
 <div class="dp-container unselectable">
 
@@ -107,22 +107,44 @@ export default {
         selectedYear: moment().year(),
         selectedMonth: moment().month(),
         targetElement: null,
-        visible: true
-        
-        
+        visible: false,
+        clickListener: null,
+        aerisThemeListener: null,
+        targetChecker : null
     }
   },
   
+  watch: {
+	  visible: function(val) {
+		  if (val) {
+			  this.ensureTheme();
+		  }
+	  }
+  },
+  
+  destroyed: function() {
+	  document.removeEventListener('mousedown', this.clickListener);
+	  this.clickListener = null;
+	  document.removeEventListener('aerisTheme', this.aerisThemeListener);
+	  this.aerisThemeListener = null;
+  },
+  
+  created: function() {
+	  this.clickListener = this.closeOnClick.bind(this)
+      document.addEventListener('mousedown', this.clickListener);
+	  this.aerisThemeListener = this.handleTheme.bind(this) 
+	  document.addEventListener('aerisTheme', this.aerisThemeListener);
+	  
+  },
+  
   mounted: function () {
-	  var el = document.querySelector(this.for);
-
-      if(!el) {
-        console.log('invalid target in the datepicker: '+ this.for);
-      } else {
-       this.targetElement = el;
-
-        el.addEventListener('focus', this.show.bind(this));
-      }
+	  var event = new CustomEvent('aerisThemeRequest', {});
+	  	document.dispatchEvent(event);
+	  this.$el.addEventListener('mousedown', function(e) {
+          e.stopPropagation();
+        });
+	  
+	  this.targetChecker = setInterval(this.lookForTarget.bind(this), 1000);
 	  
 	  },
   
@@ -130,7 +152,7 @@ export default {
 	  
 	  allYears: function() {
       var minYear = 1970;
-      var maxYear = this.currentSelectedYear + 10;
+      var maxYear =  moment().year() + 10;
 	  var result = [];
 
       for(var i = maxYear; i >= minYear; i--) {
@@ -173,6 +195,56 @@ export default {
   },
   methods: {
 	  
+	  lookForTarget : function() {
+		  
+	  var el = document.querySelector(this.for);
+	  if(el) {
+	       this.targetElement = el;
+	        console.info("Target trouvée pour "+this.for)
+	        el.addEventListener('focus', this.show.bind(this));
+	        clearInterval(this.targetChecker);
+	      }
+	  else {
+		  console.info("Target non trouvée pour "+this.for+"...")
+	  }
+	  },
+	  
+	  
+	  handleTheme: function(theme) {
+	  		this.theme = theme.detail
+			this.ensureTheme()
+	  	},
+	  	
+	  	ensureTheme: function() {
+	  	if ((this.$el) && (this.$el.querySelector)) {
+	  		this.$el.querySelector(".dp-header").style.background=this.theme.primary
+	  		this.$el.querySelector(".dp-day.day-selected").style.borderColor=this.theme.primary
+	  		this.$el.querySelector(".dp-footer .today-button").style.color=this.theme.primary
+	  		this.$el.querySelector(".dp-selectors #monthSelect").style.color=this.theme.primary
+	  		this.$el.querySelector(".dp-selectors #yearSelect").style.color=this.theme.primary
+	  	}
+	  	}
+  ,
+	  
+	  isDescendant: function(parent, child) {
+		     var node = child.parentNode;
+		     while (node != null) {
+		         if (node == parent) {
+		             return true;
+		         }
+		         node = node.parentNode;
+		     }
+		     return false;
+		},
+
+	  
+	  closeOnClick: function(e) {
+		  var aux = e.target
+		  if (!(this.isDescendant(this.$el, aux))) {
+	        	this.visible=false;
+	        }
+	      },
+	  
 	  show: function() {
 		  this.visible = true;
 	  },
@@ -188,7 +260,7 @@ export default {
 			var classes = '';
 			if(this.after) {
 				var notBefore = window.moment(this.after, this.format);
-  	classes += day.isBefore(notBefore) ? 'disabled' : 'clickable';
+				classes += day.isBefore(notBefore) ? 'disabled' : 'clickable';
 			} else {
 				classes += 'clickable';
 			}
