@@ -8,6 +8,9 @@ Vue.use(vueCustomElement);
 import VueI18n from 'vue-i18n'
 Vue.use(VueI18n);
 
+import VueColor from './vue-color.js'
+Vue.use(VueColor)
+
 import AerisTheme from './aeris-theme/aeris-theme.vue'
 import AerisNotification from './aeris-notification/aeris-notification.vue'
 import AerisNotifier from './aeris-notification/aeris-notifier.vue'
