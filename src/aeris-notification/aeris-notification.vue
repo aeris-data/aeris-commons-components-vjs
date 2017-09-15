@@ -19,8 +19,7 @@ export default {
 props: {
   spinner: { default: false, type: Boolean},
   closable: { default: false, type: Boolean},
-  autoHide: { default: false, type: Boolean},
-  autoHideDelay: {type: String, default: '4000'},
+  uuid: { default: '', type: String},
   
   type: {
   default: 'success',
@@ -38,7 +37,7 @@ props: {
   },
   
   mounted: function() {
-	  if(this.autoHide) window.setTimeout(this.close.bind(this), Number(this.autoHideDelay));
+	  
   },
   
   created: function () {
@@ -50,18 +49,12 @@ props: {
 		  return "notify-container aeris-notification-"+this.type
       },
       
-      uuid:  function(){
-    	  Math.floor((1 + Math.random()) * 0x10000)
-          .toString(16)
-          .substring(1);
-      }
   },
   methods: {
 	  
 	  close: function() {
 	        try {
 	            this.visibilityclass='hide'
-	            document.dispatchEvent(new CustomEvent('aerisNotificationDestroyed', { 'detail': {message: this.message}}))
 	        } catch (e) {
 	          // Do nothing
 	        }
