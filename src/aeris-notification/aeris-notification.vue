@@ -21,7 +21,7 @@ props: {
   closable: { default: false, type: Boolean},
   autoHide: { default: false, type: Boolean},
   autoHideDelay: {type: String, default: '4000'},
-  id: {type: String, default:''},
+  
   type: {
   default: 'success',
 	type: String  
@@ -48,6 +48,12 @@ props: {
   computed: {
 	  getNotificationStyle: function() {
 		  return "notify-container aeris-notification-"+this.type
+      },
+      
+      uuid:  function(){
+    	  Math.floor((1 + Math.random()) * 0x10000)
+          .toString(16)
+          .substring(1);
       }
   },
   methods: {

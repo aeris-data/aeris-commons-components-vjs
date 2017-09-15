@@ -1,7 +1,7 @@
 <template>
 <span class="aeris-notifier-host">
 <div class="aeris-notifier-container">
-<li v-for="notification in notifications" class="notification">
+<li v-for="notification in notifications" class="notification" :key="notification.uuid">
 <aeris-notification  :type="notification.type" :message="notification.message" :spinner="notification.spinner" :closable="notification.closable" :auto-hide="notification.autoHide" :auto-hide-delay="notification.autoHideDelay"></aeris-notification>
 </li>
 </div>
