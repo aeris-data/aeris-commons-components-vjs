@@ -10,12 +10,24 @@ export default {
   	orcid:  {
       type: String,
       default: null
-    }
+    },
+    
+    name:  {
+        type: String,
+        default: null
+      }
+
 },
   
    
-  watch: {
-   },
+watch: {
+	orcid: function() {
+	      this.refresh();
+    },
+    name: function() {
+	      this.refresh();
+    }
+  },
   
   created: function () {
    this.aerisOrcidRequestListener = this.handleOrcidRequest.bind(this) 
@@ -32,7 +44,7 @@ export default {
   },
   
   mounted: function() {
-   
+   this.refresh()
   },
   
   data () {
@@ -44,9 +56,24 @@ export default {
   methods: {
   
   handleOrcidRequest: function() {
-  	console.log("Orcid ?: "+this.orcid);
-  }
+  	this.refresh()
+  },
   
+  refresh: function() {
+	  	if (this.orcid) {
+	  		var event = new CustomEvent('aerisOrcidResponse', { detail: {user: {orcid: this.orcid}}});
+	  		document.dispatchEvent(event);
+	  	}
+	  	if ((this.orcid) && (this.name)) {
+	  		var event = new CustomEvent('aerisOrcidResponse', { detail: {user: {orcid: this.orcid, name: this.name}}});
+	  		document.dispatchEvent(event);
+	  	}
+	  	else {
+	  		var event = new CustomEvent('aerisOrcidResponse', { detail: {}});
+	  		document.dispatchEvent(event);
+	  	}
+	  	
+	  }
   }
 }
 </script>
