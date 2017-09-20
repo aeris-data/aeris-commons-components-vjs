@@ -100,7 +100,7 @@ export default {
 	
 	  lang:  {
 	      type: String,
-	      default: 'fr'
+	      default: 'en'
 	    },	  
 
    format:  {
