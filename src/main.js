@@ -32,7 +32,7 @@ ljs.load('dep', function() {
 		if (!window.registredAerisElements) {
 			window.registredAerisElements = [];
 		}
-		if (window.registredAerisElementsindexOf(name) < 0) {
+		if (window.registredAerisElements.indexOf(name) < 0) {
 			Vue.customElement(name, component);
 			window.registredAerisElements.push(name)
 		}
