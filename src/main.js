@@ -27,30 +27,32 @@ ljs.addAliases({
 })
 ljs.load('dep', function() {
 	
+	
+	function registerElement(name, component) {
+		if (!window.registredAerisElements) {
+			window.registredAerisElements = [];
+		}
+		if (window.registredAerisElementsindexOf(name) < 0) {
+			Vue.customElement(name, component);
+			window.registredAerisElements.push(name)
+		}
+	}
+	
 	window.moment = moment
 	window['moment-range'].extendMoment(moment);
 	
-	if (!window.registredAerisElements) {
-		window.registredAerisElements = [];
-	}
 	console.info("Début registration des custom elements commons")
 	console.info("Registred elements at this time: "+window.registredAerisElements)
-	Vue.customElement('aeris-theme', AerisTheme);
-	window.registredAerisElements.push('aeris-theme')
-	Vue.customElement('aeris-notification', AerisNotification);
-	window.registredAerisElements.push('aeris-notification')
-	Vue.customElement('aeris-notifier', AerisNotifier);
-	window.registredAerisElements.push('aeris-notifier')
-	Vue.customElement('aeris-cartouche', AerisCartouche);
-	window.registredAerisElements.push('aeris-cartouche')
-	Vue.customElement('aeris-spinner', AerisSpinner);
-	window.registredAerisElements.push('aeris-spinner')
-	Vue.customElement('aeris-browser-alert', AerisBrowserAlert);
-	window.registredAerisElements.push('aeris-browser-alert')
-	Vue.customElement('aeris-orcid', AerisOrcid);
-	window.registredAerisElements.push('aeris-orcid')
-	Vue.customElement('aeris-datepicker', AerisDatepicker);
-	window.registredAerisElements.push('aeris-datepicker')
+	
+	registerElement('aeris-theme', AerisTheme);
+	registerElement('aeris-notification', AerisNotification);
+	registerElement('aeris-notifier', AerisNotifier);
+	registerElement('aeris-cartouche', AerisCartouche);
+	registerElement('aeris-spinner', AerisSpinner);
+	registerElement('aeris-browser-alert', AerisBrowserAlert);
+	registerElement('aeris-orcid', AerisOrcid);
+	registerElement('aeris-datepicker', AerisDatepicker);
+
 	window.registredAerisElements.push('aeris-commons-components-vjs')
 })
 
