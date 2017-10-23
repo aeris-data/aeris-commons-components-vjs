@@ -60,12 +60,12 @@ watch: {
   },
   
   refresh: function() {
-	  	if (this.orcid) {
+	  if ((this.orcid) && (this.name)) {
+		  var event = new CustomEvent('aerisOrcidResponse', { detail: {user: {orcid: this.orcid, name: this.name}}});
+		  document.dispatchEvent(event);
+	  }
+	  else if (this.orcid) {
 	  		var event = new CustomEvent('aerisOrcidResponse', { detail: {user: {orcid: this.orcid}}});
-	  		document.dispatchEvent(event);
-	  	}
-	  	if ((this.orcid) && (this.name)) {
-	  		var event = new CustomEvent('aerisOrcidResponse', { detail: {user: {orcid: this.orcid, name: this.name}}});
 	  		document.dispatchEvent(event);
 	  	}
 	  	else {
