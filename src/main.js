@@ -11,6 +11,10 @@ Vue.use(VueI18n);
 import VueColor from './vue-color.js'
 Vue.use(VueColor)
 
+import {VueColorPlugin, VueAerisLanguagePlugin} from 'aeris-mixins'
+Vue.use(VueColorPlugin)
+Vue.use(VueAerisLanguagePlugin)
+
 import AerisTheme from './aeris-theme/aeris-theme.vue'
 import AerisLanguage from './aeris-language/aeris-language.vue'
 import AerisNotification from './aeris-notification/aeris-notification.vue'
