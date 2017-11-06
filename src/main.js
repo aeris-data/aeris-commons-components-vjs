@@ -12,6 +12,7 @@ import VueColor from './vue-color.js'
 Vue.use(VueColor)
 
 import AerisTheme from './aeris-theme/aeris-theme.vue'
+import AerisLanguage from './aeris-language/aeris-language.vue'
 import AerisNotification from './aeris-notification/aeris-notification.vue'
 import AerisNotifier from './aeris-notification/aeris-notifier.vue'
 import AerisCartouche from './aeris-cartouche/aeris-cartouche.vue'
@@ -45,6 +46,7 @@ ljs.load('dep', function() {
 	console.info("Registred elements at this time: "+window.registredAerisElements)
 	
 	registerElement('aeris-theme', AerisTheme);
+	registerElement('aeris-language', AerisLanguage);
 	registerElement('aeris-notification', AerisNotification);
 	registerElement('aeris-notifier', AerisNotifier);
 	registerElement('aeris-cartouche', AerisCartouche);
