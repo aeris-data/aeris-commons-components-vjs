@@ -45,9 +45,10 @@ ljs.load('dep', function() {
 			if (window.registredAerisElements.indexOf(name) < 0) {
 				let registrable = true
 				if (window.aerisexclusions) {
-					let aux = window.aerisexclusions[bundleName]
+					var aux = window.aerisexclusions[bundleName]
 					if (aux) {
-						if (aux.indexOf[name]>= 0) {
+						if (aux.indexOf(name)>= 0) {
+							console.log("Aeris - Exclusion of "+name)
 							registrable = false;
 						}
 					}
