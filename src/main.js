@@ -36,15 +36,29 @@ ljs.addAliases({
 ljs.load('dep', function() {
 	
 	
-	function registerElement(name, component) {
-		if (!window.registredAerisElements) {
-			window.registredAerisElements = [];
+	var bundleName = "aeris-commons-components-vjs"
+
+		function registerElement(name, component) {
+			if (!window.registredAerisElements) {
+				window.registredAerisElements = [];
+			}
+			if (window.registredAerisElements.indexOf(name) < 0) {
+				let registrable = true
+				if (window.aerisexclusions) {
+					let aux = window.aerisexclusions[bundleName]
+					if (aux) {
+						if (aux.indexOf[name]>= 0) {
+							registrable = false;
+						}
+					}
+				}
+				if (registrable) {
+					console.log("Aeris - Registration of "+name)
+					Vue.customElement(name, component);
+					window.registredAerisElements.push(name)
+				}
+			}
 		}
-		if (window.registredAerisElements.indexOf(name) < 0) {
-			Vue.customElement(name, component);
-			window.registredAerisElements.push(name)
-		}
-	}
 	
 	window.moment = moment
 	window['moment-range'].extendMoment(moment);
