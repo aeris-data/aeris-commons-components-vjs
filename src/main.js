@@ -1,5 +1,8 @@
 require("exports-loader?!./l.min.js")
 
+var pjson = require('../package.json');
+console.log(pjson.version);
+
 import Vue from 'vue'
 
 import vueCustomElement from 'vue-custom-element'
