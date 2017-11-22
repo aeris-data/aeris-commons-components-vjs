@@ -12,8 +12,10 @@
 	
 	</style>
   </head>
-  <body>
+  <body data-color="#019A9C" data-secondary-color="#ffab02">
   
+  <h2>Aeris Browser alert</h2>
+  	<aeris-browser-alert></aeris-browser-alert>
   <h2>Aeris Datepicker</h2>
 	<input type="text" id="date">
 	<aeris-datepicker for="input#date" format="DD-MM-YYYY"></aeris-datepicker>
@@ -71,8 +73,14 @@
 	<aeris-spinner id="spin2">Texte</aeris-spinner>
 	<h2>Aeris Orcid</h2>
 	<aeris-orcid orcid="tittititititi"></aeris-orcid>
-	
+	<h2>Aeris Theme</h2>
+	<aeris-wordpress-theme></aeris-wordpress-theme>
 	<aeris-theme active="true" primary="red" emphasis="blue" />
+	<script>
+	
+	window.aerisexclusions = []
+	window.aerisexclusions["aeris-commons-components-vjs"]= ["aeris-spinner"]
+	</script>
     <script src="dist/build.js"></script>
     <script>
     

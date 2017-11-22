@@ -19,12 +19,12 @@ Vue.use(VueColorPlugin)
 Vue.use(VueAerisLanguagePlugin)
 
 import AerisTheme from './aeris-theme/aeris-theme.vue'
+import AerisWordpressTheme from './aeris-theme/aeris-wordpress-theme.vue'
 import AerisLanguage from './aeris-language/aeris-language.vue'
 import AerisNotification from './aeris-notification/aeris-notification.vue'
 import AerisNotifier from './aeris-notification/aeris-notifier.vue'
 import AerisCartouche from './aeris-cartouche/aeris-cartouche.vue'
 import AerisSpinner from './aeris-spinner/aeris-spinner.vue'
-import AerisBrowserAlert from './aeris-browser-alert/aeris-browser-alert.vue'
 import AerisOrcid from './aeris-orcid/aeris-orcid.vue'
 import AerisDatepicker  from './aeris-datepicker/aeris-datepicker.vue'
 
@@ -68,12 +68,12 @@ ljs.load('dep', function() {
 	console.info("Registred elements at this time: "+window.registredAerisElements)
 	
 	registerElement('aeris-theme', AerisTheme);
+	registerElement('aeris-wordpress-theme', AerisWordpressTheme);
 	registerElement('aeris-language', AerisLanguage);
 	registerElement('aeris-notification', AerisNotification);
 	registerElement('aeris-notifier', AerisNotifier);
 	registerElement('aeris-cartouche', AerisCartouche);
 	registerElement('aeris-spinner', AerisSpinner);
-	registerElement('aeris-browser-alert', AerisBrowserAlert);
 	registerElement('aeris-orcid', AerisOrcid);
 	registerElement('aeris-datepicker', AerisDatepicker);
 

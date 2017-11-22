@@ -7,35 +7,10 @@
 <script>
 export default {
   props: {
-  	primary:  {
-      type: String,
-      default: null
-    },
-    emphasis:  {
-      type: String,
-      default: null
-    },
-    active: {
-    	type: Boolean,
-     	 default: false
-    },
-},
-  
-   
-  watch: {
-    primary () {
-	      this.refresh();
-    },
-    emphasis () {
-	      this.refresh();
-    },
-    active () {
-	      this.refresh();
-    }
   },
   
+   
   created: function () {
-  		this.refresh()
   		this.aerisThemeRequestListener = this.handleThemeRequest.bind(this) 
    document.addEventListener('aerisThemeRequest', this.aerisThemeRequestListener);
   },
@@ -50,11 +25,13 @@ export default {
   },
   
   mounted: function() {
-   
+	  this.refresh();
   },
   
   data () {
     return {
+    	primary: null,
+    	emphasis: null,
     	aerisThemeRequestListener: null
     }
   },
@@ -62,10 +39,13 @@ export default {
   methods: {
   
   refresh: function() {
-  	if (this.active && this.primary && this.emphasis) {
-  	    var event = new CustomEvent('aerisTheme', { detail: {primary: this.primary, emphasis: this.emphasis}});
+	  var aux =  document.querySelector("body");
+	  this.primary = aux.getAttribute("data-color")
+	  this.emphasis = aux.getAttribute("data-secondary-color")
+	  console.log("Wordpress theme event")
+	  var event = new CustomEvent('aerisTheme', { detail: {primary: this.primary, emphasis: this.emphasis}});
+	  console.log(event)
   		document.dispatchEvent(event);
-  	}
   },
   
   handleThemeRequest: function() {
@@ -77,5 +57,5 @@ export default {
 </script>
 
 <style>
-  
+ 
 </style>
