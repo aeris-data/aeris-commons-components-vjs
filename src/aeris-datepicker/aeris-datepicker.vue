@@ -98,24 +98,32 @@
 export default {
   props: {
 	
-	  lang:  {
-	      type: String,
-	      default: 'en'
-	    },	  
-
-   format:  {
-	  type: String,
-	  default: 'DD/MM/YYYY'  
+	lang:  {
+		type: String,
+		default: 'en'
+	},	  
+	format:  {
+		type: String,
+		default: 'DD/MM/YYYY'  
+	},
+ 	for: {
+		type: String,
+		default:''
+  	},
+  	after: {
+		default: false,
+		type: Boolean
+  	},
+	daymin:{
+		type: String,
+		default:"1970-01-01",
+		
+	},
+	daymax:{
+		type: String,
+		default:null,	
+	}
   },
-  for: {
-	type: String,
-	default:''
-  },
-  after: {
-  default: false,
-  type: Boolean
-},
-},
   data () {
     return {
     	currentDate: moment(),
@@ -158,6 +166,8 @@ export default {
       document.addEventListener('mousedown', this.clickListener);
 	  this.aerisThemeListener = this.handleTheme.bind(this) 
 	  document.addEventListener('aerisTheme', this.aerisThemeListener);
+	  console.log(this.daymin);
+	
 	  
   },
   
@@ -173,19 +183,32 @@ export default {
 	  },
   
   computed: {
-	  
-	  allYears: function() {
-      var minYear = 1970;
-      var maxYear =  moment().year() + 10;
-	  var result = [];
-
-      for(var i = maxYear; i >= minYear; i--) {
-        result.push(i);
-      }
-      return result;
+	  dateMin(){
+		  return moment(this.daymin, "YYYY-MM-DD");
+	  },
+	  dateMax(){
+		  if(!this.daymax ){
+			  var date = moment( (moment().year()+10)+"-12-31", "YYYY-MM-DD");
+		  }else  if( this.daymax == "now"){
+			  var date = moment();
+		  }else{
+			  var date = moment( this.daymax, "YYYY-MM-DD");
+		  }
+		  return date;
 	  },
 	  
+	  allYears: function() {
+	      var minYear = this.dateMin.year();
+	      var maxYear =  this.dateMax.year();
+	      
+		  var result = [];
 	
+	      for(var i = maxYear; i >= minYear; i--) {
+	        result.push(i);
+	      }
+	      return result;
+	  },
+	  
 	  start: function() {return this.currentDate.date(1)},
 	  end: function() { return this.currentDate.clone().endOf('month')},
 	  monthDays: function() {
@@ -237,18 +260,17 @@ export default {
 	  handleTheme: function(theme) {
 	  		this.theme = theme.detail
 			this.ensureTheme()
-	  	},
+	  },
 	  	
-	  	ensureTheme: function() {
-	  	if ((this.$el) && (this.$el.querySelector)) {
-	  		this.$el.querySelector(".dp-header").style.background=this.theme.primary
-	  		this.$el.querySelector(".dp-day.day-selected").style.borderColor=this.theme.primary
-	  		this.$el.querySelector(".dp-footer .today-button").style.color=this.theme.primary
-	  		this.$el.querySelector(".dp-selectors #monthSelect").style.color=this.theme.primary
-	  		this.$el.querySelector(".dp-selectors #yearSelect").style.color=this.theme.primary
-	  	}
-	  	}
-  ,
+ 	  ensureTheme: function() {
+		 	if ((this.$el) && (this.$el.querySelector)) {
+		 		this.$el.querySelector(".dp-header").style.background=this.theme.primary
+		 		this.$el.querySelector(".dp-day.day-selected").style.borderColor=this.theme.primary
+		 		this.$el.querySelector(".dp-footer .today-button").style.color=this.theme.primary
+		 		this.$el.querySelector(".dp-selectors #monthSelect").style.color=this.theme.primary
+		 		this.$el.querySelector(".dp-selectors #yearSelect").style.color=this.theme.primary
+		 	}
+ 	  },
 	  
 	  isDescendant: function(parent, child) {
 		     var node = child.parentNode;
@@ -259,9 +281,7 @@ export default {
 		         node = node.parentNode;
 		     }
 		     return false;
-		},
-
-	  
+	  },
 	  closeOnClick: function(e) {
 		  var aux = e.target
 		  if (!(this.isDescendant(this.$el, aux))) {
@@ -289,9 +309,9 @@ export default {
 				classes += 'clickable';
 			}
 
-  classes += moment().isSame(day, 'days') ? ' is-today' : '';
-  classes += day.isSame(this._selected, 'days') ? ' day-selected' : '';
-  return classes;
+			classes += moment().isSame(day, 'days') ? ' is-today' : '';
+			classes += day.isSame(this._selected, 'days') ? ' day-selected' : '';
+			return classes;
 	  	},    
 	  
 	  setCurrentDate: function(date) {
@@ -344,9 +364,9 @@ export default {
 	          titleEl.classList.remove('slideInLeft');
 	          calendarEl.classList.remove('slideInBottom');
 	        }.bind(this), 600);
-	      },
+	  },
 
-	      nextMonth: function() {
+	  nextMonth: function() {
 	        var titleEl = this.$el.querySelector('.dp-current-date');
 	        var calendarEl = this.$el.querySelector('.dp-main-calendar');
 
@@ -366,10 +386,7 @@ export default {
 	          titleEl.classList.remove('slideInRight');
 	          calendarEl.classList.remove('slideInTop');
 	        }.bind(this), 600);
-	      },
-
-	  
-	  
+	  },  
   }
 }
 </script>
