@@ -335,7 +335,7 @@ export default {
 	        window.setTimeout(function() {
 	          titleEl.classList.remove('slideOutRight');
 	          calendarEl.classList.remove('slideOutTop');
-	          this._setCurrentDate(this._currentDate.subtract(1, 'months'));
+	          this.setCurrentDate(this.currentDate.subtract(1, 'months'));
 	          titleEl.classList.add('slideInLeft');
 	          calendarEl.classList.add('slideInBottom');
 	        }.bind(this), 200);
@@ -356,6 +356,7 @@ export default {
 	        window.setTimeout(function() {
 	          titleEl.classList.remove('slideOutLeft');
 	          calendarEl.classList.remove('slideOutBottom');
+	         
 	          this.setCurrentDate(this.currentDate.add(1, 'months'));
 	          titleEl.classList.add('slideInRight');
 	          calendarEl.classList.add('slideInTop');
