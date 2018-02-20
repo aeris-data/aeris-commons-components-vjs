@@ -168,8 +168,11 @@ export default {
       document.addEventListener('mousedown', this.clickListener);
 	  this.aerisThemeListener = this.handleTheme.bind(this) 
 	  document.addEventListener('aerisTheme', this.aerisThemeListener);
-
-	  
+	  if(this.currentDate.isBefore(this.dateMin)){
+		  this.setCurrentDate( this.dateMin);
+	  }else if( this.currentDate.isAfter( this.dateMax)){
+		  this.setCurrentDate(this.dateMax);
+	  }
   },
   
   mounted: function () {
@@ -279,7 +282,9 @@ export default {
  	  ensureTheme: function() {
 		 	if ((this.$el) && (this.$el.querySelector)) {
 		 		this.$el.querySelector(".dp-header").style.background=this.theme.primary
-		 		this.$el.querySelector(".dp-day.day-selected").style.borderColor=this.theme.primary
+		 		if( this.$el.querySelector(".dp-day.day-selected")){
+		 			this.$el.querySelector(".dp-day.day-selected").style.borderColor=this.theme.primary
+		 		}
 		 		this.$el.querySelector(".dp-footer .today-button").style.color=this.theme.primary
 		 		this.$el.querySelector(".dp-selectors #monthSelect").style.color=this.theme.primary
 		 		this.$el.querySelector(".dp-selectors #yearSelect").style.color=this.theme.primary
