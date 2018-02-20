@@ -79,10 +79,10 @@
 <footer class="dp-footer">
 <div class="today-button" @click="setToToday">{{$t('today')}}</div>
 <div class="dp-selectors" >
-<select id="monthSelect" v-model="selectedMonth" @change="refresh">
+<select id="monthSelect" v-model="selectedMonth" @change="refreshMonth">
 	<option :value="id" v-for="id in allMonthId">{{$t(allMonths[id])}}</option>
 </select>
-<select id="yearSelect" v-model="selectedYear" @change="refresh">
+<select id="yearSelect" v-model="selectedYear" @change="refreshYear">
 	<option :value="item" v-for="item in allYears">{{item}}</option>
 </select>
 </div>
@@ -130,7 +130,7 @@ export default {
     	selected: null,
     	allDays: ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'],
         allMonths:  ['january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december'],
-        allMonthId: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
+        //allMonthId: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
         calendarElement: null,
         selectedYear: moment().year(),
         selectedMonth: moment().month(),
@@ -168,9 +168,7 @@ export default {
       document.addEventListener('mousedown', this.clickListener);
 	  this.aerisThemeListener = this.handleTheme.bind(this) 
 	  document.addEventListener('aerisTheme', this.aerisThemeListener);
-	  console.log(this.daymin);
-	 console.log( this.dateMin);
-	 console.log( this.dateMax);
+
 	  
   },
   
@@ -201,7 +199,18 @@ export default {
 		  }
 		  return date;
 	  },
-	  
+	  allMonthId(){
+		  var alls = [0,1,2,3,4,5,6,7,8,9,10,11];
+		  if( this.dateMax.year() == this.currentSelectedYear){
+			  var endMonth = this.dateMax.month();
+			  return alls.slice(0, endMonth+1); 
+		  }
+		  if( this.dateMin.year() == this.currentSelectedYear){
+			  var firstMonth = this.dateMin.month();
+			  return alls.slice( firstMonth, 12);
+		  }
+		  return  alls;
+	  },
 	  allYears: function() {
 	      var maxYear = this.dateMax.year();
 	      var minYear = this.dateMin.year();
@@ -240,6 +249,7 @@ export default {
 	  },
 	  
 	  currentSelectedMonth: function() {
+		  this.computeMonthsBounds( this.currentDate);
 		  var ind = this.currentDate.month();
 		  return this.$t(this.allMonths[ind]);
 	  }
@@ -248,16 +258,16 @@ export default {
 	  
 	  lookForTarget : function() {
 		  
-	  var el = document.querySelector(this.for);
-	  if(el) {
-	       this.targetElement = el;
-	        console.info("Target trouvée pour "+this.for)
-	        el.addEventListener('focus', this.show.bind(this));
-	        clearInterval(this.targetChecker);
-	      }
-	  else {
-		  console.info("Target non trouvée pour "+this.for+"...")
-	  }
+		  var el = document.querySelector(this.for);
+		  if(el) {
+		       this.targetElement = el;
+		        console.info("Target trouvée pour "+this.for)
+		        el.addEventListener('focus', this.show.bind(this));
+		        clearInterval(this.targetChecker);
+		      }
+		  else {
+			  console.info("Target non trouvée pour "+this.for+"...")
+		  }
 	  },
 	  
 	  
@@ -296,41 +306,57 @@ export default {
 	  show: function() {
 		  this.visible = true;
 	  },
-	  
-	  refresh: function() {
+	  refreshYear(){
 		  var date = this.currentDate.clone();
-	        date.month(this.selectedMonth);
-	        date.year(this.selectedYear);
-	        this.setCurrentDate(date);
+		  date.month(this.selectedMonth);
+		  date.year(this.selectedYear);
+		  if( date.isBefore( this.dateMin)){
+			  date.month( this.dateMin.month());
+			  
+		  }
+		  if( date.isAfter(this.dateMax)){
+			  date.month( this.dateMax.month());
+		  }
+		//  this.selectedMonth = date.month();
+		  this.setCurrentDate(date);
+	  },
+	  
+	  refreshMonth() {
+		  var date = this.currentDate.clone();
+	      date.month(this.selectedMonth);
+		  date.year(this.selectedYear);
+		  this.setCurrentDate(date);
 	  },
 	  
 	  computeDayClass: function(day) {
-			var classes = '';
-		
-			//if(this.after) {
-				//var notBefore = window.moment(this.after, this.format);
-				classes += day.isBefore( this.dateMin) || day.isAfter(this.dateMax) ? 'disabled' : 'clickable';
-			//} else {
-				//classes += 'clickable';
-			//}
-
+			var classes = (day.isBefore( this.dateMin) || day.isAfter(this.dateMax)) ? 'disabled' : 'clickable';
+			
 			classes += moment().isSame(day, 'days') ? ' is-today' : '';
 			classes += day.isSame(this._selected, 'days') ? ' day-selected' : '';
 			return classes;
 	  	},    
-	  
-	  setCurrentDate: function(date) {
-		    
-		    if(date.year()== this.dateMax.year() && date.month()== this.dateMax.month()){
+	  computeMonthsBounds: function(date){
+		  if(date.year()== this.dateMax.year() && date.month()== this.dateMax.month()){
 		    	this.lastMonth = true;
 		    }else{
 		    	this.lastMonth = false;
 		    }
+		  if(date.year() == this.dateMin.year() && date.month() == this.dateMin.month()){
+			  this.firstMonth = true;
+		  }else{
+			  this.firstMonth = false;
+		  }
+	  },
+	  setCurrentDate: function(date) {
+		    
+		   
 	        if(date && date.isValid()) {
 	          this.currentDate = moment(date);
 	        } else {
 	          this.currentDate = moment();
 	        }
+	        this.selectedMonth = this.currentDate.month();
+	        this.selectedYear = this.currentDate.year();
 	      },
 	      
 	      setToToday: function() {
