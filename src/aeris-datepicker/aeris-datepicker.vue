@@ -52,7 +52,7 @@
 <div class="dp-container unselectable">
 
 <header class="dp-header">
-			<div class="dp-header-left dp-header-button" @click="prevMonth">
+			<div class="dp-header-left dp-header-button" @click="prevMonth" :class="firstMonth?'disable':''">
 				<i class="fa fa-chevron-left"></i>
 			</div>
 			<div class="dp-header-central">
@@ -61,7 +61,7 @@
 					<h2>{{currentSelectedMonth}}</h2>
 				</div>
 			</div>
-			<div class="dp-header-right dp-header-button" @click="nextMonth">
+			<div class="dp-header-right dp-header-button" @click="nextMonth" :class="lastMonth?'disable':''">
 				<i class="fa fa-chevron-right"></i>
 			</div>
 </header>
@@ -111,7 +111,7 @@ export default {
 		default:''
   	},
   	after: {
-		default: false,
+		default: true,
 		type: Boolean
   	},
 	daymin:{
@@ -138,7 +138,9 @@ export default {
         visible: false,
         clickListener: null,
         aerisThemeListener: null,
-        targetChecker : null
+        targetChecker : null,
+        lastMonth: false,
+        firstMonth: false
     }
   },
   
@@ -167,7 +169,8 @@ export default {
 	  this.aerisThemeListener = this.handleTheme.bind(this) 
 	  document.addEventListener('aerisTheme', this.aerisThemeListener);
 	  console.log(this.daymin);
-	
+	 console.log( this.dateMin);
+	 console.log( this.dateMax);
 	  
   },
   
@@ -183,13 +186,15 @@ export default {
 	  },
   
   computed: {
+	  
 	  dateMin(){
 		  return moment(this.daymin, "YYYY-MM-DD");
+
 	  },
 	  dateMax(){
 		  if(!this.daymax ){
 			  var date = moment( (moment().year()+10)+"-12-31", "YYYY-MM-DD");
-		  }else  if( this.daymax == "now"){
+		  }else  if( this.daymax.toLowerCase() == "now"){
 			  var date = moment();
 		  }else{
 			  var date = moment( this.daymax, "YYYY-MM-DD");
@@ -198,9 +203,8 @@ export default {
 	  },
 	  
 	  allYears: function() {
+	      var maxYear = this.dateMax.year();
 	      var minYear = this.dateMin.year();
-	      var maxYear =  this.dateMax.year();
-	      
 		  var result = [];
 	
 	      for(var i = maxYear; i >= minYear; i--) {
@@ -302,12 +306,13 @@ export default {
 	  
 	  computeDayClass: function(day) {
 			var classes = '';
-			if(this.after) {
-				var notBefore = window.moment(this.after, this.format);
-				classes += day.isBefore(notBefore) ? 'disabled' : 'clickable';
-			} else {
-				classes += 'clickable';
-			}
+		
+			//if(this.after) {
+				//var notBefore = window.moment(this.after, this.format);
+				classes += day.isBefore( this.dateMin) || day.isAfter(this.dateMax) ? 'disabled' : 'clickable';
+			//} else {
+				//classes += 'clickable';
+			//}
 
 			classes += moment().isSame(day, 'days') ? ' is-today' : '';
 			classes += day.isSame(this._selected, 'days') ? ' day-selected' : '';
@@ -315,6 +320,12 @@ export default {
 	  	},    
 	  
 	  setCurrentDate: function(date) {
+		    
+		    if(date.year()== this.dateMax.year() && date.month()== this.dateMax.month()){
+		    	this.lastMonth = true;
+		    }else{
+		    	this.lastMonth = false;
+		    }
 	        if(date && date.isValid()) {
 	          this.currentDate = moment(date);
 	        } else {
@@ -367,6 +378,9 @@ export default {
 	  },
 
 	  nextMonth: function() {
+		    if( this.lastMonth){
+		    	return;
+		    }
 	        var titleEl = this.$el.querySelector('.dp-current-date');
 	        var calendarEl = this.$el.querySelector('.dp-main-calendar');
 
@@ -440,8 +454,14 @@ export default {
 
 .dp-header .dp-header-button {
 	cursor: pointer;
+	pointer-events:auto;
 }
 
+.dp-header .dp-header-button.disable{
+	cursor: none;
+	opacity: 0;
+	pointer-events:none;
+}
 .dp-header .dp-header-button:hover {
 	opacity: 0.6;
 }
