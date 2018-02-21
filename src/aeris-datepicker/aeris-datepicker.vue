@@ -77,6 +77,14 @@
 </main>
 
 <footer class="dp-footer">
+<div class="dp-selectors" v-if="hasHour">
+<select id="hourSelect" v-model="selectedHour" @change="refreshHour">
+	<option :value="id" v-for="id in allHours">{{ id }}</option>
+</select> :
+<select id="minSelect" v-model="selectedMin" @change="refreshHour">
+	<option :value="id" v-for="id in allMins">{{ id }}</option>
+</select>
+</div>
 <div class="today-button" @click="setToToday">{{$t('today')}}</div>
 <div class="dp-selectors" >
 <select id="monthSelect" v-model="selectedMonth" @change="refreshMonth">
@@ -130,10 +138,13 @@ export default {
     	selected: null,
     	allDays: ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'],
         allMonths:  ['january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december'],
-        //allMonthId: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
+        allHours:[ "00", "01"],
+        allMins: [ "00"],
         calendarElement: null,
         selectedYear: moment().year(),
         selectedMonth: moment().month(),
+        selectedHour: "00",
+        selectedMin: "00",
         targetElement: null,
         visible: false,
         clickListener: null,
@@ -201,6 +212,13 @@ export default {
 			  var date = moment( this.daymax, "YYYY-MM-DD");
 		  }
 		  return date;
+	  },
+	  hasHour(){
+		  if( this.format.indexOf("H") >=0){
+			  return true;
+		  }else{
+			  return false;
+		  }
 	  },
 	  allMonthId(){
 		  var alls = [0,1,2,3,4,5,6,7,8,9,10,11];
@@ -288,6 +306,10 @@ export default {
 		 		this.$el.querySelector(".dp-footer .today-button").style.color=this.theme.primary
 		 		this.$el.querySelector(".dp-selectors #monthSelect").style.color=this.theme.primary
 		 		this.$el.querySelector(".dp-selectors #yearSelect").style.color=this.theme.primary
+		 		if( this.hasHour){
+		 			this.$el.querySelector(".dp-selectors #hourSelect").style.color=this.theme.primary
+		 			this.$el.querySelector(".dp-selectors #minSelect").style.color=this.theme.primary
+		 		}
 		 	}
  	  },
 	  
@@ -332,6 +354,13 @@ export default {
 		  date.year(this.selectedYear);
 		  this.setCurrentDate(date);
 	  },
+	  refreshHour(){
+		  if( this.hasHour){
+			  date.hour( this.selectedHour );
+			  date.min( this.selectedMin);
+		  }
+		  this.setCurrentDate(date);
+	  },
 	  
 	  computeDayClass: function(day) {
 			var classes = (day.isBefore( this.dateMin) || day.isAfter(this.dateMax)) ? 'disabled' : 'clickable';
@@ -362,6 +391,10 @@ export default {
 	        }
 	        this.selectedMonth = this.currentDate.month();
 	        this.selectedYear = this.currentDate.year();
+	        if( this.hasHour){
+	        	this.selectedHour = this.currentDate.format("hh");
+	        	this.selectedMin = this.currentDate.format("mm");
+	        }
 	      },
 	      
 	      setToToday: function() {
