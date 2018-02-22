@@ -280,7 +280,7 @@ export default {
 	  },
 	  	
  	  ensureTheme: function() {
-		 	if ((this.$el) && (this.$el.querySelector)) {
+		 	if ((this.$el) && (this.$el.querySelector) && this.theme) {
 		 		this.$el.querySelector(".dp-header").style.background=this.theme.primary
 		 		if( this.$el.querySelector(".dp-day.day-selected")){
 		 			this.$el.querySelector(".dp-day.day-selected").style.borderColor=this.theme.primary
@@ -308,8 +308,11 @@ export default {
 	        }
 	      },
 	  
-	  show: function() {
+	  show: function(evt) {
 		  this.visible = true;
+		  var date = moment( evt.target.value, this.format);
+		  this.setCurrentDate( date );
+		  this.selected = moment( this.currentDate);
 	  },
 	  refreshYear(){
 		  var date = this.currentDate.clone();
@@ -317,12 +320,10 @@ export default {
 		  date.year(this.selectedYear);
 		  if( date.isBefore( this.dateMin)){
 			  date.month( this.dateMin.month());
-			  
 		  }
 		  if( date.isAfter(this.dateMax)){
 			  date.month( this.dateMax.month());
 		  }
-		//  this.selectedMonth = date.month();
 		  this.setCurrentDate(date);
 	  },
 	  
@@ -335,9 +336,9 @@ export default {
 	  
 	  computeDayClass: function(day) {
 			var classes = (day.isBefore( this.dateMin) || day.isAfter(this.dateMax)) ? 'disabled' : 'clickable';
-			
+			if(this.selected) console.log(this.selected.format("DD"));
 			classes += moment().isSame(day, 'days') ? ' is-today' : '';
-			classes += day.isSame(this._selected, 'days') ? ' day-selected' : '';
+			classes += day.isSame(this.selected, 'days') ? ' day-selected' : '';
 			return classes;
 	  	},    
 	  computeMonthsBounds: function(date){
@@ -360,32 +361,34 @@ export default {
 	        } else {
 	          this.currentDate = moment();
 	        }
+	       
 	        this.selectedMonth = this.currentDate.month();
 	        this.selectedYear = this.currentDate.year();
-	      },
+	       
+	  },
 	      
-	      setToToday: function() {
-	          this.selected = moment();
-	          this.setCurrentDate(this.selected);
-	          this.setTarget();
-	        },
-	        
-	        setTarget : function() {
-	        	this.targetElement.value = this.selected.format(this.format);
-	        	this.visible=false;
-	        },
-	        
-	        clickDay: function(e) {
-	        	var isClickable = [].slice.call(e.target.classList).indexOf('clickable') >= 0 ? true : false;
-				if(isClickable) {
-					var ele = e.currentTarget || e.srcElement;
-					var day = ele.innerText;
-					var date = moment({ year :this.currentDate.year(), month :this.currentDate.month(), day :parseInt(day)})
-					this.selected = date;
-					this.setCurrentDate(date);
-					this.setTarget();
-				}
-	        },
+      setToToday: function() {
+          this.selected = moment();
+          this.setCurrentDate(this.selected);
+          this.setTarget();
+        },
+        
+        setTarget : function() {
+        	this.targetElement.value = this.selected.format(this.format);
+        	this.visible=false;
+        },
+        
+        clickDay: function(e) {
+        	var isClickable = [].slice.call(e.target.classList).indexOf('clickable') >= 0 ? true : false;
+			if(isClickable) {
+				var ele = e.currentTarget || e.srcElement;
+				var day = ele.innerText;
+				var date = moment({ year :this.currentDate.year(), month :this.currentDate.month(), day :parseInt(day)})
+				this.selected = date;
+				this.setCurrentDate(date);
+				this.setTarget();
+			}
+        },
 	  
 	  prevMonth: function() {
 	        var titleEl = this.$el.querySelector('.dp-current-date');
