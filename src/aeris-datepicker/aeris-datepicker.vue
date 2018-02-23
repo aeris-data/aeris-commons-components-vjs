@@ -23,26 +23,26 @@
     "sun": "Sun"
   },
   "fr": {
-	  	"january": "Janvier",
-	    "february": "Février",
-	    "march": "Mars",
-	    "april": "Avril",
-	    "may": "Mai",
-	    "june": "Juin",
-	    "july": "Juillet",
-	    "august": "Août",
-	    "september": "Septembre",
-	    "october": "Octobre",
-	    "november": "Novembre",
-	    "december": "Decembre",
-	    "today": "Aujourdhui",
-	    "mon": "Lun",
-	    "tue": "Mar",
-	    "wed": "Mer",
-	    "thu": "Jeu",
-	    "fri": "Ven",
-	    "sat": "Sam",
-	    "sun": "Dim"
+  	"january": "Janvier",
+    "february": "Février",
+    "march": "Mars",
+    "april": "Avril",
+    "may": "Mai",
+    "june": "Juin",
+    "july": "Juillet",
+    "august": "Août",
+    "september": "Septembre",
+    "october": "Octobre",
+    "november": "Novembre",
+    "december": "Decembre",
+    "today": "Aujourdhui",
+    "mon": "Lun",
+    "tue": "Mar",
+    "wed": "Mer",
+    "thu": "Jeu",
+    "fri": "Ven",
+    "sat": "Sam",
+    "sun": "Dim"
   }
 }
 </i18n>
@@ -74,10 +74,7 @@
    <div class="dp-day" v-for="item in offsetBefore"></div>
 	<div class="dp-day " :class="computeDayClass(item)" v-for="item in monthDays" @click="clickDay">{{item.date()}}</div>
 </div>
-</main>
-
-<footer class="dp-footer">
-<div class="dp-selectors" v-if="hasHour">
+<div class="dp-selectors dp-hours" v-if="hasHour">
 <select id="hourSelect" v-model="selectedHour" @change="refreshHour">
 	<option :value="id" v-for="id in allHours">{{ id }}</option>
 </select> :
@@ -85,6 +82,10 @@
 	<option :value="id" v-for="id in allMins">{{ id }}</option>
 </select>
 </div>
+</main>
+
+<footer class="dp-footer">
+
 <div class="today-button" @click="setToToday">{{$t('today')}}</div>
 <div class="dp-selectors" >
 <select id="monthSelect" v-model="selectedMonth" @change="refreshMonth">
@@ -184,12 +185,14 @@ export default {
 	  }else if( this.currentDate.isAfter( this.dateMax)){
 		  this.setCurrentDate(this.dateMax);
 	  }
+	  this.allHours = this.geneTime( 0, 23);
+	  this.allMins = this.geneTime( 0, 59);
   },
   
   mounted: function () {
 	  var event = new CustomEvent('aerisThemeRequest', {});
 	  	document.dispatchEvent(event);
-	  this.$el.addEventListener('mousedown', function(e) {
+	    this.$el.addEventListener('mousedown', function(e) {
           e.stopPropagation();
         });
 	  
@@ -214,7 +217,7 @@ export default {
 		  return date;
 	  },
 	  hasHour(){
-		  if( this.format.indexOf("H") >=0){
+		  if( this.format.toLowerCase().indexOf("h") >=0){
 			  return true;
 		  }else{
 			  return false;
@@ -306,13 +309,22 @@ export default {
 		 		this.$el.querySelector(".dp-footer .today-button").style.color=this.theme.primary
 		 		this.$el.querySelector(".dp-selectors #monthSelect").style.color=this.theme.primary
 		 		this.$el.querySelector(".dp-selectors #yearSelect").style.color=this.theme.primary
+		 		
 		 		if( this.hasHour){
 		 			this.$el.querySelector(".dp-selectors #hourSelect").style.color=this.theme.primary
 		 			this.$el.querySelector(".dp-selectors #minSelect").style.color=this.theme.primary
+		 			this.$el.querySelector(".dp-main .dp-hours.dp-selectors").style.color = this.theme.primary
 		 		}
 		 	}
  	  },
-	  
+	  geneTime: function(begin, end){
+		    var times = new Array();
+			for(var i=begin; i <= end; i++){
+				var num = i < 10 ? ("0"+i) : (""+i);
+				times.push( num);
+			}
+			return times;
+	  },
 	  isDescendant: function(parent, child) {
 		     var node = child.parentNode;
 		     while (node != null) {
@@ -335,7 +347,6 @@ export default {
 	      },
 	  
 	  show: function( ) {
-		  
 		  this.visible = !this.visible;
 		  if( this.visible){
 			  var date = moment( this.targetElement.value, this.format);
@@ -360,12 +371,15 @@ export default {
 		  var date = this.currentDate.clone();
 	      date.month(this.selectedMonth);
 		  date.year(this.selectedYear);
+		  this.refreshHour(date);
 		  this.setCurrentDate(date);
 	  },
-	  refreshHour(){
+	  refreshHour( ){
+		  var date = this.currentDate.clone();
+	
 		  if( this.hasHour){
 			  date.hour( this.selectedHour );
-			  date.min( this.selectedMin);
+			  date.minutes(  this.selectedMin );
 		  }
 		  this.setCurrentDate(date);
 	  },
@@ -400,9 +414,8 @@ export default {
 	       
 	        this.selectedMonth = this.currentDate.month();
 	        this.selectedYear = this.currentDate.year();
-	
 	        if( this.hasHour){
-	        	this.selectedHour = this.currentDate.format("hh");
+	        	this.selectedHour = this.currentDate.format("HH");
 	        	this.selectedMin = this.currentDate.format("mm");
 	        }
 	  },
@@ -424,8 +437,14 @@ export default {
 			if(isClickable) {
 				var ele = e.currentTarget || e.srcElement;
 				var day = ele.innerText;
-				var date = moment({ year :this.currentDate.year(), month :this.currentDate.month(), day :parseInt(day)})
-				this.selected = date;
+				var date = moment({
+					year :this.currentDate.year(),
+					month :this.currentDate.month(),
+					day :parseInt(day),
+					hour: this.currentDate.hour(),
+					minutes: this.currentDate.minutes()})
+				
+				this.selected = moment(date);
 				this.setCurrentDate(date);
 				this.setTarget();
 			}
@@ -619,14 +638,28 @@ export default {
 
 .dp-main .is-today {
 	color: #4765A0;
-	font-weight: 600;
+	font-weight: 700;
 }
 
 .dp-main .day-selected {
 	border: 2px solid #4765A0;
 	border-radius: 50%;
 }
-
+.dp-main .dp-hours.dp-selectors{
+	line-height:24px;
+	color: #4765A0;
+	margin-top:5px;
+	font-size:12px;
+}
+.dp-main .dp-hours.dp-selectors select{
+	font-size:12px;
+	margin: 0 4px;
+	padding: 1px 8px;
+	border: 1px solid;
+	
+	color: #4765A0;
+	outline: none;
+}
 .dp-footer {
 	padding: 10px;
 	background-color: #FFF;
