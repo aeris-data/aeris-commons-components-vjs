@@ -283,7 +283,7 @@ export default {
 		  if(el) {
 		       this.targetElement = el;
 		        console.info("Target trouvée pour "+this.for)
-		        el.addEventListener('focus', this.show.bind(this));
+		       // el.addEventListener('mousedown', this.show.bind(this));
 		        clearInterval(this.targetChecker);
 		      }
 		  else {
@@ -325,16 +325,23 @@ export default {
 	  },
 	  closeOnClick: function(e) {
 		  var aux = e.target
+		  if( aux == this.targetElement){
+			  this.show();
+			  return;
+		  }
 		  if (!(this.isDescendant(this.$el, aux))) {
 	        	this.visible=false;
 	        }
 	      },
 	  
-	  show: function(evt) {
-		  this.visible = true;
-		  var date = moment( evt.target.value, this.format);
-		  this.setCurrentDate( date );
-		  this.selected = moment( this.currentDate);
+	  show: function( ) {
+		  
+		  this.visible = !this.visible;
+		  if( this.visible){
+			  var date = moment( this.targetElement.value, this.format);
+			  this.setCurrentDate( date );
+			  this.selected = moment( this.currentDate);
+		  }
 	  },
 	  refreshYear(){
 		  var date = this.currentDate.clone();
@@ -365,7 +372,7 @@ export default {
 	  
 	  computeDayClass: function(day) {
 			var classes = (day.isBefore( this.dateMin) || day.isAfter(this.dateMax)) ? 'disabled' : 'clickable';
-			if(this.selected) console.log(this.selected.format("DD"));
+			
 			classes += moment().isSame(day, 'days') ? ' is-today' : '';
 			classes += day.isSame(this.selected, 'days') ? ' day-selected' : '';
 			return classes;
