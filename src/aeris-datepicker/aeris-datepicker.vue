@@ -86,7 +86,7 @@
 
 <footer class="dp-footer">
 
-<div class="today-button" @click="setToToday">{{$t('today')}}</div>
+<div class="today-button" @click="setToToday" v-if="hasToday">{{$t('today')}}</div>
 <div class="dp-selectors" >
 <select id="monthSelect" v-model="selectedMonth" @change="refreshMonth">
 	<option :value="id" v-for="id in allMonthId">{{$t(allMonths[id])}}</option>
@@ -152,14 +152,15 @@ export default {
         aerisThemeListener: null,
         targetChecker : null,
         lastMonth: false,
-        firstMonth: false
+        firstMonth: false,
+        isActualMonth: true
     }
   },
   
   watch: {
 	  visible: function(val) {
 		  if (val) {
-			  this.ensureTheme();
+			  this.styleDays();
 		  }
 	  },
 	  lang (value) {
@@ -180,13 +181,12 @@ export default {
       document.addEventListener('mousedown', this.clickListener);
 	  this.aerisThemeListener = this.handleTheme.bind(this) 
 	  document.addEventListener('aerisTheme', this.aerisThemeListener);
-	  if(this.currentDate.isBefore(this.dateMin)){
-		  this.setCurrentDate( this.dateMin);
-	  }else if( this.currentDate.isAfter( this.dateMax)){
-		  this.setCurrentDate(this.dateMax);
-	  }
 	  this.allHours = this.geneTime( 0, 23);
 	  this.allMins = this.geneTime( 0, 59);
+	  
+	  this.selected = moment( this.currentDate);
+	  
+	 
   },
   
   mounted: function () {
@@ -218,6 +218,15 @@ export default {
 	  },
 	  hasHour(){
 		  if( this.format.toLowerCase().indexOf("h") >=0){
+			  return true;
+		  }else{
+			  return false;
+		  }
+	  },
+	  hasToday(){
+		  var nowmoins = moment().subtract(1, "days");
+		  var nowplus = moment().add(1, "days");
+		  if( nowmoins.isBefore( this.dateMax) && nowplus.isAfter( this.dateMin)){
 			  return true;
 		  }else{
 			  return false;
@@ -303,10 +312,9 @@ export default {
  	  ensureTheme: function() {
 		 	if ((this.$el) && (this.$el.querySelector) && this.theme) {
 		 		this.$el.querySelector(".dp-header").style.background=this.theme.primary
-		 		if( this.$el.querySelector(".dp-day.day-selected")){
-		 			this.$el.querySelector(".dp-day.day-selected").style.borderColor=this.theme.primary
+		 		if( this.hasToday){
+		 			this.$el.querySelector(".dp-footer .today-button").style.color=this.theme.primary
 		 		}
-		 		this.$el.querySelector(".dp-footer .today-button").style.color=this.theme.primary
 		 		this.$el.querySelector(".dp-selectors #monthSelect").style.color=this.theme.primary
 		 		this.$el.querySelector(".dp-selectors #yearSelect").style.color=this.theme.primary
 		 		
@@ -316,6 +324,18 @@ export default {
 		 			this.$el.querySelector(".dp-main .dp-hours.dp-selectors").style.color = this.theme.primary
 		 		}
 		 	}
+ 	  },
+ 	  styleDays(){
+	    	this.$el.querySelectorAll(".dp-day").forEach( function( day){
+	 			 day.style.color = "";
+	 		 })
+	 		 if( this.$el.querySelector(".dp-day.day-selected")){
+		 			this.$el.querySelector(".dp-day.day-selected").style.borderColor=this.theme.primary;
+		 	 }
+	 		 
+	 		if(  this.$el.querySelector(".dp-day.is-today")){
+	 			this.$el.querySelector(".dp-day.is-today").style.color=this.theme.primary;
+	 	 	}
  	  },
 	  geneTime: function(begin, end){
 		    var times = new Array();
@@ -350,9 +370,23 @@ export default {
 		  this.visible = !this.visible;
 		  if( this.visible){
 			  var date = moment( this.targetElement.value, this.format);
-			  this.setCurrentDate( date );
-			  this.selected = moment( this.currentDate);
+			  this.setDefaultDate( date);
+			 
 		  }
+	  },
+
+	  setDefaultDate( date){
+		  if( !date.isValid()){
+			 date = moment();
+		  }
+		  if(date.isBefore(this.dateMin)){
+			  this.setCurrentDate( this.dateMin);
+		  }else if( date.isAfter( this.dateMax)){
+			  this.setCurrentDate(this.dateMax);
+		  }else{
+			  this.setCurrentDate( date);
+		  }
+		  this.selected = moment( this.currentDate);
 	  },
 	  refreshYear(){
 		  var date = this.currentDate.clone();
@@ -364,7 +398,8 @@ export default {
 		  if( date.isAfter(this.dateMax)){
 			  date.month( this.dateMax.month());
 		  }
-		  this.setCurrentDate(date);
+		  this.slideTo(date);
+
 	  },
 	  
 	  refreshMonth() {
@@ -372,7 +407,7 @@ export default {
 	      date.month(this.selectedMonth);
 		  date.year(this.selectedYear);
 		  this.refreshHour(date);
-		  this.setCurrentDate(date);
+		  this.slideTo( date);
 	  },
 	  refreshHour( ){
 		  var date = this.currentDate.clone();
@@ -387,7 +422,8 @@ export default {
 	  computeDayClass: function(day) {
 			var classes = (day.isBefore( this.dateMin) || day.isAfter(this.dateMax)) ? 'disabled' : 'clickable';
 			
-			classes += moment().isSame(day, 'days') ? ' is-today' : '';
+			if( this.isActualMonth)
+				classes += moment().isSame( day, 'days') ? ' is-today' : '';
 			classes += day.isSame(this.selected, 'days') ? ' day-selected' : '';
 			return classes;
 	  	},    
@@ -405,19 +441,22 @@ export default {
 	  },
 	  setCurrentDate: function(date) {
 		    
-		   
 	        if(date && date.isValid()) {
 	          this.currentDate = moment(date);
+	          
 	        } else {
 	          this.currentDate = moment();
 	        }
-	       
+
+	        this.isActualMonth = moment().isSame( this.currentDate, 'month');
 	        this.selectedMonth = this.currentDate.month();
 	        this.selectedYear = this.currentDate.year();
 	        if( this.hasHour){
 	        	this.selectedHour = this.currentDate.format("HH");
 	        	this.selectedMin = this.currentDate.format("mm");
 	        }
+	        //wait all displayed for style
+	        window.setTimeout( this.styleDays, 0);
 	  },
 
 	      
@@ -449,9 +488,16 @@ export default {
 				this.setTarget();
 			}
         },
-	  
-	  prevMonth: function() {
-	        var titleEl = this.$el.querySelector('.dp-current-date');
+	  slideTo( date){
+        	if( date.isBefore( this.currentDate)){
+        		this.slideLeftTo( date );
+        	}else{
+        		this.slideRightTo( date);
+        	}
+        	
+        },
+      slideLeftTo( date){
+        	var titleEl = this.$el.querySelector('.dp-current-date');
 	        var calendarEl = this.$el.querySelector('.dp-main-calendar');
 
 	        titleEl.classList.add('slideOutRight');
@@ -460,7 +506,7 @@ export default {
 	        window.setTimeout(function() {
 	          titleEl.classList.remove('slideOutRight');
 	          calendarEl.classList.remove('slideOutTop');
-	          this.setCurrentDate(this.currentDate.subtract(1, 'months'));
+	          this.setCurrentDate(date);
 	          titleEl.classList.add('slideInLeft');
 	          calendarEl.classList.add('slideInBottom');
 	        }.bind(this), 200);
@@ -469,12 +515,9 @@ export default {
 	          titleEl.classList.remove('slideInLeft');
 	          calendarEl.classList.remove('slideInBottom');
 	        }.bind(this), 600);
-	  },
-
-	  nextMonth: function() {
-		    if( this.lastMonth){
-		    	return;
-		    }
+      },
+      slideRightTo(date){
+    	  
 	        var titleEl = this.$el.querySelector('.dp-current-date');
 	        var calendarEl = this.$el.querySelector('.dp-main-calendar');
 
@@ -485,7 +528,7 @@ export default {
 	          titleEl.classList.remove('slideOutLeft');
 	          calendarEl.classList.remove('slideOutBottom');
 	         
-	          this.setCurrentDate(this.currentDate.add(1, 'months'));
+	          this.setCurrentDate(date);
 	          titleEl.classList.add('slideInRight');
 	          calendarEl.classList.add('slideInTop');
 	        }.bind(this), 200);
@@ -494,6 +537,17 @@ export default {
 	          titleEl.classList.remove('slideInRight');
 	          calendarEl.classList.remove('slideInTop');
 	        }.bind(this), 600);
+    	  
+      },
+	  prevMonth: function() {
+		    var date = moment( this.currentDate).subtract(1, 'months');
+		    this.slideTo( date );
+	  },
+
+	  nextMonth: function() {
+		    var date = moment( this.currentDate).add(1, 'months');
+		    this.slideTo( date );
+	        
 	  },  
   }
 }
