@@ -183,10 +183,6 @@ export default {
 	  document.addEventListener('aerisTheme', this.aerisThemeListener);
 	  this.allHours = this.geneTime( 0, 23);
 	  this.allMins = this.geneTime( 0, 59);
-	  
-	  this.selected = moment( this.currentDate);
-	  
-	 
   },
   
   mounted: function () {
