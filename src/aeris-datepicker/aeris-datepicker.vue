@@ -307,17 +307,17 @@ export default {
 	  	
  	  ensureTheme: function() {
 		 	if ((this.$el) && (this.$el.querySelector) && this.theme) {
-		 		this.$el.querySelector(".dp-header").style.background=this.theme.primary
+		 		this.$el.querySelector(".dp-header").style.background=this.theme.emphasis
 		 		if( this.hasToday){
-		 			this.$el.querySelector(".dp-footer .today-button").style.color=this.theme.primary
+		 			this.$el.querySelector(".dp-footer .today-button").style.color=this.theme.emphasis
 		 		}
-		 		this.$el.querySelector(".dp-selectors #monthSelect").style.color=this.theme.primary
-		 		this.$el.querySelector(".dp-selectors #yearSelect").style.color=this.theme.primary
+		 		this.$el.querySelector(".dp-selectors #monthSelect").style.color=this.theme.emphasis
+		 		this.$el.querySelector(".dp-selectors #yearSelect").style.color=this.theme.emphasis
 		 		
 		 		if( this.hasHour){
-		 			this.$el.querySelector(".dp-selectors #hourSelect").style.color=this.theme.primary
-		 			this.$el.querySelector(".dp-selectors #minSelect").style.color=this.theme.primary
-		 			this.$el.querySelector(".dp-main .dp-hours.dp-selectors").style.color = this.theme.primary
+		 			this.$el.querySelector(".dp-selectors #hourSelect").style.color=this.theme.emphasis
+		 			this.$el.querySelector(".dp-selectors #minSelect").style.color=this.theme.emphasis
+		 			this.$el.querySelector(".dp-main .dp-hours.dp-selectors").style.color = this.theme.emphasis
 		 		}
 		 	}
  	  },
@@ -326,11 +326,11 @@ export default {
 	 			 day.style.color = "";
 	 		 })
 	 		 if( this.$el.querySelector(".dp-day.day-selected")){
-		 			this.$el.querySelector(".dp-day.day-selected").style.borderColor=this.theme.primary;
+		 			this.$el.querySelector(".dp-day.day-selected").style.borderColor=this.theme.emphasis;
 		 	 }
 	 		 
 	 		if(  this.$el.querySelector(".dp-day.is-today")){
-	 			this.$el.querySelector(".dp-day.is-today").style.color=this.theme.primary;
+	 			this.$el.querySelector(".dp-day.is-today").style.color=this.theme.emphasis;
 	 	 	}
  	  },
 	  geneTime: function(begin, end){
