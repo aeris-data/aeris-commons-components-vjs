@@ -149,6 +149,7 @@ export default {
         targetElement: null,
         visible: false,
         clickListener: null,
+        closeListener:null,
         aerisThemeListener: null,
         targetChecker : null,
         lastMonth: false,
@@ -171,6 +172,8 @@ export default {
   destroyed: function() {
 	  document.removeEventListener('mousedown', this.clickListener);
 	  this.clickListener = null;
+	  document.removeEventListener('keypress', this.closeListener);
+	  this.closeListener = null;
 	  document.removeEventListener('aerisTheme', this.aerisThemeListener);
 	  this.aerisThemeListener = null;
   },
@@ -179,6 +182,8 @@ export default {
 	  this.$i18n.locale = this.lang
 	  this.clickListener = this.closeOnClick.bind(this)
       document.addEventListener('mousedown', this.clickListener);
+	  this.closeListener = this.close.bind(this)
+      document.addEventListener('keypress', this.closeListener);
 	  this.aerisThemeListener = this.handleTheme.bind(this) 
 	  document.addEventListener('aerisTheme', this.aerisThemeListener);
 	  this.allHours = this.geneTime( 0, 23);
@@ -350,6 +355,13 @@ export default {
 		         node = node.parentNode;
 		     }
 		     return false;
+	  },
+	  close: function(e){
+		  var aux = e.target
+		  if( aux == this.targetElement){
+			  this.visible = false;
+			
+		  }
 	  },
 	  closeOnClick: function(e) {
 		  var aux = e.target
