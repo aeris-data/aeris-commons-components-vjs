@@ -477,6 +477,8 @@ export default {
         setTarget : function() {
         	this.targetElement.value = this.selected.format(this.format);
         	this.visible=false;
+        	var event = new InputEvent('input');
+        	this.targetElement.dispatchEvent(event);
         },
         
         clickDay: function(e) {
