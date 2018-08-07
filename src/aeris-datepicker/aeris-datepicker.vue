@@ -259,7 +259,7 @@ export default {
 	  start: function() {return this.currentDate.date(1)},
 	  end: function() { return this.currentDate.clone().endOf('month')},
 	  monthDays: function() {
-		  var range = window.moment.range(this.start, this.end)
+		  var range = window.momentCst.range(this.start, this.end)
 		  var result = []
 		  for (let day of range.by('days')) {
 			 result.push(day);
