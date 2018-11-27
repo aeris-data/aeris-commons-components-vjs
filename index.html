@@ -1,108 +1,29 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
+<html lang="fr">
+
+<head>
     <meta charset="utf-8">
-    <title>Vue Example</title>
-	
-	<style>
-	body {
-        font-family: 'Open Sans', sans-serif;
-        margin: 0;
-      }
-	
-	</style>
-  </head>
-  <body data-color="#019A9C" data-secondary-color="#ffab02">
-  
-  <h2>Aeris Browser alert</h2>
-  	<aeris-browser-alert></aeris-browser-alert>
-  <h2>Aeris Datepicker</h2>
-	<input type="text" id="date">
-	<aeris-datepicker for="input#date" format="DD-MM-YYYY HH:mm" daymin="1950-09-03" daymax="now"></aeris-datepicker>
-	<div id="myslot"></div>
-	<aeris-datepicker for="input#date2" format="DD-MM-YYYY"></aeris-datepicker>
-	<button onclick="addInput2()">Ajouter input 2</button>
-  
-  	<h2>Aeris notification</h2>
-  	<div style="padding:5px">
-  	
-  	<div style="margin-bottom:5px">
-  	<aeris-notification  message="un message de <b>succes</b>" spinner="true" closable="true"></aeris-notification>
-  	</div>
-  	<div style="margin-bottom:5px">
-  	<aeris-notification  message="un message de <b>notification</b>" spinner="true"  type="notification" closable="true"></aeris-notification>
-  	</div>
-  	<div style="margin-bottom:5px">
-  	<aeris-notification  message="un message d'<b>attente</b>" spinner="true"  type="wait" closable="true"></aeris-notification>
-  	</div>
-  	<aeris-notification type="error" message="un message d'<b>erreur</b>" closable="true"></aeris-notification>
-  	<div style="margin-bottom:5px">
-  	<aeris-notification  message="un message de <b>succes</b> non fermable et sans progression" ></aeris-notification>
-  	</div>
-  	<div style="margin-bottom:5px">
-  	<aeris-notification type="wait" message="un message d'<b>attente</b> qui va bientôt disparaitre" auto-hide="true" ></aeris-notification>
-  	</div>
-  	<div style="margin-bottom:5px">
-  	<aeris-notification type="wait" message="un message d'<b>attente</b> qui disparaitra plus tard" auto-hide="true" auto-hide-delay="10000" ></aeris-notification>
-  	</div>
-  	</div>
-  	<h2>Aeris notifier</h2>
-  	<aeris-notifier></aeris-notifier>
-  	<button onclick="document.dispatchEvent(new CustomEvent('aerisNotificationMessageEvent', { 'detail': {message: 'un message de notif'}}))">Click Notif</button>
-  	<button onclick="document.dispatchEvent(new CustomEvent('aerisErrorNotificationMessageEvent', { 'detail': {message: 'un message d erreur'}}))">Click Error</button>
-  	<button onclick="document.dispatchEvent(new CustomEvent('aerisLongActionStartEvent', { 'detail': {message: 'un message d action longue'}}))">Click Debut longue</button>
-  	<button onclick="document.dispatchEvent(new CustomEvent('aerisLongActionStopEvent', { 'detail': {message: 'un message d action longue'}}))">Click Fin longue</button>
-  	<h2>Aeris cartouche</h2>
-    <aeris-cartouche>Coucou</aeris-cartouche>
-	<aeris-cartouche icon="bath">Coucou bath</aeris-cartouche>
-	<aeris-cartouche >Coucou</aeris-cartouche>
-	<aeris-cartouche edit=true >Coucou_edit</aeris-cartouche>
-    <aeris-cartouche >Coucou</aeris-cartouche>
-	<aeris-cartouche >Coucou</aeris-cartouche>
-	<h3>Test suppression</h3>
-	<span id="container1" style="background-color:red;padding:10px;">
-	<aeris-cartouche edit=true itemref="item1" >Item 1</aeris-cartouche>
-	<aeris-cartouche edit=true itemref="item2" >Item 2</aeris-cartouche>
-	</span>
-	<span id="container2" style="background-color:pink	;padding:10px;">
-	<aeris-cartouche edit=true itemref="item3" >Item 3</aeris-cartouche>
-	<aeris-cartouche edit=true itemref="item4" >Item 4</aeris-cartouche>
-	</span>
-	<h2>Aeris spinner</h2>
-	<aeris-spinner ref="spin1" size="small" id="sp1"></aeris-spinner>
-	<aeris-spinner id="spin2">Texte</aeris-spinner>
-	<h2>Aeris Orcid</h2>
-	<aeris-orcid orcid="tittititititi"></aeris-orcid>
-	<h2>Aeris Theme</h2>
-	<aeris-wordpress-theme></aeris-wordpress-theme>
-	<aeris-theme active="true" primary="red" emphasis="blue" />
-	<script>
-	
-	window.aerisexclusions = []
-	window.aerisexclusions["aeris-commons-components-vjs"]= ["aeris-spinner"]
-	</script>
-    <script src="dist/build.js"></script>
-    <script>
-    
-    function addInput2() {
-    	var newInput = document.createElement("input");
-    	newInput.setAttribute("id", "date2");
-    	newInput.setAttribute("type", "text");
-    	document.querySelector('#myslot').appendChild(newInput)
-    }
-    
-    document.querySelector('#container1').addEventListener("aerisCartoucheItemDeleted", function(e){
-       console.log("capté container 1: "+e.detail.itemref);
-       e.stopPropagation()
-    });
-    
-    document.querySelector('#container2').addEventListener("aerisCartoucheItemDeleted", function(e){
-        console.log("capté container 2: "+e.detail.itemref);
-     });
-    
-    document.addEventListener("aerisCartoucheItemDeleted", function(e){
-        console.log("capté haut "+e.detail.itemref);
-     });
-    </script>
-  </body>
+
+    <title>Workshop Components</title>
+    <script type="text/javascript" component="aeris-data/aeris-commons-components-vjs@latest" src="https://rawgit.com/aeris-data/aeris-component-loader/master/aerisComponentLoader.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Open Sans', sans-serif;
+            margin: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div>
+        <div id="app"></div>
+    </div>
+</body>
+
 </html>
