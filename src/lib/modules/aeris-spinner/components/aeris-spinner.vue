@@ -1,9 +1,7 @@
 <template>
   <span v-if="visible" class="aeris-spinner-host">
-      <div class="aeris-spinner-container">
-      <div id="aerisSpinner" :class="sizeClass" class="aeris__spinner">
-        <span />
-      </div>
+    <div class="aeris-spinner-container">
+      <div id="aerisSpinner" :class="sizeClass" class="aeris__spinner"><span /></div>
       <div class="aeris-spinner-label"><slot /></div>
     </div>
   </span>

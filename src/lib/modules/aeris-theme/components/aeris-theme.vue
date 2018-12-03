@@ -34,13 +34,11 @@ export default {
   created: function() {
     this.refresh();
     this.aerisThemeRequestListener = this.handleThemeRequest.bind(this);
-    document.addEventListener("aerisThemeRequest",
-      this.aerisThemeRequestListener);
+    document.addEventListener("aerisThemeRequest", this.aerisThemeRequestListener);
   },
 
   destroyed: function() {
-    document.removeEventListener("aerisThemeRequest",
-      this.aerisThemeRequestListener);
+    document.removeEventListener("aerisThemeRequest", this.aerisThemeRequestListener);
     this.aerisThemeRequestListener = null;
   },
 

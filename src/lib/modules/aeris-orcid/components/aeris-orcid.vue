@@ -27,13 +27,11 @@ export default {
 
   created: function() {
     this.aerisOrcidRequestListener = this.handleOrcidRequest.bind(this);
-    document.addEventListener("aerisOrcidRequest",
-      this.aerisOrcidRequestListener);
+    document.addEventListener("aerisOrcidRequest", this.aerisOrcidRequestListener);
   },
 
   destroyed: function() {
-    document.removeEventListener("aerisOrcidRequest",
-      this.aerisOrcidRequestListener);
+    document.removeEventListener("aerisOrcidRequest", this.aerisOrcidRequestListener);
     this.aerisOrcidRequestListener = null;
   },
 

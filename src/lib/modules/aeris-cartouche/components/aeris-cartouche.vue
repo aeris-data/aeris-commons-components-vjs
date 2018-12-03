@@ -1,15 +1,10 @@
 /* dependances: font awesome */
 
 <template>
-   <span class="aeris-cartouche-host">
-      <span v-if="isvisible" class="aeris-cartouche-container">
+  <span class="aeris-cartouche-host">
+    <span v-if="isvisible" class="aeris-cartouche-container">
       <span v-if="icon"> <i :class="_getIconStyle" /> </span> <slot />
-      <span v-if="edit">
-        <i
-          class="aeris-cartouche-delete fa fa-times"
-          @click.prevent="_handleClick"
-        ></i>
-      </span>
+      <span v-if="edit"> <i class="aeris-cartouche-delete fa fa-times" @click.prevent="_handleClick" /> </span>
     </span>
   </span>
 </template>
@@ -47,9 +42,7 @@ export default {
   computed: {
     _getIconStyle: function() {
       if (this.icon) {
-        return this.icon.startsWith("fa-")
-          ? "fa " + this.icon.toLowerCase()
-          : "fa fa-" + this.icon.toLowerCase();
+        return this.icon.startsWith("fa-") ? "fa " + this.icon.toLowerCase() : "fa fa-" + this.icon.toLowerCase();
       }
     }
   },

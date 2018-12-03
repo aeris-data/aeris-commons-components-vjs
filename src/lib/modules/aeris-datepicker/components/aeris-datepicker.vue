@@ -47,78 +47,57 @@
 }
 </i18n>
 <template>
-   <span v-show="visible" class="aeris-datepicker-host">
-      <div class="dp-container unselectable">
-         <header class="dp-header">
-        <div
-          :class="firstMonth ? 'disable' : ''"
-               class="dp-header-left dp-header-button"
-          @click="prevMonth"
-        >
+  <span v-show="visible" class="aeris-datepicker-host">
+    <div class="dp-container unselectable">
+      <header class="dp-header">
+        <div :class="firstMonth ? 'disable' : ''" class="dp-header-left dp-header-button" @click="prevMonth">
           <i class="fa fa-chevron-left" />
-            </div>
+        </div>
         <div class="dp-header-central">
-               <div class="dp-current-date">
+          <div class="dp-current-date">
             <h5>{{ currentSelectedYear }}</h5>
             <h2>{{ currentSelectedMonth }}</h2>
-               </div>
-            </div>
-        <div
-          :class="lastMonth ? 'disable' : ''"
-               class="dp-header-right dp-header-button"
-          @click="nextMonth"
-        >
+          </div>
+        </div>
+        <div :class="lastMonth ? 'disable' : ''" class="dp-header-right dp-header-button" @click="nextMonth">
           <i class="fa fa-chevron-right" />
         </div>
       </header>
 
-         <main class="dp-main">
-            <div class="dp-title-line">
+      <main class="dp-main">
+        <div class="dp-title-line">
           <span v-for="item in allDays" class="dp-day">{{ $t(item) }} </span>
         </div>
         <div class="dp-main-calendar">
-               <div v-for="item in offsetBefore" class="dp-day" />
-          <div
-            :class="computeDayClass(item)"
-            class="dp-day "
-            v-for="item in monthDays"
-            @click="clickDay"
-          >
+          <div v-for="item in offsetBefore" class="dp-day" />
+          <div v-for="item in monthDays" :class="computeDayClass(item)" class="dp-day " @click="clickDay">
             {{ item.date() }}
           </div>
-            </div>
-            <div v-if="hasHour" class="dp-selectors dp-hours">
-               <select id="hourSelect" v-model="selectedHour" @change="refreshHour">
+        </div>
+        <div v-if="hasHour" class="dp-selectors dp-hours">
+          <select id="hourSelect" v-model="selectedHour" @change="refreshHour">
             <option v-for="id in allHours" :value="id">{{ id }}</option>
           </select>
           :
-               <select id="minSelect" v-model="selectedMin" @change="refreshHour">
+          <select id="minSelect" v-model="selectedMin" @change="refreshHour">
             <option v-for="id in allMins" :value="id">{{ id }}</option>
-               </select>
+          </select>
         </div>
       </main>
 
-         <footer class="dp-footer">
-            <div v-if="hasToday" class="today-button" @click="setToToday">
-               {{ $t("today") }}
-            </div>
+      <footer class="dp-footer">
+        <div v-if="hasToday" class="today-button" @click="setToToday">{{ $t("today") }}</div>
         <div class="dp-selectors">
-          <select
-            id="monthSelect"
-            v-model="selectedMonth"
-            @change="refreshMonth"
-          >
-            <option v-for="id in allMonthId" :value="id">{{
-              $t(allMonths[id])
-            }}</option>
+          <select id="monthSelect" v-model="selectedMonth" @change="refreshMonth">
+            <option v-for="id in allMonthId" :value="id">{{ $t(allMonths[id]) }}</option>
           </select>
-               <select id="yearSelect" v-model="selectedYear" @change="refreshYear">
+          <select id="yearSelect" v-model="selectedYear" @change="refreshYear">
             <option v-for="item in allYears" :value="item">{{ item }}</option>
           </select>
-            </div>
-         </footer>
-      </div>
-   </span>
+        </div>
+      </footer>
+    </div>
+  </span>
 </template>
 
 <script>
@@ -450,29 +429,19 @@ export default {
     },
 
     computeDayClass: function(day) {
-      var classes =
-        day.isBefore(this.dateMin) || day.isAfter(this.dateMax)
-          ? "disabled"
-          : "clickable";
+      var classes = day.isBefore(this.dateMin) || day.isAfter(this.dateMax) ? "disabled" : "clickable";
 
-      if (this.isActualMonth)
-        classes += moment().isSame(day, "days") ? " is-today" : "";
+      if (this.isActualMonth) classes += moment().isSame(day, "days") ? " is-today" : "";
       classes += day.isSame(this.selected, "days") ? " day-selected" : "";
       return classes;
     },
     computeMonthsBounds: function(date) {
-      if (
-        date.year() == this.dateMax.year() &&
-        date.month() == this.dateMax.month()
-      ) {
+      if (date.year() == this.dateMax.year() && date.month() == this.dateMax.month()) {
         this.lastMonth = true;
       } else {
         this.lastMonth = false;
       }
-      if (
-        date.year() == this.dateMin.year() &&
-        date.month() == this.dateMin.month()
-      ) {
+      if (date.year() == this.dateMin.year() && date.month() == this.dateMin.month()) {
         this.firstMonth = true;
       } else {
         this.firstMonth = false;
@@ -510,10 +479,7 @@ export default {
     },
 
     clickDay: function(e) {
-      var isClickable =
-        [].slice.call(e.target.classList).indexOf("clickable") >= 0
-          ? true
-          : false;
+      var isClickable = [].slice.call(e.target.classList).indexOf("clickable") >= 0 ? true : false;
       if (isClickable) {
         var ele = e.currentTarget || e.srcElement;
         var day = ele.innerText;

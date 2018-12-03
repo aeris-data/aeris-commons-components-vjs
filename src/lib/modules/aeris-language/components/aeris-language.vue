@@ -27,13 +27,11 @@ export default {
   created: function() {
     this.refresh();
     this.aerisLanguageRequestListener = this.handleLanguageRequest.bind(this);
-    document.addEventListener("aerisLanguageRequest",
-      this.aerisLanguageRequestListener);
+    document.addEventListener("aerisLanguageRequest", this.aerisLanguageRequestListener);
   },
 
   destroyed: function() {
-    document.removeEventListener("aerisLanguageRequest",
-      this.aerisLanguageRequestListener);
+    document.removeEventListener("aerisLanguageRequest", this.aerisLanguageRequestListener);
     this.aerisLanguageRequestListener = null;
   },
 

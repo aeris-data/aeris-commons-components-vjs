@@ -6,8 +6,15 @@
   "private": false,
   "scripts": {
     "dev": "cross-env NODE_ENV=development webpack-dev-server --config ./build/webpack.dev.conf --progress",
-    "build": "node build/build.js"
+    "build": "node build/build.js",
+    "lint-staged": "lint-staged",
+    "format": "node_modules/.bin/eslint --fix \"src/**/*.*(js|vue)\" && node_modules/.bin/stylelint --fix \"src/**/*.vue\"",
+    "eslint-check": "eslint --print-config .eslintrc.js | eslint-config-prettier-check"
   },
+  "lint-staged": {
+    "src/**/*.{vue,js}": "node_modules/.bin/eslint"
+  },
+  "pre-commit": "lint-staged",
   "dependencies": {
     "aeris-mixins": "latest",
     "friendly-errors-webpack-plugin": "^1.7.0",
@@ -19,6 +26,8 @@
     "vuex": "^3.0.1"
   },
   "devDependencies": {
+    "lint-staged": "^7.2.0",
+    "pre-commit": "^1.2.2",
     "@kazupon/vue-i18n-loader": "0.1.1",
     "babel-core": "^6.0.0",
     "babel-eslint": "^8.2.6",
