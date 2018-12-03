@@ -1,15 +1,9 @@
 <template>
   <div>
-    <aeris-notifier
-      :delete-notif-uuid="uuid"
-      :new-notification="notification"
-    />
-    <button @click="sendNotifError">error</button>
-    <button @click="sendNotifSuccess">success</button>
-    <button @click="sendNotif">Notification</button>
-    <button @click="sendNotifWait">Wait</button>
-    <button @click="sendLongNotif">Create</button>
-    <button @click="destroyLongNotif">Destroy</button>
+    <aeris-notifier :delete-notif-uuid="uuid" :new-notification="notification"></aeris-notifier>
+    <button @click="sendNotifError">error</button> <button @click="sendNotifSuccess">success</button>
+    <button @click="sendNotif">Notification</button> <button @click="sendNotifWait">Wait</button>
+    <button @click="sendLongNotif">Create</button> <button @click="destroyLongNotif">Destroy</button>
   </div>
 </template>
 
@@ -34,7 +28,7 @@ export default {
 
     sendNotifSuccess() {
       this.notification = {
-        message: "<script>alert('lol')<//script>",
+        message: "<script>alert('lol')<\/script>",
         type: "success"
       };
     },
@@ -55,9 +49,7 @@ export default {
     sendLongNotif() {
       this.longNotifUUID.push(computeUuid());
       this.notification = {
-        message:
-          "Je suis une longue notif uuid : " +
-          this.longNotifUUID[this.longNotifUUID.length - 1],
+        message: "Je suis une longue notif uuid : " + this.longNotifUUID[this.longNotifUUID.length - 1],
         type: "wait",
         uuid: this.longNotifUUID[this.longNotifUUID.length - 1]
       };

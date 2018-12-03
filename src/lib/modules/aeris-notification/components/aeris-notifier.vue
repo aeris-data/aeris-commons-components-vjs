@@ -2,11 +2,7 @@
   <span class="aeris-notifier-host">
     <div class="aeris-notifier-container">
       <ul>
-        <li
-               v-for="notification in notifications"
-               :key="notification.uuid"
-          class="notification"
-            >
+        <li v-for="notification in notifications" :key="notification.uuid" class="notification">
           <aeris-notification
             :type="notification.type"
             :message="notification.message"
@@ -14,7 +10,7 @@
             :closable="notification.closable"
             :uuid="notification.uuid"
             @deleteNotification="deleteNotification"
-          />
+          ></aeris-notification>
         </li>
       </ul>
     </div>
@@ -66,40 +62,16 @@ export default {
       let uuid = notification.uuid || computeUuid();
       switch (notification.type) {
         case "notification":
-          this.addNewNotification(
-            notification,
-            uuid,
-            true,
-            false,
-            notification.duration
-          );
+          this.addNewNotification(notification, uuid, true, false, notification.duration);
           break;
         case "wait":
-          this.addNewNotification(
-            notification,
-            uuid,
-            true,
-            true,
-            notification.duration
-          );
+          this.addNewNotification(notification, uuid, true, true, notification.duration);
           break;
         case "error":
-          this.addNewNotification(
-            notification,
-            uuid,
-            true,
-            false,
-            notification.duration
-          );
+          this.addNewNotification(notification, uuid, true, false, notification.duration);
           break;
         case "success":
-          this.addNewNotification(
-            notification,
-            uuid,
-            true,
-            false,
-            notification.duration
-          );
+          this.addNewNotification(notification, uuid, true, false, notification.duration);
           break;
         default:
           notification = null;
@@ -118,18 +90,13 @@ export default {
     },
 
     deleteNotification(uuid) {
-      this.notifications = this.notifications.filter(
-        notification => notification.uuid !== uuid
-      );
+      this.notifications = this.notifications.filter(notification => notification.uuid !== uuid);
     },
 
     notificationTimer(notification, duration) {
       let _this = this;
       window.setTimeout(function() {
-        _this.notifications.splice(
-          _this.notifications.indexOf(notification),
-          1
-        );
+        _this.notifications.splice(_this.notifications.indexOf(notification), 1);
       }, duration * 1000);
     }
   }

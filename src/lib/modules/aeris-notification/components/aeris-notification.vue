@@ -1,17 +1,14 @@
 <template>
-  <span :class="visibilityclass" class="aeris-notification-host">
-    <div :class="getNotificationStyle">
+  <div :class="visibilityclass" class="aeris-notification-host">
+    <div :class="`notify-container aeris-notification-${type}`">
       <div class="notification-text">
-        <span v-if="spinner">
-          <i class="fa fa-circle-o-notch fa-spin fa-fw" />
-        </span>
+        <span v-if="spinner"> <i class="fa fa-circle-o-notch fa-spin fa-fw" /> </span>
         <span class="notification-message">{{ message }}</span>
       </div>
-      <div v-if="closable" class="notification-close-button">
-        <i class="fa fa-times close-icon" @click="close" />
-      </div>
+
+      <div v-if="closable" class="notification-close-button"><i class="fa fa-times close-icon" @click="close" /></div>
     </div>
-  </span>
+  </div>
 </template>
 
 <script>
@@ -46,7 +43,7 @@ export default {
   },
 
   created: function() {
-    this.visibilityclass = "show";
+    this.visibilityclass = "shownotify-container";
   },
 
   computed: {

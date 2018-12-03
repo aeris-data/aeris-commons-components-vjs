@@ -1,18 +1,11 @@
 module.exports = {
     root: true,
-    extends: [
-      'plugin:vue/recommended',
-      "plugin:prettier/recommended"
-       
-    ],
+    extends: ["eslint:recommended", "plugin:vue/recommended", "plugin:prettier/recommended"],
     parserOptions: {
-      sourceType: 'module',
-      ecmaVersion: 2018
+        parser: "babel-eslint",
+        ecmaVersion: 2018,
+        sourceType: "module"
     },
-    plugins: [
-      'vue',
-      "prettier"
-    ],
     env: {
       browser: true,
       commonjs: true,
@@ -35,11 +28,20 @@ module.exports = {
           "allowFirstLine": true
         }
       }],
-      "vue/html-indent": ["error", 3, {
+      "vue/html-self-closing": ["error", {
+          "html": {
+              "void": "always",
+              "normal": "always",
+              "component": "never"
+          }
+      }],
+
+      "vue/html-indent": ["error", 2, {
         "attribute": 1,
         "closeBracket": 0,
         "ignores": []
-      }],
+      },
+      ],
       "vue/name-property-casing": ["error", "kebab-case"],
       "prettier/prettier": "error"
       }
