@@ -2,7 +2,7 @@
   <div id="app">
     <ul>
       <li>
-        <router-link to="/example-path">test example</router-link>
+        <router-link to="/notification-test">notification test</router-link>
       </li>
     </ul>
     <div>

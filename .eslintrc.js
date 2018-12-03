@@ -23,6 +23,7 @@ module.exports = {
     rules: {
       'no-console': 0,
       'no-undef': 0,
+      'function-paren-newline': ["error", "never"],
       'semi': [2, 'always'],
       'space-before-function-paren': 0,
       'object-property-newline': 0,
