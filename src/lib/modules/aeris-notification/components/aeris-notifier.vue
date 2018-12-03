@@ -2,7 +2,11 @@
   <span class="aeris-notifier-host">
     <div class="aeris-notifier-container">
       <ul>
-        <li v-for="notification in notifications" class="notification" :key="notification.uuid">
+        <li
+               v-for="notification in notifications"
+               :key="notification.uuid"
+          class="notification"
+            >
           <aeris-notification
             :type="notification.type"
             :message="notification.message"
@@ -10,7 +14,7 @@
             :closable="notification.closable"
             :uuid="notification.uuid"
             @deleteNotification="deleteNotification"
-          ></aeris-notification>
+          />
         </li>
       </ul>
     </div>
@@ -29,7 +33,9 @@ export default {
   props: {
     newNotification: {
       type: Object,
-      default: {}
+      default: () => {
+        return {};
+      }
     },
     deleteNotifUuid: {
       type: String,
@@ -60,7 +66,13 @@ export default {
       let uuid = notification.uuid || computeUuid();
       switch (notification.type) {
         case "notification":
-          this.addNewNotification(notification, uuid, true, false, notification.duration);
+          this.addNewNotification(
+            notification,
+            uuid,
+            true,
+            false,
+            notification.duration
+          );
           break;
         case "wait":
           this.addNewNotification(

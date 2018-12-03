@@ -1,14 +1,14 @@
 <template>
-  <span class="aeris-notification-host" :class="visibilityclass">
+  <span :class="visibilityclass" class="aeris-notification-host">
     <div :class="getNotificationStyle">
       <div class="notification-text">
         <span v-if="spinner">
-          <i class="fa fa-circle-o-notch fa-spin fa-fw"></i>
+          <i class="fa fa-circle-o-notch fa-spin fa-fw" />
         </span>
         <span class="notification-message">{{ message }}</span>
       </div>
-      <div class="notification-close-button" v-if="closable">
-        <i class="fa fa-times close-icon" @click="close"></i>
+      <div v-if="closable" class="notification-close-button">
+        <i class="fa fa-times close-icon" @click="close" />
       </div>
     </div>
   </span>

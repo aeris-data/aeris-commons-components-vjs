@@ -1,74 +1,67 @@
 <template>
-<span class="aeris-language-host">
-</span>
+  <span class="aeris-language-host" />
 </template>
-
 
 <script>
 export default {
   props: {
-  	lang:  {
+    lang: {
       type: String,
       default: null
     },
     active: {
-    	type: Boolean,
-     	 default: false
-    },
-},
-  
-   
+      type: Boolean,
+      default: false
+    }
+  },
+
   watch: {
-    lang () {
-	      this.refresh();
+    lang() {
+      this.refresh();
     },
-    active () {
-	      this.refresh();
+    active() {
+      this.refresh();
     }
   },
-  
-  created: function () {
-  		this.refresh()
-  		this.aerisLanguageRequestListener = this.handleLanguageRequest.bind(this) 
-   document.addEventListener('aerisLanguageRequest', this.aerisLanguageRequestListener);
+
+  created: function() {
+    this.refresh();
+    this.aerisLanguageRequestListener = this.handleLanguageRequest.bind(this);
+    document.addEventListener("aerisLanguageRequest",
+      this.aerisLanguageRequestListener);
   },
-  
-   destroyed: function() {
-  	document.removeEventListener('aerisLanguageRequest', this.aerisLanguageRequestListener);
-  	this.aerisLanguageRequestListener = null;
+
+  destroyed: function() {
+    document.removeEventListener("aerisLanguageRequest",
+      this.aerisLanguageRequestListener);
+    this.aerisLanguageRequestListener = null;
   },
-  
-  computed: {
- 
-  },
-  
-  mounted: function() {
-   
-  },
-  
-  data () {
+
+  computed: {},
+
+  mounted: function() {},
+
+  data() {
     return {
-    	aerisLanguageRequestListener: null
-    }
+      aerisLanguageRequestListener: null
+    };
   },
-  
+
   methods: {
-  
-  refresh: function() {
-  	if (this.active && this.lang) {
-  	    var event = new CustomEvent('aerisLanguageResponse', { detail: {lang: this.lang}});
-  		document.dispatchEvent(event);
-  	}
-  },
-  
-  handleLanguageRequest: function() {
-  	this.refresh();
+    refresh: function() {
+      if (this.active && this.lang) {
+        var event = new CustomEvent("aerisLanguageResponse", {
+          detail: { lang: this.lang }
+        });
+        document.dispatchEvent(event);
+      }
+    },
+
+    handleLanguageRequest: function() {
+      this.refresh();
+    }
   }
-  
-  }
-}
+};
 </script>
 
-<style>
-  
-</style>
+<style></style>

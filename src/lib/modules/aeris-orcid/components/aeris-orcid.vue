@@ -1,83 +1,77 @@
 <template>
-<span class="aeris-orcid-host">
-</span>
+  <span class="aeris-orcid-host" />
 </template>
-
 
 <script>
 export default {
   props: {
-  	orcid:  {
+    orcid: {
       type: String,
       default: null
     },
-    
-    name:  {
-        type: String,
-        default: null
-      }
 
-},
-  
-   
-watch: {
-	orcid: function() {
-	      this.refresh();
+    name: {
+      type: String,
+      default: null
+    }
+  },
+
+  watch: {
+    orcid: function() {
+      this.refresh();
     },
     name: function() {
-	      this.refresh();
+      this.refresh();
     }
   },
-  
-  created: function () {
-   this.aerisOrcidRequestListener = this.handleOrcidRequest.bind(this) 
-   document.addEventListener('aerisOrcidRequest', this.aerisOrcidRequestListener);
+
+  created: function() {
+    this.aerisOrcidRequestListener = this.handleOrcidRequest.bind(this);
+    document.addEventListener("aerisOrcidRequest",
+      this.aerisOrcidRequestListener);
   },
-  
-   destroyed: function() {
-   document.removeEventListener('aerisOrcidRequest', this.aerisOrcidRequestListener);
-  	this.aerisOrcidRequestListener = null;
+
+  destroyed: function() {
+    document.removeEventListener("aerisOrcidRequest",
+      this.aerisOrcidRequestListener);
+    this.aerisOrcidRequestListener = null;
   },
-  
-  computed: {
- 
-  },
-  
+
+  computed: {},
+
   mounted: function() {
-   this.refresh()
+    this.refresh();
   },
-  
-  data () {
+
+  data() {
     return {
-    	aerisOrcidRequestListener: null
-    }
+      aerisOrcidRequestListener: null
+    };
   },
-  
+
   methods: {
-  
-  handleOrcidRequest: function() {
-  	this.refresh()
-  },
-  
-  refresh: function() {
-	  if ((this.orcid) && (this.name)) {
-		  var event = new CustomEvent('aerisOrcidResponse', { detail: {user: {orcid: this.orcid, name: this.name}}});
-		  document.dispatchEvent(event);
-	  }
-	  else if (this.orcid) {
-	  		var event = new CustomEvent('aerisOrcidResponse', { detail: {user: {orcid: this.orcid}}});
-	  		document.dispatchEvent(event);
-	  	}
-	  	else {
-	  		var event = new CustomEvent('aerisOrcidResponse', { detail: {}});
-	  		document.dispatchEvent(event);
-	  	}
-	  	
-	  }
+    handleOrcidRequest: function() {
+      this.refresh();
+    },
+
+    refresh: function() {
+      if (this.orcid && this.name) {
+        var event = new CustomEvent("aerisOrcidResponse", {
+          detail: { user: { orcid: this.orcid, name: this.name } }
+        });
+        document.dispatchEvent(event);
+      } else if (this.orcid) {
+        var event = new CustomEvent("aerisOrcidResponse", {
+          detail: { user: { orcid: this.orcid } }
+        });
+        document.dispatchEvent(event);
+      } else {
+        var event = new CustomEvent("aerisOrcidResponse", { detail: {} });
+        document.dispatchEvent(event);
+      }
+    }
   }
-}
+};
 </script>
 
-<style>
-   
-</style>
+<style></style>
