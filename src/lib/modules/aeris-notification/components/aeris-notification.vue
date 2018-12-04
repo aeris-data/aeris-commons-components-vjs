@@ -42,17 +42,11 @@ export default {
     };
   },
 
-  created: function() {
+  created() {
     this.visibilityclass = "shownotify-container";
   },
-
-  computed: {
-    getNotificationStyle: function() {
-      return "notify-container aeris-notification-" + this.type;
-    }
-  },
   methods: {
-    close: function() {
+    close() {
       this.$emit("deleteNotification", this.uuid);
     }
   }
