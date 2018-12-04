@@ -94,14 +94,14 @@ export default {
     },
 
     notificationTimer(notification, duration) {
-      let _this = this;
-      window.setTimeout(function() {
-        _this.notifications.splice(_this.notifications.indexOf(notification), 1);
-      }, duration * 1000);
+      window.setTimeout(() => {
+        this.notifications.splice(this.notifications.indexOf(notification), 1), duration * 1000;
+      });
     }
   }
 };
 </script>
+
 <style scoped>
 .aeris-notifier-host {
   display: block;
