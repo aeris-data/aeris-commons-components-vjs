@@ -9,6 +9,8 @@ import AerisNotification from "../lib/modules/aeris-notification/components/aeri
 
 import app from "./app.vue";
 import AerisNotificationTest from "./modules/notification/notification-test.vue";
+import AerisLanguageTest from "./modules/language/language-test.vue";
+import languageModule from "../lib/modules/aeris-language/store/aeris-language-store.js";
 
 Vue.use(Vuex);
 Vue.use(VueI18n);
@@ -17,12 +19,26 @@ Vue.use(VueRouter);
 Vue.use(VueColorPlugin);
 Vue.use(VueAerisLanguagePlugin);
 
+const store = new Vuex.Store({
+  modules: {
+    language: languageModule
+  }
+});
+
+Vue.use(AerisLanguageTest, {
+  store: store
+});
+
 const router = new VueRouter({
   mode: "history",
   routes: [
     {
       path: "/notification-test",
       component: AerisNotificationTest
+    },
+    {
+      path: "/language-test",
+      component: AerisLanguageTest
     }
   ]
 });
@@ -30,6 +46,7 @@ const router = new VueRouter({
 new Vue({
   el: "#app",
   router,
+  store,
   template: "<app/>",
   components: {
     app,

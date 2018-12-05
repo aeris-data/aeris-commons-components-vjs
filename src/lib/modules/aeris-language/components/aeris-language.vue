@@ -1,65 +1,30 @@
 <template>
-  <span class="aeris-language-host" />
+  <div />
 </template>
-
 <script>
 export default {
   props: {
-    lang: {
+    language: {
       type: String,
-      default: null
-    },
-    active: {
-      type: Boolean,
-      default: false
+      default: "en"
     }
   },
 
   watch: {
-    lang() {
-      this.refresh();
-    },
-    active() {
-      this.refresh();
+    language(language) {
+      if (language) {
+        this.$store.commit("setLanguage", language);
+      }
     }
   },
 
-  created: function() {
-    this.refresh();
-    this.aerisLanguageRequestListener = this.handleLanguageRequest.bind(this);
-    document.addEventListener("aerisLanguageRequest", this.aerisLanguageRequestListener);
-  },
-
-  destroyed: function() {
-    document.removeEventListener("aerisLanguageRequest", this.aerisLanguageRequestListener);
-    this.aerisLanguageRequestListener = null;
-  },
-
-  computed: {},
-
-  mounted: function() {},
-
-  data() {
-    return {
-      aerisLanguageRequestListener: null
-    };
-  },
-
-  methods: {
-    refresh: function() {
-      if (this.active && this.lang) {
-        var event = new CustomEvent("aerisLanguageResponse", {
-          detail: { lang: this.lang }
-        });
-        document.dispatchEvent(event);
-      }
-    },
-
-    handleLanguageRequest: function() {
-      this.refresh();
+  created() {
+    let browserLanguage = document.documentElement.lang.split("-")[0];
+    if (browserLanguage) {
+      this.$store.commit("setLanguage", browserLanguage);
+    } else {
+      this.$store.commit("setLanguage", this.language);
     }
   }
 };
 </script>
-
-<style></style>
