@@ -42,7 +42,7 @@ export default {
   },
   computed: {
     getLanguage() {
-      return this.$store.getters.language;
+      return this.$store.getters.getLanguage;
     },
     languageToChangeTo() {
       return this.language === "fr" ? "en" : "fr";

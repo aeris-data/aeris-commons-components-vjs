@@ -1,72 +1,44 @@
 <template>
-  <span class="aeris-theme-host" />
+  <div />
 </template>
 
 <script>
 export default {
   props: {
-    primary: {
+    primaryColor: {
       type: String,
       default: null
     },
-    emphasis: {
+    secondaryColor: {
       type: String,
       default: null
-    },
-    active: {
-      type: Boolean,
-      default: false
     }
   },
 
   watch: {
-    primary() {
-      this.refresh();
+    primaryColor(primaryColor) {
+      if (primaryColor) {
+        this.$store.commit("setPrimaryColor", primaryColor);
+      }
     },
-    emphasis() {
-      this.refresh();
-    },
-    active() {
-      this.refresh();
+    secondaryColor(secondaryColor) {
+      if (secondaryColor) {
+        this.$store.commit("setSecondaryColor", secondaryColor);
+      }
     }
   },
 
-  created: function() {
-    this.refresh();
-    this.aerisThemeRequestListener = this.handleThemeRequest.bind(this);
-    document.addEventListener("aerisThemeRequest", this.aerisThemeRequestListener);
-  },
+  created() {
+    let primary = document.body.getAttribute("data-color");
+    let secondary = document.body.getAttribute("data-secondary-color");
 
-  destroyed: function() {
-    document.removeEventListener("aerisThemeRequest", this.aerisThemeRequestListener);
-    this.aerisThemeRequestListener = null;
-  },
+    if (primary) {
+      this.$store.commit("setPrimaryColor", primary);
+    }
 
-  computed: {},
-
-  mounted: function() {},
-
-  data() {
-    return {
-      aerisThemeRequestListener: null
-    };
-  },
-
-  methods: {
-    refresh: function() {
-      if (this.active && this.primary && this.emphasis) {
-        var event = new CustomEvent("aerisTheme", {
-          detail: { primary: this.primary, emphasis: this.emphasis }
-        });
-        document.dispatchEvent(event);
-      }
-    },
-
-    handleThemeRequest: function() {
-      this.refresh();
+    if (secondary) {
+      this.$store.commit("setSecondaryColor", secondary);
     }
   }
 };
 </script>
-
-<style></style>

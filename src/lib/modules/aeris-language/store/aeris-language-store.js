@@ -4,7 +4,7 @@ export default {
   },
 
   getters: {
-    language: state => state.language
+    getLanguage: state => state.language
   },
 
   mutations: {
