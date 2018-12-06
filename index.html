@@ -3,17 +3,17 @@
   <head>
     <meta charset="utf-8">
     <title>Vue Example</title>
-	
+
 	<style>
 	body {
         font-family: 'Open Sans', sans-serif;
         margin: 0;
       }
-	
+
 	</style>
   </head>
   <body data-color="#019A9C" data-secondary-color="#ffab02">
-  
+
   <h2>Aeris Browser alert</h2>
   	<aeris-browser-alert></aeris-browser-alert>
   <h2>Aeris Datepicker</h2>
@@ -22,10 +22,10 @@
 	<div id="myslot"></div>
 	<aeris-datepicker for="input#date2" format="DD-MM-YYYY"></aeris-datepicker>
 	<button onclick="addInput2()">Ajouter input 2</button>
-  
+
   	<h2>Aeris notification</h2>
   	<div style="padding:5px">
-  	
+
   	<div style="margin-bottom:5px">
   	<aeris-notification  message="un message de <b>succes</b>" spinner="true" closable="true"></aeris-notification>
   	</div>
@@ -48,8 +48,8 @@
   	</div>
   	<h2>Aeris notifier</h2>
   	<aeris-notifier></aeris-notifier>
-  	<button onclick="document.dispatchEvent(new CustomEvent('aerisNotificationMessageEvent', { 'detail': {message: 'un message de notif'}}))">Click Notif</button>
-  	<button onclick="document.dispatchEvent(new CustomEvent('aerisErrorNotificationMessageEvent', { 'detail': {message: 'un message d erreur'}}))">Click Error</button>
+  	<button id="notification" onclick="document.dispatchEvent(new CustomEvent('aerisNotificationMessageEvent', { 'detail': {message: 'un message de notif'}}))">Click Notif</button>
+  	<button id="error" onclick="document.dispatchEvent(new CustomEvent('aerisErrorNotificationMessageEvent', { 'detail': {message: 'un message d erreur'}}))">Click Error</button>
   	<button onclick="document.dispatchEvent(new CustomEvent('aerisLongActionStartEvent', { 'detail': {message: 'un message d action longue'}}))">Click Debut longue</button>
   	<button onclick="document.dispatchEvent(new CustomEvent('aerisLongActionStopEvent', { 'detail': {message: 'un message d action longue'}}))">Click Fin longue</button>
   	<h2>Aeris cartouche</h2>
@@ -77,29 +77,29 @@
 	<aeris-wordpress-theme></aeris-wordpress-theme>
 	<aeris-theme active="true" primary="red" emphasis="blue" />
 	<script>
-	
+
 	window.aerisexclusions = []
 	window.aerisexclusions["aeris-commons-components-vjs"]= ["aeris-spinner"]
 	</script>
     <script src="dist/build.js"></script>
     <script>
-    
+
     function addInput2() {
     	var newInput = document.createElement("input");
     	newInput.setAttribute("id", "date2");
     	newInput.setAttribute("type", "text");
     	document.querySelector('#myslot').appendChild(newInput)
     }
-    
+
     document.querySelector('#container1').addEventListener("aerisCartoucheItemDeleted", function(e){
        console.log("capté container 1: "+e.detail.itemref);
        e.stopPropagation()
     });
-    
+
     document.querySelector('#container2').addEventListener("aerisCartoucheItemDeleted", function(e){
         console.log("capté container 2: "+e.detail.itemref);
      });
-    
+
     document.addEventListener("aerisCartoucheItemDeleted", function(e){
         console.log("capté haut "+e.detail.itemref);
      });
