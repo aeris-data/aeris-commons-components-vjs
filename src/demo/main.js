@@ -9,9 +9,11 @@ import app from "./app.vue";
 import AerisNotificationTest from "./modules/notification/notification-test.vue";
 import AerisLanguageTest from "./modules/language/language-test.vue";
 import AerisThemeTest from "./modules/theme/theme-test.vue";
+import AerisOrcidTest from "./modules/orcid/orcid-test.vue";
 
 import languageModule from "../lib/modules/aeris-language/store/aeris-language-store.js";
 import themeModule from "../lib/modules/aeris-theme/store/aeris-theme-store.js";
+import orcidModule from "../lib/modules/aeris-orcid/store/aeris-orcid-store.js";
 
 Vue.use(Vuex);
 Vue.use(VueI18n);
@@ -23,7 +25,8 @@ Vue.use(VueAerisLanguagePlugin);
 const store = new Vuex.Store({
   modules: {
     language: languageModule,
-    theme: themeModule
+    theme: themeModule,
+    orcid: orcidModule
   }
 });
 
@@ -32,6 +35,10 @@ Vue.use(AerisLanguageTest, {
 });
 
 Vue.use(AerisThemeTest, {
+  store: store
+});
+
+Vue.use(AerisOrcidTest, {
   store: store
 });
 
@@ -49,6 +56,10 @@ const router = new VueRouter({
     {
       path: "/theme-test",
       component: AerisThemeTest
+    },
+    {
+      path: "/orcid-test",
+      component: AerisOrcidTest
     }
   ]
 });
