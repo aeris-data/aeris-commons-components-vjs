@@ -9,6 +9,7 @@ import app from "./app.vue";
 import AerisNotificationTest from "./modules/notification/notification-test.vue";
 import AerisLanguageTest from "./modules/language/language-test.vue";
 import AerisThemeTest from "./modules/theme/theme-test.vue";
+import AerisDatepickerTest from "./modules/datepicker/datepicker-test.vue";
 
 import languageModule from "../lib/modules/aeris-language/store/aeris-language-store.js";
 import themeModule from "../lib/modules/aeris-theme/store/aeris-theme-store.js";
@@ -49,6 +50,10 @@ const router = new VueRouter({
     {
       path: "/theme-test",
       component: AerisThemeTest
+    },
+    {
+      path: "/datepicker-test",
+      component: AerisDatepickerTest
     }
   ]
 });

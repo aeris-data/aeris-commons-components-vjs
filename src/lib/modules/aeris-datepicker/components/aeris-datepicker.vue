@@ -1,53 +1,7 @@
-<i18n>
-{
-  "en": {
-    "january": "January",
-    "february": "February",
-    "march": "March",
-    "april": "April",
-    "may": "May",
-    "june": "June",
-    "july": "July",
-    "august": "August",
-    "september": "September",
-    "october": "October",
-    "november": "November",
-    "december": "December",
-    "today": "Today",
-    "mon": "Mon",
-    "tue": "Tue",
-    "wed": "Wed",
-    "thu": "Thu",
-    "fri": "Fri",
-    "sat": "Sat",
-    "sun": "Sun"
-  },
-  "fr": {
-  	"january": "Janvier",
-    "february": "Février",
-    "march": "Mars",
-    "april": "Avril",
-    "may": "Mai",
-    "june": "Juin",
-    "july": "Juillet",
-    "august": "Août",
-    "september": "Septembre",
-    "october": "Octobre",
-    "november": "Novembre",
-    "december": "Decembre",
-    "today": "Aujourdhui",
-    "mon": "Lun",
-    "tue": "Mar",
-    "wed": "Mer",
-    "thu": "Jeu",
-    "fri": "Ven",
-    "sat": "Sam",
-    "sun": "Dim"
-  }
-}
-</i18n>
+<i18n src="../lang/dates.json"></i18n>
+
 <template>
-  <span v-show="visible" class="aeris-datepicker-host">
+  <span v-show="visible" :style="applyTheme" class="aeris-datepicker-host">
     <div class="dp-container unselectable">
       <header class="dp-header">
         <div :class="firstMonth ? 'disable' : ''" class="dp-header-left dp-header-button" @click="prevMonth">
@@ -55,8 +9,19 @@
         </div>
         <div class="dp-header-central">
           <div class="dp-current-date">
-            <h5>{{ currentSelectedYear }}</h5>
-            <h2>{{ currentSelectedMonth }}</h2>
+            <!-- {{ currentSelectedMonth }} {{ currentSelectedYear }} -->
+            <div class="dp-selectors">
+              <div id="monthSelect">
+                <select v-model="selectedMonth" @change="refreshMonth">
+                  <option v-for="id in allMonthIds" :value="id" :key="id">{{ $t(allMonths[id]) }}</option>
+                </select>
+              </div>
+              <div id="yearSelect">
+                <select v-model="selectedYear" @change="refreshYear">
+                  <option v-for="year in allYears" :value="year" :key="year">{{ year }}</option>
+                </select>
+              </div>
+            </div>
           </div>
         </div>
         <div :class="lastMonth ? 'disable' : ''" class="dp-header-right dp-header-button" @click="nextMonth">
@@ -66,46 +31,64 @@
 
       <main class="dp-main">
         <div class="dp-title-line">
-          <span v-for="item in allDays" class="dp-day">{{ $t(item) }} </span>
+          <span v-for="day in allDays" :key="day" class="dp-day">{{ $t(day) }}</span>
         </div>
         <div class="dp-main-calendar">
-          <div v-for="item in offsetBefore" class="dp-day" />
-          <div v-for="item in monthDays" :class="computeDayClass(item)" class="dp-day " @click="clickDay">
-            {{ item.date() }}
+          <div v-for="(offset, index) in offsetBefore" :key="`offset-${index}`" class="dp-day" />
+          <div
+            v-for="(day, index) in monthDays"
+            :class="computeDayClass(day)"
+            :key="`day-${index}`"
+            class="dp-day"
+            @click="clickDay"
+          >
+            {{ day.date() }}
           </div>
         </div>
         <div v-if="hasHour" class="dp-selectors dp-hours">
-          <select id="hourSelect" v-model="selectedHour" @change="refreshHour">
-            <option v-for="id in allHours" :value="id">{{ id }}</option>
-          </select>
-          :
-          <select id="minSelect" v-model="selectedMin" @change="refreshHour">
-            <option v-for="id in allMins" :value="id">{{ id }}</option>
-          </select>
+          <div id="hourSelect">
+            <select v-model="selectedHour" @change="refreshHour">
+              <option v-for="hour in allHours" :value="hour" :key="hour">{{ hour }}</option>
+            </select>
+          </div>
+          <sup>h</sup>
+          <div id="minSelect">
+            <select v-model="selectedMin" @change="refreshHour">
+              <option v-for="min in allMins" :value="min" :key="min">{{ min }}</option>
+            </select>
+          </div>
+          <sup>min</sup>
         </div>
       </main>
 
       <footer class="dp-footer">
-        <div v-if="hasToday" class="today-button" @click="setToToday">{{ $t("today") }}</div>
-        <div class="dp-selectors">
-          <select id="monthSelect" v-model="selectedMonth" @change="refreshMonth">
-            <option v-for="id in allMonthId" :value="id">{{ $t(allMonths[id]) }}</option>
-          </select>
-          <select id="yearSelect" v-model="selectedYear" @change="refreshYear">
-            <option v-for="item in allYears" :value="item">{{ item }}</option>
-          </select>
-        </div>
+        <button v-if="hasToday" class="today-button" @click="setToToday">{{ $t("today") }}</button>
+        <button id="validate-btn" @click="validate">{{ $t("validate") }}</button>
       </footer>
     </div>
   </span>
 </template>
 
 <script>
+import moment from "moment";
+import { extendMoment } from "moment-range";
+import dates from "../lang/dates.json";
+
+window.momentCst = extendMoment(moment);
+const DAYS = Object.keys(dates.en).slice(-7);
+const MONTHS = Object.keys(dates.en).slice(0, 12);
+
 export default {
   props: {
-    lang: {
+    language: {
       type: String,
       default: "en"
+    },
+    theme: {
+      type: Object,
+      default: () => {
+        return { emphasis: "#0b6bb3" };
+      }
     },
     format: {
       type: String,
@@ -132,24 +115,11 @@ export default {
     return {
       currentDate: moment(),
       selected: null,
-      allDays: ["mon", "tue", "wed", "thu", "fri", "sat", "sun"],
-      allMonths: [
-        "january",
-        "february",
-        "march",
-        "april",
-        "may",
-        "june",
-        "july",
-        "august",
-        "september",
-        "october",
-        "november",
-        "december"
-      ],
+      allDays: DAYS,
+      allMonths: MONTHS,
       allHours: ["00", "01"],
       allMins: ["00"],
-      calendarElement: null,
+      selectedDay: moment().day(),
       selectedYear: moment().year(),
       selectedMonth: moment().month(),
       selectedHour: "00",
@@ -158,7 +128,6 @@ export default {
       visible: false,
       clickListener: null,
       closeListener: null,
-      aerisThemeListener: null,
       targetChecker: null,
       lastMonth: false,
       firstMonth: false,
@@ -167,40 +136,29 @@ export default {
   },
 
   watch: {
-    visible: function(val) {
-      if (val) {
-        this.styleDays();
-      }
-    },
-    lang(value) {
+    language(value) {
       this.$i18n.locale = value;
     }
   },
 
-  destroyed: function() {
+  destroyed() {
     document.removeEventListener("mousedown", this.clickListener);
     this.clickListener = null;
     document.removeEventListener("keypress", this.closeListener);
     this.closeListener = null;
-    document.removeEventListener("aerisTheme", this.aerisThemeListener);
-    this.aerisThemeListener = null;
   },
 
-  created: function() {
-    this.$i18n.locale = this.lang;
+  created() {
+    this.$i18n.locale = this.language;
     this.clickListener = this.closeOnClick.bind(this);
     document.addEventListener("mousedown", this.clickListener);
     this.closeListener = this.close.bind(this);
     document.addEventListener("keypress", this.closeListener);
-    this.aerisThemeListener = this.handleTheme.bind(this);
-    document.addEventListener("aerisTheme", this.aerisThemeListener);
     this.allHours = this.geneTime(0, 23);
     this.allMins = this.geneTime(0, 59);
   },
 
-  mounted: function() {
-    var event = new CustomEvent("aerisThemeRequest", {});
-    document.dispatchEvent(event);
+  mounted() {
     this.$el.addEventListener("mousedown", function(e) {
       e.stopPropagation();
     });
@@ -209,19 +167,28 @@ export default {
   },
 
   computed: {
+    applyTheme() {
+      return {
+        "--emphasis": this.theme.emphasis
+      };
+    },
+
     dateMin() {
       return moment(this.daymin, "YYYY-MM-DD");
     },
+
     dateMax() {
+      let date;
       if (!this.daymax) {
-        var date = moment(moment().year() + 10 + "-12-31", "YYYY-MM-DD");
+        date = moment(moment().year() + 10 + "-12-31", "YYYY-MM-DD");
       } else if (this.daymax.toLowerCase() == "now") {
-        var date = moment();
+        date = moment();
       } else {
-        var date = moment(this.daymax, "YYYY-MM-DD");
+        date = moment(this.daymax, "YYYY-MM-DD");
       }
       return date;
     },
+
     hasHour() {
       if (this.format.toLowerCase().indexOf("h") >= 0) {
         return true;
@@ -229,129 +196,99 @@ export default {
         return false;
       }
     },
+
     hasToday() {
-      var nowmoins = moment().subtract(1, "days");
-      var nowplus = moment().add(1, "days");
+      let nowmoins = moment().subtract(1, "days");
+      let nowplus = moment().add(1, "days");
       if (nowmoins.isBefore(this.dateMax) && nowplus.isAfter(this.dateMin)) {
         return true;
       } else {
         return false;
       }
     },
-    allMonthId() {
-      var alls = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
+
+    allMonthIds() {
+      let ids = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
       if (this.dateMax.year() == this.currentSelectedYear) {
-        var endMonth = this.dateMax.month();
-        return alls.slice(0, endMonth + 1);
+        let endMonth = this.dateMax.month();
+        return ids.slice(0, endMonth + 1);
       }
       if (this.dateMin.year() == this.currentSelectedYear) {
-        var firstMonth = this.dateMin.month();
-        return alls.slice(firstMonth, 12);
+        let firstMonth = this.dateMin.month();
+        return ids.slice(firstMonth, 12);
       }
-      return alls;
+      return ids;
     },
-    allYears: function() {
-      var maxYear = this.dateMax.year();
-      var minYear = this.dateMin.year();
-      var result = [];
 
-      for (var i = maxYear; i >= minYear; i--) {
+    allYears() {
+      let maxYear = this.dateMax.year();
+      let minYear = this.dateMin.year();
+      let result = [];
+      for (let i = maxYear; i >= minYear; i--) {
         result.push(i);
       }
       return result;
     },
 
-    start: function() {
+    start() {
       return this.currentDate.date(1);
     },
-    end: function() {
+
+    end() {
       return this.currentDate.clone().endOf("month");
     },
-    monthDays: function() {
-      var range = window.momentCst.range(this.start, this.end);
-      var result = [];
+
+    monthDays() {
+      let range = window.momentCst.range(this.start, this.end);
+      let result = [];
       for (let day of range.by("days")) {
         result.push(day);
       }
       return result;
     },
 
-    offsetBefore: function() {
-      var weekDay = this.start.day() - 1;
+    offsetBefore() {
+      let weekDay = this.start.day() - 1;
       if (weekDay === -1) weekDay = 6;
-      var result = [];
-      for (var i = 0; i < weekDay; i++) {
+      let result = [];
+      for (let i = 0; i < weekDay; i++) {
         result.push("blank");
       }
       return result;
-    },
-
-    currentSelectedYear: function() {
-      return this.currentDate.year();
-    },
-
-    currentSelectedMonth: function() {
-      this.computeMonthsBounds(this.currentDate);
-      var ind = this.currentDate.month();
-      return this.$t(this.allMonths[ind]);
     }
+
+    // currentSelectedYear() {
+    //   return this.currentDate.year();
+    // },
+
+    // currentSelectedMonth() {
+    //   this.computeMonthsBounds(this.currentDate);
+    //   let id = this.currentDate.month();
+    //   return this.$t(this.allMonths[id]);
+    // }
   },
+
   methods: {
-    lookForTarget: function() {
-      var el = document.querySelector(this.for);
+    lookForTarget() {
+      if (this.for === "") return;
+      let el = document.querySelector(this.for);
       if (el) {
         this.targetElement = el;
-        console.info("Target trouvée pour " + this.for);
-        // el.addEventListener('mousedown', this.show.bind(this));
         clearInterval(this.targetChecker);
-      } else {
-        console.info("Target non trouvée pour " + this.for + "...");
       }
     },
 
-    handleTheme: function(theme) {
-      this.theme = theme.detail;
-      this.ensureTheme();
-    },
-
-    ensureTheme: function() {
-      if (this.$el && this.$el.querySelector && this.theme) {
-        this.$el.querySelector(".dp-header").style.background = this.theme.emphasis;
-        if (this.hasToday) {
-          this.$el.querySelector(".dp-footer .today-button").style.color = this.theme.emphasis;
-        }
-        this.$el.querySelector(".dp-selectors #monthSelect").style.color = this.theme.emphasis;
-        this.$el.querySelector(".dp-selectors #yearSelect").style.color = this.theme.emphasis;
-
-        if (this.hasHour) {
-          this.$el.querySelector(".dp-selectors #hourSelect").style.color = this.theme.emphasis;
-          this.$el.querySelector(".dp-selectors #minSelect").style.color = this.theme.emphasis;
-          this.$el.querySelector(".dp-main .dp-hours.dp-selectors").style.color = this.theme.emphasis;
-        }
-      }
-    },
-    styleDays() {
-      this.$el.querySelectorAll(".dp-day").forEach(function(day) {
-        day.style.color = "";
-      });
-      if (this.$el.querySelector(".dp-day.day-selected")) {
-        this.$el.querySelector(".dp-day.day-selected").style.borderColor = this.theme.emphasis;
-      }
-
-      if (this.$el.querySelector(".dp-day.is-today")) {
-        this.$el.querySelector(".dp-day.is-today").style.color = this.theme.emphasis;
-      }
-    },
-    geneTime: function(begin, end) {
-      var times = new Array();
-      for (var i = begin; i <= end; i++) {
-        var num = i < 10 ? "0" + i : "" + i;
+    geneTime(begin, end) {
+      let times = [];
+      for (let i = begin; i <= end; i++) {
+        let num = i < 10 ? "0" + i : "" + i;
         times.push(num);
       }
       return times;
     },
-    isDescendant: function(parent, child) {
-      var node = child.parentNode;
+
+    isDescendant(parent, child) {
+      let node = child.parentNode;
       while (node != null) {
         if (node == parent) {
           return true;
@@ -360,27 +297,27 @@ export default {
       }
       return false;
     },
-    close: function(e) {
-      var aux = e.target;
-      if (aux == this.targetElement) {
-        this.visible = false;
-      }
-    },
-    closeOnClick: function(e) {
-      var aux = e.target;
-      if (aux == this.targetElement) {
-        this.show();
-        return;
-      }
-      if (!this.isDescendant(this.$el, aux)) {
+
+    close(e) {
+      if (e.target == this.targetElement) {
         this.visible = false;
       }
     },
 
-    show: function() {
+    closeOnClick(e) {
+      if (e.target == this.targetElement) {
+        this.show();
+        return;
+      }
+      if (!this.isDescendant(this.$el, e.target)) {
+        this.visible = false;
+      }
+    },
+
+    show() {
       this.visible = !this.visible;
       if (this.visible) {
-        var date = moment(this.targetElement.value, this.format);
+        let date = moment(this.targetElement.value, this.format);
         this.setDefaultDate(date);
       }
     },
@@ -398,8 +335,9 @@ export default {
       }
       this.selected = moment(this.currentDate);
     },
+
     refreshYear() {
-      var date = this.currentDate.clone();
+      let date = this.currentDate.clone();
       date.month(this.selectedMonth);
       date.year(this.selectedYear);
       if (date.isBefore(this.dateMin)) {
@@ -412,30 +350,41 @@ export default {
     },
 
     refreshMonth() {
-      var date = this.currentDate.clone();
+      let date = this.currentDate.clone();
       date.month(this.selectedMonth);
       date.year(this.selectedYear);
       this.refreshHour(date);
       this.slideTo(date);
     },
+
     refreshHour() {
-      var date = this.currentDate.clone();
+      let date = moment({
+        year: this.currentDate.year(),
+        month: this.currentDate.month(),
+        day: this.selectedDay,
+        hour: this.currentDate.hour(),
+        minutes: this.currentDate.minutes()
+      });
 
       if (this.hasHour) {
         date.hour(this.selectedHour);
         date.minutes(this.selectedMin);
       }
       this.setCurrentDate(date);
+      this.setDate(date);
     },
 
-    computeDayClass: function(day) {
-      var classes = day.isBefore(this.dateMin) || day.isAfter(this.dateMax) ? "disabled" : "clickable";
+    computeDayClass(day) {
+      let classes = day.isBefore(this.dateMin) || day.isAfter(this.dateMax) ? "disabled" : "clickable";
 
-      if (this.isActualMonth) classes += moment().isSame(day, "days") ? " is-today" : "";
+      if (this.isActualMonth) {
+        classes += moment().isSame(day, "days") ? " is-today" : "";
+      }
       classes += day.isSame(this.selected, "days") ? " day-selected" : "";
       return classes;
     },
-    computeMonthsBounds: function(date) {
+
+    computeMonthsBounds(date) {
       if (date.year() == this.dateMax.year() && date.month() == this.dateMax.month()) {
         this.lastMonth = true;
       } else {
@@ -447,7 +396,8 @@ export default {
         this.firstMonth = false;
       }
     },
-    setCurrentDate: function(date) {
+
+    setCurrentDate(date) {
       if (date && date.isValid()) {
         this.currentDate = moment(date);
       } else {
@@ -455,47 +405,55 @@ export default {
       }
 
       this.isActualMonth = moment().isSame(this.currentDate, "month");
+      this.selectedDay = this.currentDate.format("DD");
       this.selectedMonth = this.currentDate.month();
       this.selectedYear = this.currentDate.year();
       if (this.hasHour) {
         this.selectedHour = this.currentDate.format("HH");
         this.selectedMin = this.currentDate.format("mm");
       }
-      //wait all displayed for style
-      window.setTimeout(this.styleDays, 0);
     },
 
-    setToToday: function() {
+    setToToday() {
       this.selected = moment();
       this.setCurrentDate(this.selected);
       this.setTarget();
     },
 
-    setTarget: function() {
+    setDate(date) {
+      this.selected = moment(date);
+      this.setCurrentDate(date);
+      this.setTarget();
+    },
+
+    setTarget() {
       this.targetElement.value = this.selected.format(this.format);
-      this.visible = false;
-      var event = new InputEvent("input");
+      let event = new InputEvent("input");
       this.targetElement.dispatchEvent(event);
     },
 
-    clickDay: function(e) {
-      var isClickable = [].slice.call(e.target.classList).indexOf("clickable") >= 0 ? true : false;
+    clickDay(e) {
+      let isClickable = e.target.classList.contains("clickable") ? true : false;
       if (isClickable) {
-        var ele = e.currentTarget || e.srcElement;
-        var day = ele.innerText;
-        var date = moment({
+        let elt = e.currentTarget || e.srcElement;
+        this.selectedDay = parseInt(elt.innerText);
+        let date = moment({
           year: this.currentDate.year(),
           month: this.currentDate.month(),
-          day: parseInt(day),
+          day: this.selectedDay,
           hour: this.currentDate.hour(),
           minutes: this.currentDate.minutes()
         });
 
-        this.selected = moment(date);
-        this.setCurrentDate(date);
-        this.setTarget();
+        this.setDate(date);
       }
     },
+
+    validate() {
+      this.setTarget();
+      this.visible = false;
+    },
+
     slideTo(date) {
       if (date.isBefore(this.currentDate)) {
         this.slideLeftTo(date);
@@ -503,58 +461,56 @@ export default {
         this.slideRightTo(date);
       }
     },
+
     slideLeftTo(date) {
-      var titleEl = this.$el.querySelector(".dp-current-date");
-      var calendarEl = this.$el.querySelector(".dp-main-calendar");
+      let titleEl = this.$el.querySelector(".dp-current-date");
+      let calendarEl = this.$el.querySelector(".dp-main-calendar");
 
       titleEl.classList.add("slideOutRight");
       calendarEl.classList.add("slideOutTop");
 
-      window.setTimeout(function() {
-          titleEl.classList.remove("slideOutRight");
-          calendarEl.classList.remove("slideOutTop");
-          this.setCurrentDate(date);
-          titleEl.classList.add("slideInLeft");
-          calendarEl.classList.add("slideInBottom");
-        }.bind(this),
-        200);
+      window.setTimeout(() => {
+        titleEl.classList.remove("slideOutRight");
+        calendarEl.classList.remove("slideOutTop");
+        this.setCurrentDate(date);
+        titleEl.classList.add("slideInLeft");
+        calendarEl.classList.add("slideInBottom");
+      }, 200);
 
-      window.setTimeout(function() {
-          titleEl.classList.remove("slideInLeft");
-          calendarEl.classList.remove("slideInBottom");
-        }.bind(this),
-        600);
+      window.setTimeout(() => {
+        titleEl.classList.remove("slideInLeft");
+        calendarEl.classList.remove("slideInBottom");
+      }, 600);
     },
+
     slideRightTo(date) {
-      var titleEl = this.$el.querySelector(".dp-current-date");
-      var calendarEl = this.$el.querySelector(".dp-main-calendar");
+      let titleEl = this.$el.querySelector(".dp-current-date");
+      let calendarEl = this.$el.querySelector(".dp-main-calendar");
 
       titleEl.classList.add("slideOutLeft");
       calendarEl.classList.add("slideOutBottom");
 
-      window.setTimeout(function() {
-          titleEl.classList.remove("slideOutLeft");
-          calendarEl.classList.remove("slideOutBottom");
+      window.setTimeout(() => {
+        titleEl.classList.remove("slideOutLeft");
+        calendarEl.classList.remove("slideOutBottom");
+        this.setCurrentDate(date);
+        titleEl.classList.add("slideInRight");
+        calendarEl.classList.add("slideInTop");
+      }, 200);
 
-          this.setCurrentDate(date);
-          titleEl.classList.add("slideInRight");
-          calendarEl.classList.add("slideInTop");
-        }.bind(this),
-        200);
-
-      window.setTimeout(function() {
-          titleEl.classList.remove("slideInRight");
-          calendarEl.classList.remove("slideInTop");
-        }.bind(this),
-        600);
+      window.setTimeout(() => {
+        titleEl.classList.remove("slideInRight");
+        calendarEl.classList.remove("slideInTop");
+      }, 600);
     },
-    prevMonth: function() {
-      var date = moment(this.currentDate).subtract(1, "months");
+
+    prevMonth() {
+      let date = moment(this.currentDate).subtract(1, "months");
       this.slideTo(date);
     },
 
-    nextMonth: function() {
-      var date = moment(this.currentDate).add(1, "months");
+    nextMonth() {
+      let date = moment(this.currentDate).add(1, "months");
       this.slideTo(date);
     }
   }
@@ -563,9 +519,14 @@ export default {
 
 <style>
 .aeris-datepicker-host {
+  position: fixed;
+  z-index: 1;
+}
+</style>
+
+<style scoped>
+.aeris-datepicker-host {
   display: block;
-  position: absolute;
-  z-index: 999;
   font-family: "Open Sans", sans-serif;
   transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   transform: scale(1);
@@ -594,7 +555,7 @@ export default {
   display: flex;
   flex-flow: column nowrap;
   min-width: 17em;
-  border: #4765a0;
+  border: var(--emphasis);
   box-shadow: 0 2px 10px 2px rgba(0, 0, 0, 0.1);
 }
 
@@ -604,11 +565,13 @@ export default {
   justify-content: space-between;
   align-items: center;
   padding: 10px;
-  background-color: #4765a0;
+  background-color: var(--emphasis);
   color: #fff;
 }
 
 .dp-header .dp-header-button {
+  display: flex;
+  align-items: center;
   cursor: pointer;
   pointer-events: auto;
 }
@@ -623,23 +586,14 @@ export default {
 }
 
 .dp-header .dp-current-date {
-  padding: 0 10px;
-  transition: 0.3s;
-}
-
-.dp-header .dp-current-date h2,
-.dp-header .dp-current-date h5 {
+  width: 100%;
   margin: 5px 0;
+  padding: 10px;
+  transition: 0.3s;
   font-weight: normal;
-}
-
-.dp-header .dp-current-date h2 {
-  font-size: 30px;
+  color: #fff;
+  font-size: 24px;
   opacity: 1;
-}
-
-.dp-header .dp-current-date h5 {
-  opacity: 0.7;
 }
 
 .dp-main {
@@ -693,72 +647,134 @@ export default {
   left: 0;
   bottom: 0;
   right: 0;
-  background-color: #4765a0;
+  background-color: var(--emphasis);
   border-radius: 50%;
   opacity: 0.1;
 }
 
 .dp-main .is-today {
-  color: #4765a0;
+  color: var(--emphasis);
   font-weight: 700;
 }
 
 .dp-main .day-selected {
-  border: 2px solid #4765a0;
+  border: 2px solid var(--emphasis);
   border-radius: 50%;
-}
-.dp-main .dp-hours.dp-selectors {
-  line-height: 24px;
-  color: #4765a0;
-  margin-top: 5px;
-  font-size: 12px;
-}
-.dp-main .dp-hours.dp-selectors select {
-  font-size: 12px;
-  margin: 0 4px;
-  padding: 1px 8px;
-  border: 1px solid;
-
-  color: #4765a0;
-  outline: none;
-}
-.dp-footer {
-  padding: 10px;
-  background-color: #fff;
-}
-
-.dp-footer .today-button {
-  padding: 5px 10px;
-  border: 1px solid;
-  text-align: center;
-  color: #4765a0;
-}
-
-.dp-footer .today-button:hover {
-  cursor: pointer;
 }
 
 .dp-selectors {
   display: flex;
   flex-flow: row nowrap;
   justify-content: center;
+  align-items: center;
   text-align: center;
-  margin-top: 10px;
+}
+
+.dp-main .dp-hours.dp-selectors {
+  line-height: 24px;
+  color: var(--emphasis);
+  margin-top: 5px;
 }
 
 .dp-selectors select {
-  display: block;
-  margin: 2px;
-  padding: 5px 10px;
-  font-size: 14px;
+  cursor: pointer;
+  border: none;
+  font-size: 20px;
   background-color: transparent;
-  border: 1px solid;
-  color: #4765a0;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
   outline: none;
+  /* hide outline on mozilla */
+  color: #000;
+  color: rgba(0, 0, 0, 0);
+  text-shadow: 0 0 0 #fff;
 }
 
-.dp-selectors select option {
-  color: #333;
+.dp-main .dp-hours.dp-selectors select {
+  /* replace color because of the outline for firefox */
+  display: inline;
+  text-shadow: 0 0 0 var(--emphasis);
+  padding: 2px;
+  text-align: center;
+  text-align-last: center;
+}
+
+.dp-selectors [id="yearSelect"] select {
+  text-align: right;
+}
+
+.dp-selectors [id="monthSelect"] select {
+  text-align: left;
+  text-align-last: left;
+}
+
+.dp-selectors [id="yearSelect"],
+.dp-selectors [id="monthSelect"],
+.dp-selectors [id="hourSelect"],
+.dp-selectors [id="minSelect"] {
+  display: flex;
+  position: relative;
+  overflow: hidden;
+}
+
+.dp-selectors [id="yearSelect"]::after,
+.dp-selectors [id="monthSelect"]::after,
+.dp-selectors [id="hourSelect"]::after,
+.dp-selectors [id="minSelect"]::after {
+  content: "";
+  opacity: 0.3;
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  transform: translate(5px);
+  height: 1px;
+  width: 20px;
+  border-bottom: 1px dashed #fff;
+}
+
+.dp-selectors [id="hourSelect"]::after,
+.dp-selectors [id="minSelect"]::after {
+  border-bottom: 1px dashed var(--emphasis);
+  opacity: 1;
+  left: 3px;
+  width: 12px;
+}
+
+select::-ms-expand {
+  display: none;
+}
+
+.dp-footer {
+  padding: 10px;
+  background-color: #fff;
+}
+
+.dp-footer .today-button,
+.dp-footer [id="validate-btn"] {
+  padding: 5px 10px;
+  width: 100%;
+  border: 1px solid var(--emphasis);
+  text-align: center;
+  color: var(--emphasis);
+  background-color: transparent;
+}
+
+.dp-footer .today-button:focus,
+.dp-footer [id="validate-btn"]:focus {
+  transform: translate(2px, 2px);
+}
+
+.dp-footer .today-button:hover,
+.dp-footer [id="validate-btn"]:hover {
+  cursor: pointer;
+}
+
+.dp-footer [id="validate-btn"] {
+  margin-top: 10px;
+  border: none;
+  background-color: var(--emphasis);
+  color: #fff;
 }
 
 .slideInRight {
@@ -895,5 +911,39 @@ export default {
     transform: translateY(-10px);
     opacity: 0;
   }
+}
+
+/* Chrome 29+ */
+@media screen and (-webkit-min-device-pixel-ratio: 0) and (min-resolution: 0.001dpcm) {
+  .dp-main .dp-hours.dp-selectors [id="minSelect"] {
+    margin-left: 4px;
+  }
+
+  .dp-selectors [id="yearSelect"]::after,
+  .dp-selectors [id="monthSelect"]::after {
+    left: -4px;
+  }
+
+  .dp-selectors [id="hourSelect"]::after,
+  .dp-selectors [id="minSelect"]::after {
+    left: -2px;
+  }
+
+  .dp-selectors select option {
+    color: #333;
+  }
+}
+
+/* remove outline from buttons, anchor tags, etc. */
+a:focus,
+a:active,
+button::-moz-focus-inner,
+input[type="reset"]::-moz-focus-inner,
+input[type="button"]::-moz-focus-inner,
+input[type="submit"]::-moz-focus-inner,
+select::-moz-focus-inner,
+input[type="file"] > input[type="button"]::-moz-focus-inner {
+  border: 0;
+  outline: 0;
 }
 </style>

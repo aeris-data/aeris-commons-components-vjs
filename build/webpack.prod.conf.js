@@ -10,7 +10,13 @@ const buildName = PACKAGE.name;
 
 const webpackConfig = merge(baseWebpackConfig, {
   entry: {
-    task: "./src/lib/modules/tasks/tasks-main.js"
+    "aeris-cartouche": "./src/lib/modules/aeris-cartouche/index.js",
+    "aeris-datepicker": "./src/lib/modules/aeris-datepicker/index.js",
+    "aeris-language": "./src/lib/modules/aeris-language/index.js",
+    "aeris-notification": "./src/lib/modules/aeris-notification/index.js",
+    "aeris-orcid": "./src/lib/modules/aeris-orcid/index.js",
+    "aeris-spinner": "./src/lib/modules/aeris-spinner/index.js",
+    "aeris-theme": "./src/lib/modules/aeris-theme/index.js",
   },
   output: {
     path: path.resolve(__dirname, "../dist"),
