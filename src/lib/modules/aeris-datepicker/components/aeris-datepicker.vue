@@ -9,7 +9,6 @@
         </div>
         <div class="dp-header-central">
           <div class="dp-current-date">
-            <!-- {{ currentSelectedMonth }} {{ currentSelectedYear }} -->
             <div class="dp-selectors">
               <div id="monthSelect">
                 <select v-model="selectedMonth" @change="refreshMonth">
@@ -82,12 +81,12 @@ export default {
   props: {
     language: {
       type: String,
-      default: "en"
+      default: ""
     },
     theme: {
       type: Object,
       default: () => {
-        return { emphasis: "#0b6bb3" };
+        return {};
       }
     },
     format: {
@@ -98,10 +97,6 @@ export default {
       type: String,
       default: ""
     },
-    after: {
-      default: true,
-      type: Boolean
-    },
     daymin: {
       type: String,
       default: "1970-01-01"
@@ -111,6 +106,7 @@ export default {
       default: null
     }
   },
+
   data() {
     return {
       currentDate: moment(),
@@ -135,38 +131,15 @@ export default {
     };
   },
 
-  watch: {
-    language(value) {
-      this.$i18n.locale = value;
-    }
-  },
-
-  destroyed() {
-    document.removeEventListener("mousedown", this.clickListener);
-    this.clickListener = null;
-    document.removeEventListener("keypress", this.closeListener);
-    this.closeListener = null;
-  },
-
-  created() {
-    this.$i18n.locale = this.language;
-    this.clickListener = this.closeOnClick.bind(this);
-    document.addEventListener("mousedown", this.clickListener);
-    this.closeListener = this.close.bind(this);
-    document.addEventListener("keypress", this.closeListener);
-    this.allHours = this.geneTime(0, 23);
-    this.allMins = this.geneTime(0, 59);
-  },
-
-  mounted() {
-    this.$el.addEventListener("mousedown", function(e) {
-      e.stopPropagation();
-    });
-
-    this.targetChecker = setInterval(this.lookForTarget.bind(this), 1000);
-  },
-
   computed: {
+    getLanguage() {
+      return this.language || this.$store.getters.getLanguage;
+    },
+
+    getTheme() {
+      return this.theme.emphasis || this.$store.getters.getPrimaryColor;
+    },
+
     applyTheme() {
       return {
         "--emphasis": this.theme.emphasis
@@ -256,16 +229,42 @@ export default {
       }
       return result;
     }
+  },
 
-    // currentSelectedYear() {
-    //   return this.currentDate.year();
-    // },
+  watch: {
+    getLanguage(value) {
+      this.$i18n.locale = value;
+    },
+    getTheme(value) {
+      this.theme.emphasis = value;
+    }
+  },
 
-    // currentSelectedMonth() {
-    //   this.computeMonthsBounds(this.currentDate);
-    //   let id = this.currentDate.month();
-    //   return this.$t(this.allMonths[id]);
-    // }
+  created() {
+    this.$i18n.locale = this.getLanguage;
+    this.theme.emphasis = this.getTheme;
+
+    this.clickListener = this.closeOnClick.bind(this);
+    document.addEventListener("mousedown", this.clickListener);
+    this.closeListener = this.close.bind(this);
+    document.addEventListener("keypress", this.closeListener);
+
+    this.allHours = this.timeRange(0, 24);
+    this.allMins = this.timeRange(0, 60);
+  },
+
+  mounted() {
+    this.$el.addEventListener("mousedown", function(e) {
+      e.stopPropagation();
+    });
+    this.targetChecker = setInterval(this.lookForTarget.bind(this), 1000);
+  },
+
+  destroyed() {
+    document.removeEventListener("mousedown", this.clickListener);
+    this.clickListener = null;
+    document.removeEventListener("keypress", this.closeListener);
+    this.closeListener = null;
   },
 
   methods: {
@@ -278,13 +277,10 @@ export default {
       }
     },
 
-    geneTime(begin, end) {
-      let times = [];
-      for (let i = begin; i <= end; i++) {
-        let num = i < 10 ? "0" + i : "" + i;
-        times.push(num);
-      }
-      return times;
+    timeRange(start, stop, step = 1) {
+      return Array.from({ length: (stop - start) / step }, (_, i) => start + i * step).map(n =>
+        n < 10 ? "0" + n : "" + n
+      );
     },
 
     isDescendant(parent, child) {
@@ -382,19 +378,6 @@ export default {
       }
       classes += day.isSame(this.selected, "days") ? " day-selected" : "";
       return classes;
-    },
-
-    computeMonthsBounds(date) {
-      if (date.year() == this.dateMax.year() && date.month() == this.dateMax.month()) {
-        this.lastMonth = true;
-      } else {
-        this.lastMonth = false;
-      }
-      if (date.year() == this.dateMin.year() && date.month() == this.dateMin.month()) {
-        this.firstMonth = true;
-      } else {
-        this.firstMonth = false;
-      }
     },
 
     setCurrentDate(date) {
@@ -581,6 +564,7 @@ export default {
   opacity: 0;
   pointer-events: none;
 }
+
 .dp-header .dp-header-button:hover {
   opacity: 0.6;
 }
@@ -678,6 +662,7 @@ export default {
 
 .dp-selectors select {
   cursor: pointer;
+  margin-right: 1px;
   border: none;
   font-size: 20px;
   background-color: transparent;
@@ -691,9 +676,8 @@ export default {
   text-shadow: 0 0 0 #fff;
 }
 
-.dp-main .dp-hours.dp-selectors select {
+.dp-hours.dp-selectors select {
   /* replace color because of the outline for firefox */
-  display: inline;
   text-shadow: 0 0 0 var(--emphasis);
   padding: 2px;
   text-align: center;
@@ -723,7 +707,6 @@ export default {
 .dp-selectors [id="hourSelect"]::after,
 .dp-selectors [id="minSelect"]::after {
   content: "";
-  opacity: 0.3;
   position: absolute;
   left: 0;
   bottom: 0;

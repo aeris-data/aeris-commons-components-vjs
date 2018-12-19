@@ -2,15 +2,23 @@
   <div>
     <div id="catalogue" class="catalogue">
       <div id="criteria" class="criteria">
-        <input id="from" type="text" class="input__datepicker" placeholder="Choose beginning date" />
+        <div class="aeris-input-group">
+          <form autocomplete="off">
+            <input id="from" type="text" class="input__datepicker" placeholder="Choose beginning date" />
+          </form>
+        </div>
         <aeris-datepicker
           :theme="{ emphasis: '#f39c12' }"
-          lang="fr"
+          language="fr"
           for="input#from"
           format="DD/MM/YYYY"
         ></aeris-datepicker>
-        <input id="to" type="text" class="input__datepicker" placeholder="Choose ending date" />
-        <aeris-datepicker lang="en" for="input#to" format="DD/MM/YYYY HH:mm"></aeris-datepicker>
+        <div class="aeris-input-group">
+          <form autocomplete="off">
+            <input id="to" type="text" class="input__datepicker" placeholder="Choose ending date" />
+          </form>
+        </div>
+        <aeris-datepicker for="input#to" format="DD/MM/YYYY HH:mm"></aeris-datepicker>
       </div>
       <div class="cart">Téléchargement</div>
       <div class="summaries">Summaries</div>
