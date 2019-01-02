@@ -254,7 +254,7 @@ export default {
   },
 
   mounted() {
-    this.$el.addEventListener("mousedown", function(e) {
+    this.$el.addEventListener("mousedown", e => {
       e.stopPropagation();
     });
     this.targetChecker = setInterval(this.lookForTarget.bind(this), 1000);
@@ -500,15 +500,10 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .aeris-datepicker-host {
   position: fixed;
   z-index: 1;
-}
-</style>
-
-<style scoped>
-.aeris-datepicker-host {
   display: block;
   font-family: "Open Sans", sans-serif;
   transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
