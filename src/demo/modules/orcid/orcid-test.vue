@@ -1,6 +1,6 @@
 <template>
   <div>
-    <aeris-orcid ></aeris-orcid>
+    <aeris-orcid></aeris-orcid>
     <button @click="changeOrcid">Orcid Change</button>
     <p>Current orcid in store : {{getOrcid}} and currentOrcid : {{getOrcid}}</p>
     <p v-if="getOrcid == '0000-0003-3607-3108'">Orcid logged 0000-0003-3607-3108</p>
@@ -17,7 +17,6 @@ export default {
   data() {
     return {
       orcid: "",
-    //   orcidShow: false,
       currentOrcid: "",
       listOrcid: [
         "0000-0002-3845-4580",
@@ -40,11 +39,10 @@ export default {
       }
     }
   },
- computed: {
+  computed: {
     getOrcid() {
-     return this.$store.getters.getOrcid;
-   }
- },
- 
+      return this.$store.getters.getOrcid;
+    }
+  }
 };
 </script>
