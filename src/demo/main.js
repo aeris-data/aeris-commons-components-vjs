@@ -10,10 +10,12 @@ import AerisNotificationTest from "./modules/notification/notification-test.vue"
 import AerisLanguageTest from "./modules/language/language-test.vue";
 import AerisThemeTest from "./modules/theme/theme-test.vue";
 import AerisDatepickerTest from "./modules/datepicker/datepicker-test.vue";
+import AerisOrcidTest from "./modules/orcid/orcid-test.vue";
 
+import datepickerModule from "../lib/modules/aeris-datepicker/store/aeris-datepicker-store.js";
 import languageModule from "../lib/modules/aeris-language/store/aeris-language-store.js";
 import themeModule from "../lib/modules/aeris-theme/store/aeris-theme-store.js";
-import datepickerModule from "../lib/modules/aeris-datepicker/store/aeris-datepicker-store.js";
+import orcidModule from "../lib/modules/aeris-orcid/store/aeris-orcid-store.js";
 
 Vue.use(Vuex);
 Vue.use(VueI18n);
@@ -26,7 +28,8 @@ const store = new Vuex.Store({
   modules: {
     language: languageModule,
     theme: themeModule,
-    date: datepickerModule
+    date: datepickerModule,
+    orcid: orcidModule
   }
 });
 
@@ -40,6 +43,10 @@ Vue.use(AerisThemeTest, {
 
 Vue.use(AerisDatepickerTest, {
   store
+});
+
+Vue.use(AerisOrcidTest, {
+  store: store
 });
 
 const router = new VueRouter({
@@ -60,6 +67,10 @@ const router = new VueRouter({
     {
       path: "/datepicker-test",
       component: AerisDatepickerTest
+    },
+    {
+      path: "/orcid-test",
+      component: AerisOrcidTest
     }
   ]
 });
