@@ -2,23 +2,15 @@
   <div>
     <div id="catalogue" class="catalogue">
       <div id="criteria" class="criteria">
-        <div class="aeris-input-group">
-          <form autocomplete="off">
-            <input id="from" type="text" class="input__datepicker" placeholder="Choose beginning date" />
-          </form>
-        </div>
         <aeris-datepicker
           :theme="{ emphasis: '#f39c12' }"
-          language="fr"
-          for="input#from"
-          format="DD/MM/YYYY"
+          from
+          language="en"
+          format="DD/MM/YYYY HH:mm"
         ></aeris-datepicker>
-        <div class="aeris-input-group">
-          <form autocomplete="off">
-            <input id="to" type="text" class="input__datepicker" placeholder="Choose ending date" />
-          </form>
-        </div>
-        <aeris-datepicker for="input#to" format="DD/MM/YYYY HH:mm"></aeris-datepicker>
+        <aeris-datepicker :theme="{ emphasis: '#6fbfb2' }" to language="en" format="DD/MM/YYYY"></aeris-datepicker>
+        <p>Date from : {{ fromDate }}</p>
+        <p>Date to : {{ toDate }}</p>
       </div>
       <div class="cart">Téléchargement</div>
       <div class="summaries">Summaries</div>
@@ -33,6 +25,15 @@ import AerisDatepicker from "../../../lib/modules/aeris-datepicker/components/ae
 export default {
   components: {
     AerisDatepicker
+  },
+
+  computed: {
+    fromDate() {
+      return this.$store.getters.getFromDate;
+    },
+    toDate() {
+      return this.$store.getters.getToDate;
+    }
   }
 };
 </script>
@@ -89,4 +90,8 @@ export default {
   justify-content: center;
   width: 100%;
 }
+
+/* .aeris-datepicker {
+  width: 100%;
+} */
 </style>

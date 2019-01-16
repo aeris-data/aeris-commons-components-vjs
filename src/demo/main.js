@@ -13,6 +13,7 @@ import AerisDatepickerTest from "./modules/datepicker/datepicker-test.vue";
 
 import languageModule from "../lib/modules/aeris-language/store/aeris-language-store.js";
 import themeModule from "../lib/modules/aeris-theme/store/aeris-theme-store.js";
+import datepickerModule from "../lib/modules/aeris-datepicker/store/aeris-datepicker-store.js";
 
 Vue.use(Vuex);
 Vue.use(VueI18n);
@@ -24,16 +25,21 @@ Vue.use(VueAerisLanguagePlugin);
 const store = new Vuex.Store({
   modules: {
     language: languageModule,
-    theme: themeModule
+    theme: themeModule,
+    date: datepickerModule
   }
 });
 
 Vue.use(AerisLanguageTest, {
-  store: store
+  store
 });
 
 Vue.use(AerisThemeTest, {
-  store: store
+  store
+});
+
+Vue.use(AerisDatepickerTest, {
+  store
 });
 
 const router = new VueRouter({

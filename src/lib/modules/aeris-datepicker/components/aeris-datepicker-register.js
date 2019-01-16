@@ -1,8 +1,9 @@
 import HelperRegisterModule from "../../helper-register-module.js";
 
 import AerisDatepicker from "./aeris-datepicker.vue";
+import AerisDatepickerModal from "./aeris-datepicker-modal.vue";
 
-const components = [AerisDatepicker];
+const components = [AerisDatepicker, AerisDatepickerModal];
 
 export default {
   install: (Vue, options) => {
