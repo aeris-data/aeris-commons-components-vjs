@@ -7,8 +7,6 @@
       <li><router-link to="/datepicker-test">datepicker test</router-link></li>
       <li><router-link to="/orcid-test">orcid test</router-link></li>
     </ul>
-    <div>
-      <router-view class="view"></router-view>
-    </div>
+    <div><router-view class="view"></router-view></div>
   </div>
 </template>

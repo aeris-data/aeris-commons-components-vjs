@@ -1,13 +1,9 @@
 <i18n>
 {
   "en" : {
-    "from": "from",
-    "to": "to",
     "chooseDate": "Choose date"
   },
   "fr": {
-    "from": "de",
-    "to": "à",
     "chooseDate": "Choisir date"
   }
 }
@@ -17,8 +13,7 @@
   <div class="aeris-datepicker">
     <div class="aeris-input-group">
       <form autocomplete="off">
-        <label v-if="from" @click="toggle">{{ $t("from") }}</label>
-        <label v-if="to" @click="toggle">{{ $t("to") }}</label>
+        <label v-if="label" for="input__datepicker" @click.prevent="toggle">{{ $t(label.key) }}</label>
         <input
           id="input__datepicker"
           :placeholder="$t('chooseDate')"
@@ -74,13 +69,9 @@ export default {
       type: String,
       default: null
     },
-    from: {
-      type: Boolean,
-      default: false
-    },
-    to: {
-      type: Boolean,
-      default: false
+    label: {
+      type: Object,
+      default: () => {}
     }
   },
 
@@ -105,6 +96,10 @@ export default {
 
   created() {
     this.$i18n.locale = this.language || this.getLanguage;
+    if (this.label) {
+      // add translation for label to i18n messages
+      this.$i18n.mergeLocaleMessage(this.$i18n.locale, this.label.lang[this.$i18n.locale]);
+    }
   },
 
   methods: {
@@ -114,12 +109,7 @@ export default {
 
     setDate(value) {
       this.date = value;
-      if (this.from) {
-        this.$store.commit("setFromDate", this.date);
-      }
-      if (this.to) {
-        this.$store.commit("setToDate", this.date);
-      }
+      this.$emit("date", this.date);
     },
 
     getInfo(value) {
@@ -133,9 +123,8 @@ export default {
 
 <style scoped>
 .aeris-input-group form {
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
+  max-width: 300px;
+  display: inline-flex;
   align-items: center;
   flex-wrap: nowrap;
   margin: 5px;
@@ -148,13 +137,16 @@ export default {
   text-align: center;
   color: #525556;
   font-size: 0.9rem;
-  padding: 5px 10px;
+  margin: 5px 0;
+  padding: 0 10px;
+  line-height: 20px;
+  border-right: 1px solid #fff;
 }
 
 [id="input__datepicker"] {
+  max-width: 150px;
   background-color: transparent;
   border: none;
-  border-left: 1px solid #fff;
   padding-left: 10px;
 }
 

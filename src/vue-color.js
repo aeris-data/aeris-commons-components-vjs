@@ -1,5 +1,5 @@
 const VueColorPlugin = {
-  install(Vue, options) {
+  install(Vue) {
     Vue.prototype.$myAddedProperty = "Example Property";
     Vue.prototype.$myAddedMethod = function() {
       return Vue.myAddedProperty;

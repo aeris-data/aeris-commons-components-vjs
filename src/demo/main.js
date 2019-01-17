@@ -12,7 +12,6 @@ import AerisThemeTest from "./modules/theme/theme-test.vue";
 import AerisDatepickerTest from "./modules/datepicker/datepicker-test.vue";
 import AerisOrcidTest from "./modules/orcid/orcid-test.vue";
 
-import datepickerModule from "../lib/modules/aeris-datepicker/store/aeris-datepicker-store.js";
 import languageModule from "../lib/modules/aeris-language/store/aeris-language-store.js";
 import themeModule from "../lib/modules/aeris-theme/store/aeris-theme-store.js";
 import orcidModule from "../lib/modules/aeris-orcid/store/aeris-orcid-store.js";
@@ -28,7 +27,6 @@ const store = new Vuex.Store({
   modules: {
     language: languageModule,
     theme: themeModule,
-    date: datepickerModule,
     orcid: orcidModule
   }
 });
@@ -38,10 +36,6 @@ Vue.use(AerisLanguageTest, {
 });
 
 Vue.use(AerisThemeTest, {
-  store
-});
-
-Vue.use(AerisDatepickerTest, {
   store
 });
 

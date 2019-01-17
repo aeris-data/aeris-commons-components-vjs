@@ -4,11 +4,28 @@
       <div id="criteria" class="criteria">
         <aeris-datepicker
           :theme="{ emphasis: '#f39c12' }"
-          from
-          language="en"
+          :label="{
+            key: 'from',
+            lang: {
+              en: { from: 'From' },
+              fr: { from: 'De' }
+            }
+          }"
           format="DD/MM/YYYY HH:mm"
+          @date="setFromDate"
         ></aeris-datepicker>
-        <aeris-datepicker :theme="{ emphasis: '#6fbfb2' }" to language="en" format="DD/MM/YYYY"></aeris-datepicker>
+        <aeris-datepicker
+          :theme="{ emphasis: '#6fbfb2' }"
+          :label="{
+            key: 'to',
+            lang: {
+              en: { to: 'To' },
+              fr: { to: 'À' }
+            }
+          }"
+          format="DD/MM/YYYY"
+          @date="setToDate"
+        ></aeris-datepicker>
         <p>Date from : {{ fromDate }}</p>
         <p>Date to : {{ toDate }}</p>
       </div>
@@ -26,13 +43,18 @@ export default {
   components: {
     AerisDatepicker
   },
-
-  computed: {
-    fromDate() {
-      return this.$store.getters.getFromDate;
+  data() {
+    return {
+      fromDate: "",
+      toDate: ""
+    };
+  },
+  methods: {
+    setFromDate(value) {
+      this.fromDate = value;
     },
-    toDate() {
-      return this.$store.getters.getToDate;
+    setToDate(value) {
+      this.toDate = value;
     }
   }
 };
@@ -90,8 +112,4 @@ export default {
   justify-content: center;
   width: 100%;
 }
-
-/* .aeris-datepicker {
-  width: 100%;
-} */
 </style>

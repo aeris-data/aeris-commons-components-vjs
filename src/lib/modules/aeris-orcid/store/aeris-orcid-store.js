@@ -1,15 +1,15 @@
 export default {
-    state: {
-        orcid: ""
-    },
+  state: {
+    orcid: ""
+  },
 
-    getters: {
-        getOrcid: state => state.orcid
-    },
+  getters: {
+    getOrcid: state => state.orcid
+  },
 
-    mutations: {
-        setOrcid(state, orcid) {
-            state.orcid = orcid;
-        }
+  mutations: {
+    setOrcid(state, orcid) {
+      state.orcid = orcid;
     }
+  }
 };
