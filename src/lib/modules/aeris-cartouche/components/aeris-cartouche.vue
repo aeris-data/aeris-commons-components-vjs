@@ -51,11 +51,13 @@ export default {
       console.log("_handleClick " + this.itemref);
       var itemref = this.itemref;
       this.isvisible = false;
-      this.$el.dispatchEvent(new CustomEvent("aerisCartoucheItemDeleted", {
+      this.$el.dispatchEvent(
+        new CustomEvent("aerisCartoucheItemDeleted", {
           bubbles: true,
           cancelable: true,
           detail: { itemref: itemref }
-        }));
+        })
+      );
     }
   }
 };

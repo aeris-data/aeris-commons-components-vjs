@@ -1,9 +1,11 @@
 <template>
   <div>
     <aeris-notifier :delete-notif-uuid="uuid" :new-notification="notification"></aeris-notifier>
-    <button @click="sendNotifError">error</button> <button @click="sendNotifSuccess">success</button>
-    <button @click="sendNotif">Notification</button> <button @click="sendNotifWait">Wait</button>
-    <button @click="sendLongNotif">Create</button> <button @click="destroyLongNotif">Destroy</button>
+    <button id="error" @click="sendNotifError">error</button>
+    <button id="success" @click="sendNotifSuccess">success</button>
+    <button id="notif" @click="sendNotif">Notification</button> <button id="wait" @click="sendNotifWait">Wait</button>
+    <button id="create" @click="sendLongNotif">Create</button>
+    <button id="destroy" @click="destroyLongNotif">Destroy</button>
   </div>
 </template>
 
@@ -28,7 +30,7 @@ export default {
 
     sendNotifSuccess() {
       this.notification = {
-        message: "<script>alert('lol')<\/script>",
+        message: "<script>alert('lol')<//script>",
         type: "success"
       };
     },

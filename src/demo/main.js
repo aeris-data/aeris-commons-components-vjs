@@ -9,6 +9,7 @@ import app from "./app.vue";
 import AerisNotificationTest from "./modules/notification/notification-test.vue";
 import AerisLanguageTest from "./modules/language/language-test.vue";
 import AerisThemeTest from "./modules/theme/theme-test.vue";
+import AerisDatepickerTest from "./modules/datepicker/datepicker-test.vue";
 import AerisOrcidTest from "./modules/orcid/orcid-test.vue";
 
 import languageModule from "../lib/modules/aeris-language/store/aeris-language-store.js";
@@ -31,11 +32,11 @@ const store = new Vuex.Store({
 });
 
 Vue.use(AerisLanguageTest, {
-  store: store
+  store
 });
 
 Vue.use(AerisThemeTest, {
-  store: store
+  store
 });
 
 Vue.use(AerisOrcidTest, {
@@ -56,6 +57,10 @@ const router = new VueRouter({
     {
       path: "/theme-test",
       component: AerisThemeTest
+    },
+    {
+      path: "/datepicker-test",
+      component: AerisDatepickerTest
     },
     {
       path: "/orcid-test",
