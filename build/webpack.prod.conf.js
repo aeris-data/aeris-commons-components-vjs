@@ -13,7 +13,8 @@ const webpackConfig = merge(baseWebpackConfig, {
     "aeris-language": "./src/lib/modules/aeris-language/index.js",
     "aeris-notification": "./src/lib/modules/aeris-notification/index.js",
     "aeris-orcid": "./src/lib/modules/aeris-orcid/index.js",
-    "aeris-theme": "./src/lib/modules/aeris-theme/index.js"
+    "aeris-theme": "./src/lib/modules/aeris-theme/index.js",
+    "aeris-commons-components": "./src/lib/index.js"
   },
   output: {
     path: path.resolve(__dirname, "../dist"),
