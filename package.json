@@ -6,7 +6,7 @@
   "private": false,
   "scripts": {
     "dev": "cross-env NODE_ENV=development webpack-dev-server --config ./build/webpack.dev.conf --progress",
-    "build": "node build/build.js && sudo cp dist/*.js dist/*.js.map /var/www/html/aeris",
+    "build": "node build/build.js",
     "lint-staged": "lint-staged",
     "format": "eslint --fix \"src/**/*.*(js|vue)\" && stylelint --fix \"src/**/*.vue\"",
     "eslint-check": "eslint --print-config .eslintrc.js | eslint-config-prettier-check",

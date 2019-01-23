@@ -1,7 +1,7 @@
 import Vue from "vue";
 import Vuex from "vuex";
 
-import AerisOrcid from "./components/aeris-orcid.js";
+import AerisOrcid from "./components/aeris-orcid";
 
 Vue.use(Vuex);
 

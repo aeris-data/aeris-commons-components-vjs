@@ -6,22 +6,19 @@ const baseWebpackConfig = require("./webpack.base.conf");
 const CleanWebpackPlugin = require("clean-webpack-plugin");
 const PACKAGE = require("../package.json");
 const buildVersion = PACKAGE.version;
-const buildName = PACKAGE.name;
 
 const webpackConfig = merge(baseWebpackConfig, {
   entry: {
-    "aeris-cartouche": "./src/lib/modules/aeris-cartouche/index.js",
     "aeris-datepicker": "./src/lib/modules/aeris-datepicker/index.js",
     "aeris-language": "./src/lib/modules/aeris-language/index.js",
     "aeris-notification": "./src/lib/modules/aeris-notification/index.js",
     "aeris-orcid": "./src/lib/modules/aeris-orcid/index.js",
-    "aeris-spinner": "./src/lib/modules/aeris-spinner/index.js",
-    "aeris-theme": "./src/lib/modules/aeris-theme/index.js",
+    "aeris-theme": "./src/lib/modules/aeris-theme/index.js"
   },
   output: {
     path: path.resolve(__dirname, "../dist"),
     publicPath: "/dist/",
-    filename: buildName + "_" + "[name]" + "_" + buildVersion + ".js"
+    filename: "[name]" + "_" + buildVersion + ".js"
   },
   devtool: "#source-map",
   plugins: [
@@ -37,7 +34,7 @@ const webpackConfig = merge(baseWebpackConfig, {
       compress: {
         warnings: false
       },
-      sourceMap: true
+      sourceMap: false
     })
   ]
 });
