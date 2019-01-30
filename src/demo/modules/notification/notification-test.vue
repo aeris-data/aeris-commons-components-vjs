@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import AerisNotifier from "../../../lib/modules/aeris-notification/components/aeris-notifier.vue";
+import { AerisNotifier } from "../../../lib/modules/aeris-commons-components";
 import { computeUuid } from "../../../lib/modules/aeris-notification/utils/utils.js";
 export default {
   data() {
