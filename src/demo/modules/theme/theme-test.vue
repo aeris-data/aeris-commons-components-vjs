@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import AerisTheme from "../../../lib/modules/aeris-theme/components/aeris-theme.vue";
+import { AerisTheme } from "../../../lib/modules/aeris-commons-components";
 
 export default {
   components: {

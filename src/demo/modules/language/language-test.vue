@@ -18,7 +18,7 @@
 </template>
 
 <script>
-import AerisLanguage from "../../../lib/modules/aeris-language/components/aeris-language.vue";
+import { AerisLanguage } from "../../../lib/modules/aeris-commons-components";
 
 export default {
   components: {

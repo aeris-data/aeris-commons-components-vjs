@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import AerisOrcid from "../../../lib/modules/aeris-orcid/components/aeris-orcid.vue";
+import { AerisOrcid } from "../../../lib/modules/aeris-commons-components";
 
 export default {
   components: {

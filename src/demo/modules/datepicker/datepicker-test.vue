@@ -37,7 +37,7 @@
 </template>
 
 <script>
-import AerisDatepicker from "../../../lib/modules/aeris-datepicker/components/aeris-datepicker.vue";
+import { AerisDatepicker } from "../../../lib/modules/aeris-commons-components";
 
 export default {
   components: {
