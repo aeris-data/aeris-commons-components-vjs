@@ -4,5 +4,6 @@ import AerisNotifier from "./aeris-notification/components/aeris-notifier";
 import AerisOrcid from "./aeris-orcid/components/aeris-orcid";
 import AerisTheme from "./aeris-theme/components/aeris-theme";
 import AerisUiIconButton from "./ui/components/aeris-ui-icon-button";
+import AerisUiInput from "./ui/components/aeris-ui-input";
 
-export { AerisDatepicker, AerisLanguage, AerisNotifier, AerisOrcid, AerisTheme, AerisUiIconButton };
+export { AerisDatepicker, AerisLanguage, AerisNotifier, AerisOrcid, AerisTheme, AerisUiIconButton, AerisUiInput };

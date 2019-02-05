@@ -12,6 +12,7 @@ import AerisThemeTest from "./modules/theme/theme-test.vue";
 import AerisDatepickerTest from "./modules/datepicker/datepicker-test.vue";
 import AerisOrcidTest from "./modules/orcid/orcid-test.vue";
 import AerisUiIconButtonTest from "./modules/ui/aeris-ui-icon-button-test";
+import AerisUiInputTest from "./modules/ui/aeris-ui-input-test";
 
 import languageModule from "../lib/modules/aeris-language/store/aeris-language-store.js";
 import themeModule from "../lib/modules/aeris-theme/store/aeris-theme-store.js";
@@ -70,6 +71,10 @@ const router = new VueRouter({
     {
       path: "/icon-button-test",
       component: AerisUiIconButtonTest
+    },
+    {
+      path: "/input-test",
+      component: AerisUiInputTest
     }
   ]
 });

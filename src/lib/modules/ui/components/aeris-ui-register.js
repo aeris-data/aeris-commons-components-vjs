@@ -1,8 +1,9 @@
 import HelperRegisterModule from "../../helper-register-module.js";
 
 import AerisUiIconButton from "./aeris-ui-icon-button";
+import AerisUiInput from "./aeris-ui-input";
 
-const components = [AerisUiIconButton];
+const components = [AerisUiIconButton, AerisUiInput];
 
 export default {
   install: Vue => {
