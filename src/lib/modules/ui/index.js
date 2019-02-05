@@ -1,5 +1,5 @@
 import Vue from "vue";
 
-import AerisUiIconButton from "./components/aeris-ui-icon-button-register";
+import AerisUi from "./components/aeris-ui-register";
 
-Vue.use(AerisUiIconButton);
+Vue.use(AerisUi);
