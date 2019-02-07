@@ -1,74 +1,73 @@
 <template>
-<div>
+  <div>
     <div class="aeris-gallery">
       <div class="gallery-container">
         <div class="gallery-img-container">
-          <article v-for="(item,index) in images" :key="item.url" class="gallery-image">
-            <a  @click="displayCarousel(index)">
-              <img :src="item.url" alt="Quicklook">
+          <article v-for="(item, index) in images" :key="item.url" class="gallery-image">
+            <a @click="displayCarousel(index)">
+              <img :src="item.url" alt="Quicklook" />
             </a>
-          </article> 
+          </article>
         </div>
       </div>
     </div>
 
-    <aeris-carousel v-show="showCarousel" :startImage="index" @closecarousel="showCarousel = false" >
-      <aeris-carousel-slide v-for="item in images" :language="language" :img="item.url" :description="item.description" :key="item.url"></aeris-carousel-slide>
+    <aeris-carousel v-show="showCarousel" :start-image="index" @closecarousel="showCarousel = false">
+      <aeris-carousel-slide
+        v-for="item in images"
+        :language="language"
+        :img="item.url"
+        :description="item.description"
+        :key="item.url"
+      ></aeris-carousel-slide>
     </aeris-carousel>
-</div>
+  </div>
 </template>
 
 <script>
-import AerisCarousel from "./aeris-carousel.vue"
-import AerisCarouselSlide from "./aeris-carrousel-slide.vue"
+import AerisCarousel from "./aeris-carousel.vue";
+import AerisCarouselSlide from "./aeris-carrousel-slide.vue";
 
 export default {
-
   name: "aeris-gallery",
 
-  components : {AerisCarousel,AerisCarouselSlide},
+  components: { AerisCarousel, AerisCarouselSlide },
 
   props: {
-
     language: {
       type: String,
       default: "en"
     },
 
     images: {
-      type:Array,
-      default :[]
+      type: Array,
+      default: []
     }
   },
 
   data() {
-
     return {
-
-      index:0,
-      showCarousel:false,
+      index: 0,
+      showCarousel: false
     };
   },
 
-   watch: {
-
+  watch: {
     lang(value) {
       this.$i18n.locale = value;
     }
   },
 
   created() {
-
     //exit modal with escape key
-    document.addEventListener('keyup', this.escapeKeyListener);
+    document.addEventListener("keyup", this.escapeKeyListener);
   },
 
   methods: {
-
-    displayCarousel(index){
-      console.log("index",index)
-      this.showCarousel=true
-      this.index=index
+    displayCarousel(index) {
+      console.log("index", index);
+      this.showCarousel = true;
+      this.index = index;
     },
 
     escapeKeyListener: function(evt) {

@@ -1,54 +1,60 @@
 <template>
-<div class="modal-mask">
-<div class="aeris_carousel">
-    
-    <i class="fa fa-chevron-left carousel_nav carousel_previous " @click.prevent="previous_element" @keyup.prevent.left="previous_element"></i>
-    <div class="slide">
-    <div class="headerslide" >
-        {{index+1}} / {{slides.length}}
-        
-        <div class="tool_bar">
-            <i class="fa fa-search button" @click="full_size_image"></i>
-            <i class="fa fa-times button"  @click="$emit('closecarousel')"></i>
+  <div class="modal-mask">
+    <div class="aeris_carousel">
+      <i
+        class="fa fa-chevron-left carousel_nav carousel_previous "
+        @click.prevent="previous_element"
+        @keyup.prevent.left="previous_element"
+      />
+      <div class="slide">
+        <div class="headerslide">
+          {{ index + 1 }} / {{ slides.length }}
+          <div class="tool_bar">
+            <i class="fa fa-search button" @click="full_size_image" />
+            <i class="fa fa-times button" @click="$emit('closecarousel')" />
+          </div>
         </div>
+        <div class="carousel-pagination">
+          <div
+            v-for="index_slide in sildeCount"
+            :key="index_slide"
+            :class="{ active: index_slide - 1 === index }"
+            @click="go_to_image(index_slide - 1)"
+          />
+        </div>
+        <slot />
+      </div>
+      <i
+        class="fa fa-chevron-right carousel_nav carousel_next "
+        @click.prevent="next_element"
+        @keyup.right="next_element"
+      />
     </div>
-    <div class="carousel-pagination" >
-            <div v-for="index_slide in sildeCount" :key="index_slide" @click="go_to_image(index_slide-1)" :class="{active:index_slide -1 === index}"> </div>
-        </div>
-        <slot ></slot>
-        
-   </div>
-   <i class="fa fa-chevron-right carousel_nav carousel_next " @click.prevent="next_element" @keyup.right="next_element"></i> 
-</div>
-</div>
+  </div>
 </template>
 
 <script>
 import AerisCarrouselSlide from "./aeris-carrousel-slide.vue";
 
 export default {
-
-  name:"aeris-carousel",
+  name: "aeris-carousel",
 
   components: { AerisCarrouselSlide },
 
   props: {
-
     startImage: {
       type: Number,
       default: 0
     },
 
-    language:{
-      type:String,
-      default:"en"
+    language: {
+      type: String,
+      default: "en"
     }
   },
 
   data() {
-
     return {
-
       index: 0,
       slides: [],
       direction: "right",
@@ -57,29 +63,25 @@ export default {
     };
   },
 
-   watch: {
-
+  watch: {
     startImage(value) {
       this.index = value;
     }
   },
 
   computed: {
-    
     sildeCount() {
       return this.slides.length;
     }
   },
 
   created() {
-
     // navigation with left and rigth arrows
-    document.addEventListener('keyup', this.leftKeyListerner);
-    document.addEventListener('keyup', this.rightKeyListerner);
+    document.addEventListener("keyup", this.leftKeyListerner);
+    document.addEventListener("keyup", this.rightKeyListerner);
   },
 
   mounted() {
-
     setTimeout(() => {
       this.slides = this.$children;
       this.slides.forEach((slide, i) => {
@@ -91,7 +93,6 @@ export default {
   },
 
   methods: {
-
     full_size_image() {
       window.open(this.$children[this.index].img, "_blank");
     },
@@ -117,21 +118,19 @@ export default {
       this.index = index;
     },
 
-    leftKeyListerner(event){
-      if(event.keyCode == "37"){
-        this.previous_element()
+    leftKeyListerner(event) {
+      if (event.keyCode == "37") {
+        this.previous_element();
       }
     },
 
-    rightKeyListerner(event){
-      if(event.keyCode == "39"){
-        this.next_element()
+    rightKeyListerner(event) {
+      if (event.keyCode == "39") {
+        this.next_element();
       }
-    },
-
+    }
   }
 };
-
 </script>
 
 <style scoped>

@@ -1,43 +1,38 @@
 <template>
-<div  class="aeris-carousel-slide">
+  <div class="aeris-carousel-slide">
     <transition :name="transition">
-        
-        <div  v-if="visible" > 
-            <slot><img class="aeris-carousel-slide" :src="img"/></slot>
-            <div class="footerslide">
-                <p>{{legende}}</p>
-            </div>
-        </div>  
-
+      <div v-if="visible">
+        <slot><img :src="img" class="aeris-carousel-slide"/></slot>
+        <div class="footerslide">
+          <p>{{ legende }}</p>
+        </div>
+      </div>
     </transition>
-</div>
+  </div>
 </template>
 
 <script>
 export default {
-
   name: "aeris-carousel-slide",
 
-    props: {
-
-      description: {
-        type: Object,
-        default: ""
-      },
-  
-      img: {
-        type: String,
-        default: ""
-      },
-  
-      language: {
-        type: String,
-        default: "en"
-      }
+  props: {
+    description: {
+      type: Object,
+      default: ""
     },
 
-   computed: {
+    img: {
+      type: String,
+      default: ""
+    },
 
+    language: {
+      type: String,
+      default: "en"
+    }
+  },
+
+  computed: {
     transition() {
       return "slide-" + this.$parent.direction;
     },
@@ -47,9 +42,7 @@ export default {
   },
 
   data() {
-
     return {
-
       index: 0,
       legende: "",
       resizeFull: false
@@ -61,7 +54,6 @@ export default {
   },
 
   methods: {
-    
     updateDescription() {
       this.legende = this.language === "fr" ? this.description.fr : this.description.en;
     }
@@ -69,7 +61,7 @@ export default {
 };
 </script>
 
-<style >
+<style>
 .aeris-carousel-slide {
   min-width: 900px;
   min-width: 900px;

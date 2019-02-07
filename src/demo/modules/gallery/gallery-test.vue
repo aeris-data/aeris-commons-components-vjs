@@ -1,5 +1,5 @@
 <template>
-    <aeris-gallery :images="quicklooks" lang="fr"></aeris-gallery>
+  <aeris-gallery :images="quicklooks" lang="fr"></aeris-gallery>
 </template>
 <script>
 import AerisGallery from "../../../lib/modules/aeris-gallery/components/aeris-gallery.vue";
@@ -47,6 +47,4 @@ export default {
 };
 </script>
 
-
-<style scoped>
-</style>
+<style scoped></style>
