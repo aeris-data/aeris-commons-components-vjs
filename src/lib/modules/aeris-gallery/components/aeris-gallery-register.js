@@ -7,9 +7,8 @@ import AerisCarrouselSlide from "./aeris-carrousel-slide.vue";
 const components = [AerisGallery, AerisCarrousel, AerisCarrouselSlide];
 
 export default {
-  install: (Vue, options) => {
+  install: Vue => {
     let timer = setInterval(() => {
-      HelperRegisterModule.registerStore(options.store, components);
       HelperRegisterModule.registerVueComponents(Vue, components);
       clearInterval(timer);
     }, 2000);
