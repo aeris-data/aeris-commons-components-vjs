@@ -94,7 +94,7 @@ export default {
 
   methods: {
     full_size_image() {
-      window.open(this.$children[this.index].img, "_blank");
+      window.open(this.$children[this.index].image, "_blank");
     },
 
     next_element() {

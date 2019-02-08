@@ -18,7 +18,9 @@ export default {
   props: {
     description: {
       type: Object,
-      default:() => {return {}}
+      default: () => {
+        return {};
+      }
     },
 
     image: {

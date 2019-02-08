@@ -41,7 +41,7 @@ export default {
 
     images: {
       type: Array,
-      default:() => []
+      default: () => []
     }
   },
 
