@@ -16,7 +16,7 @@
       <aeris-carousel-slide
         v-for="item in images"
         :language="language"
-        :img="item.url"
+        :image="item.url"
         :description="item.description"
         :key="item.url"
       ></aeris-carousel-slide>
@@ -41,7 +41,7 @@ export default {
 
     images: {
       type: Array,
-      default: []
+      default:() => []
     }
   },
 
@@ -65,12 +65,11 @@ export default {
 
   methods: {
     displayCarousel(index) {
-      console.log("index", index);
       this.showCarousel = true;
       this.index = index;
     },
 
-    escapeKeyListener: function(evt) {
+    escapeKeyListener(evt) {
       if (evt.keyCode === 27 && this.showCarousel) {
         this.showCarousel = false;
       }

@@ -2,7 +2,7 @@
   <div class="aeris-carousel-slide">
     <transition :name="transition">
       <div v-if="visible">
-        <slot><img :src="img" class="aeris-carousel-slide"/></slot>
+        <slot><img :src="image" class="aeris-carousel-slide"/></slot>
         <div class="footerslide">
           <p>{{ legende }}</p>
         </div>
@@ -18,10 +18,10 @@ export default {
   props: {
     description: {
       type: Object,
-      default: ""
+      default:() => {return {}}
     },
 
-    img: {
+    image: {
       type: String,
       default: ""
     },
@@ -44,7 +44,7 @@ export default {
   data() {
     return {
       index: 0,
-      legende: "",
+      legend: "",
       resizeFull: false
     };
   },
@@ -61,12 +61,9 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .aeris-carousel-slide {
   min-width: 900px;
-  min-width: 900px;
-
-  max-height: 900px;
   max-width: 900px;
 }
 
@@ -124,5 +121,10 @@ export default {
 
 .footerslide p {
   color: #dedede;
+  margin-top: 10px;
+  margin-bottom: 20px;
+  padding: 5px;
+  max-height: 150px;
+  overflow: auto;
 }
 </style>
