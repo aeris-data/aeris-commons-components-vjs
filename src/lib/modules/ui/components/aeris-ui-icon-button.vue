@@ -1,16 +1,15 @@
 <template>
-  <div aeris-ui-icon-button>
-    <button
-      :style="getTheme"
-      :class="[type, 'tooltip']"
-      :title="title"
-      type="button"
-      aria-hidden="true"
-      @click.prevent="handleClick"
-    >
-      <i v-if="icon" :style="getIconTheme" :class="['fa', icon]" /> {{ text }}
-    </button>
-  </div>
+  <button
+    :style="getTheme"
+    :class="[type, 'tooltip']"
+    :title="title"
+    aeris-ui-icon-button
+    type="button"
+    aria-hidden="true"
+    @click.prevent="handleClick"
+  >
+    <i v-if="icon" :style="getIconTheme" :class="['fa', icon]" /> {{ text }}
+  </button>
 </template>
 
 <script>
@@ -80,7 +79,7 @@ export default {
 </script>
 
 <style scoped>
-[aeris-ui-icon-button] .icon-button {
+.icon-button {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -97,7 +96,7 @@ export default {
   cursor: pointer;
 }
 
-[aeris-ui-icon-button] .button {
+.button {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -111,15 +110,15 @@ export default {
   cursor: pointer;
 }
 
-[aeris-ui-icon-button] .button i {
+.button i {
   margin-right: 10px;
 }
 
-[aeris-ui-icon-button] button::-moz-focus-inner {
+button::-moz-focus-inner {
   border: 0;
 }
 
-[aeris-ui-icon-button] button:hover {
+button:hover {
   filter: brightness(80%);
 }
 </style>

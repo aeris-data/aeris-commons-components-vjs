@@ -78,8 +78,4 @@ section {
   flex-direction: row;
   justify-content: center;
 }
-[aeris-ui-icon-button] {
-  height: 50px;
-  min-width: 80px;
-}
 </style>
