@@ -7,4 +7,13 @@ import AerisUiIconButton from "./ui/components/aeris-ui-icon-button";
 import AerisUiInput from "./ui/components/aeris-ui-input";
 import AerisGallery from "./aeris-gallery/components/aeris-gallery";
 
-export { AerisDatepicker, AerisLanguage, AerisNotifier, AerisOrcid, AerisTheme, AerisUiIconButton, AerisUiInput, AerisGallery};
+export {
+  AerisDatepicker,
+  AerisLanguage,
+  AerisNotifier,
+  AerisOrcid,
+  AerisTheme,
+  AerisUiIconButton,
+  AerisUiInput,
+  AerisGallery
+};
