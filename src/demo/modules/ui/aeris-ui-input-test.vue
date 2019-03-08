@@ -21,7 +21,7 @@
       name="keywords"
       @input="inputKeyword"
     ></aeris-ui-input>
-    <aeris-notifier :new-notification="notification"></aeris-notifier>
+    <aeris-notifier></aeris-notifier>
   </section>
 </template>
 
@@ -45,10 +45,11 @@ export default {
   },
   methods: {
     inputKeyword(text) {
-      this.notification = {
+      let notification = {
         message: text,
         type: "notification"
       };
+      this.$store.dispatch("addNewNotification", notification);
     }
   }
 };

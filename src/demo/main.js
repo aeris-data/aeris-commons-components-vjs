@@ -18,6 +18,7 @@ import AerisUiIconButtonTest from "./modules/ui/aeris-ui-icon-button-test";
 import languageModule from "../lib/modules/aeris-language/store/aeris-language-store.js";
 import themeModule from "../lib/modules/aeris-theme/store/aeris-theme-store.js";
 import orcidModule from "../lib/modules/aeris-orcid/store/aeris-orcid-store.js";
+import notificationModule from "../lib/modules/aeris-notification/store/aeris-notification-store";
 
 Vue.use(Vuex);
 Vue.use(VueI18n);
@@ -30,7 +31,8 @@ const store = new Vuex.Store({
   modules: {
     language: languageModule,
     theme: themeModule,
-    orcid: orcidModule
+    orcid: orcidModule,
+    notification: notificationModule
   }
 });
 
