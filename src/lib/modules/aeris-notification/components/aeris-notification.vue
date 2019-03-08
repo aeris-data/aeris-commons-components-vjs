@@ -45,6 +45,7 @@ export default {
   created() {
     this.visibilityclass = "shownotify-container";
   },
+
   methods: {
     close() {
       this.$emit("deleteNotification", this.uuid);
