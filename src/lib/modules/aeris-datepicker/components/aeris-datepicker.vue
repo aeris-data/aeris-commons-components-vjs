@@ -20,7 +20,7 @@
           v-model="date"
           type="text"
           readonly
-          @click="toggle"
+          @click.stop="toggle"
         />
       </form>
     </div>
