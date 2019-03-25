@@ -1,8 +1,10 @@
 <template>
   <div>
     <div id="catalogue" class="catalogue">
+      <input type="button" value="Reset" @click="resetDate" />
       <div id="criteria" class="criteria">
         <aeris-datepicker
+          ref="datePicker1"
           :theme="{ emphasis: '#f39c12' }"
           :label="{
             key: 'from',
@@ -15,6 +17,7 @@
           @date="setFromDate"
         ></aeris-datepicker>
         <aeris-datepicker
+          ref="datePicker2"
           :theme="{ emphasis: '#6fbfb2' }"
           :label="{
             key: 'to',
@@ -55,6 +58,11 @@ export default {
     },
     setToDate(value) {
       this.toDate = value;
+    },
+
+    resetDate() {
+      this.$refs.datePicker1.resetDate();
+      this.$refs.datePicker2.resetDate();
     }
   }
 };

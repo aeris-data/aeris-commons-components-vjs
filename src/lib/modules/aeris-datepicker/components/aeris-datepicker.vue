@@ -116,6 +116,10 @@ export default {
       if (value === "VALIDATE") {
         this.visible = false;
       }
+    },
+
+    resetDate() {
+      this.date = "";
     }
   }
 };
