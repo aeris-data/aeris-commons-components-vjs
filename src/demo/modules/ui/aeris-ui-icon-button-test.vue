@@ -27,7 +27,7 @@
       type="button"
       @click="clickHandle('download')"
     ></aeris-ui-icon-button>
-    <aeris-notifier :new-notification="notification"></aeris-notifier>
+    <aeris-notifier></aeris-notifier>
   </section>
 </template>
 
@@ -57,16 +57,16 @@ export default {
       },
       iconTheme: {
         color: "green"
-      },
-      notification: null
+      }
     };
   },
   methods: {
     clickHandle(text) {
-      this.notification = {
+      let notification = {
         message: text,
         type: "notification"
       };
+      this.$store.dispatch("addNewNotification", notification);
     }
   }
 };

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <aeris-notifier :delete-notif-uuid="uuid" :new-notification="notification"></aeris-notifier>
+    <aeris-notifier></aeris-notifier>
     <button id="error" @click="sendNotifError">error</button>
     <button id="success" @click="sendNotifSuccess">success</button>
     <button id="notif" @click="sendNotif">Notification</button> <button id="wait" @click="sendNotifWait">Wait</button>
@@ -13,51 +13,60 @@
 import { AerisNotifier } from "../../../lib/modules/aeris-commons-components";
 import { computeUuid } from "../../../lib/modules/aeris-notification/utils/utils.js";
 export default {
+  name: "notification-test",
   data() {
     return {
-      notification: null,
-      uuid: null,
-      longNotifUUID: []
+      longNotifUUIDs: []
     };
   },
   methods: {
     sendNotifError() {
-      this.notification = {
+      let notification = {
         message: "Je suis un error",
         type: "error"
       };
+      this.addNewNotification(notification);
     },
 
     sendNotifSuccess() {
-      this.notification = {
+      let notification = {
         message: "<script>alert('lol')<//script>",
         type: "success"
       };
+      this.addNewNotification(notification);
     },
 
     sendNotif() {
-      this.notification = {
+      let notification = {
         message: "Je suis une Notif ",
         type: "notification"
       };
+      this.addNewNotification(notification);
     },
 
     sendNotifWait() {
-      this.notification = {
+      let notification = {
         message: "Je suis un Wait",
-        type: "wait"
+        type: "wait",
+        duration: 5
       };
+      this.addNewNotification(notification);
     },
     sendLongNotif() {
-      this.longNotifUUID.push(computeUuid());
-      this.notification = {
-        message: "Je suis une longue notif uuid : " + this.longNotifUUID[this.longNotifUUID.length - 1],
+      this.longNotifUUIDs.push(computeUuid());
+      let notification = {
+        message: "Je suis une longue notif uuid : " + this.longNotifUUIDs[this.longNotifUUIDs.length - 1],
         type: "wait",
-        uuid: this.longNotifUUID[this.longNotifUUID.length - 1]
+        uuid: this.longNotifUUIDs[this.longNotifUUIDs.length - 1]
       };
+      this.addNewNotification(notification);
     },
     destroyLongNotif() {
-      this.uuid = this.longNotifUUID.shift();
+      let uuid = this.longNotifUUIDs.shift();
+      this.$store.dispatch("deleteNotification", uuid);
+    },
+    addNewNotification(notification) {
+      this.$store.dispatch("addNewNotification", notification);
     }
   },
   components: {
