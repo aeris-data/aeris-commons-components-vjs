@@ -110,10 +110,6 @@ export default {
   cursor: pointer;
 }
 
-.button i {
-  margin-right: 10px;
-}
-
 button::-moz-focus-inner {
   border: 0;
 }
