@@ -57,7 +57,11 @@ export default {
 
   methods: {
     updateDescription() {
-      this.legende = this.language === "fr" ? this.description.fr : this.description.en;
+      if (this.description && (this.description.fr || this.description.en)) {
+        this.legende = this.language === "fr" ? this.description.fr : this.description.en;
+      } else {
+        this.legende = "";
+      }
     }
   }
 };
