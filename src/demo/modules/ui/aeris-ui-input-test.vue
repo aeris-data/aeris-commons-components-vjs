@@ -21,6 +21,14 @@
       name="keywords"
       @input="inputKeyword"
     ></aeris-ui-input>
+    <aeris-ui-input
+      ref="uiInput"
+      :title="$t('titleHelp')"
+      :placeholder="$t('keywords')"
+      icon="fa fa-pencil"
+      name="keywords"
+      @input="changeValue"
+    ></aeris-ui-input>
     <aeris-notifier></aeris-notifier>
   </section>
 </template>
@@ -37,6 +45,7 @@ export default {
         emphasis: "#f39c12",
         color: "#fff"
       },
+      inputValue: "place holder message",
       notification: null
     };
   },
@@ -50,6 +59,9 @@ export default {
         type: "notification"
       };
       this.$store.dispatch("addNewNotification", notification);
+    },
+    changeValue() {
+      this.$refs.uiInput.resetValue();
     }
   }
 };

@@ -5,6 +5,7 @@
       :name="name"
       :aria-label="ariaLabel"
       :placeholder="placeholder"
+      v-model="value"
       type="text"
       autofocus
       @change.prevent="updateValue($event, false)"
@@ -36,10 +37,20 @@ export default {
     }
   },
 
+  data() {
+    return {
+      value: ""
+    };
+  },
+
   methods: {
     updateValue: _.debounce(function(event, isEnter) {
       this.$emit("input", { value: event.target.value, isEnter: isEnter });
-    }, 100)
+    }, 100),
+
+    resetValue() {
+      this.value = "";
+    }
   }
 };
 </script>
