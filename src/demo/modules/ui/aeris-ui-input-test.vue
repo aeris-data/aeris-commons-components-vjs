@@ -46,7 +46,7 @@ export default {
   methods: {
     inputKeyword(text) {
       let notification = {
-        message: text,
+        message: text.value + "isEnter: " + text.isEnter,
         type: "notification"
       };
       this.$store.dispatch("addNewNotification", notification);

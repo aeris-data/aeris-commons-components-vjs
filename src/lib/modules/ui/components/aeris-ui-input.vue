@@ -7,8 +7,8 @@
       :placeholder="placeholder"
       type="text"
       autofocus
-      @change.prevent="updateValue"
-      @keyup.enter="updateValue"
+      @change.prevent="updateValue($event, false)"
+      @keyup.enter="updateValue($event, true)"
     />
   </div>
 </template>
@@ -37,8 +37,8 @@ export default {
   },
 
   methods: {
-    updateValue: _.debounce(function(event) {
-      this.$emit("input", event.target.value);
+    updateValue: _.debounce(function(event, isEnter) {
+      this.$emit("input", { value: event.target.value, isEnter: isEnter });
     }, 100)
   }
 };
