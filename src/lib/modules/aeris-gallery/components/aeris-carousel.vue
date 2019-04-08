@@ -82,12 +82,11 @@ export default {
   },
 
   mounted() {
-    setTimeout(() => {
+    
       this.slides = this.$children;
       this.slides.forEach((slide, i) => {
         slide.index = i;
-      });
-    }, 100);
+      })
     this.index = this.startImage;
     this.show = true;
   },
