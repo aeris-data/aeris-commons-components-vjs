@@ -5,10 +5,11 @@
       :name="name"
       :aria-label="ariaLabel"
       :placeholder="placeholder"
+      v-model="value"
       type="text"
       autofocus
-      @change.prevent="updateValue"
-      @keyup.enter="updateValue"
+      @change.prevent="updateValue($event, false)"
+      @keyup.enter="updateValue($event, true)"
     />
   </div>
 </template>
@@ -36,10 +37,20 @@ export default {
     }
   },
 
+  data() {
+    return {
+      value: ""
+    };
+  },
+
   methods: {
-    updateValue: _.debounce(function(event) {
-      this.$emit("input", event.target.value);
-    }, 100)
+    updateValue: _.debounce(function(event, isEnter) {
+      this.$emit("input", { value: event.target.value, isEnter: isEnter });
+    }, 100),
+
+    resetValue() {
+      this.value = "";
+    }
   }
 };
 </script>
