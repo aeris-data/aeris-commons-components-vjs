@@ -45,15 +45,14 @@ export default {
 
   data() {
     return {
-      value: ""
+      value: "",
+      defaultColor: "#333"
     };
   },
 
   computed: {
     getTheme() {
-      return {
-        "--primary": this.theme.primaryColor
-      };
+      return this.theme !== null ? { "--primary": this.theme.primaryColor } : { "--primary": this.defaultColor };
     }
   },
 
@@ -69,6 +68,8 @@ export default {
     focus() {
       if (this.theme !== null) {
         this.$el.style.border = "1px solid " + this.theme.primaryColor;
+      } else {
+        this.$el.style.border = "1px solid " + this.defaultColor;
       }
     },
 
@@ -86,6 +87,7 @@ export default {
   justify-content: space-between;
   align-items: center;
   margin-bottom: 10px;
+  border: 1px solid transparent;
   border-radius: 30px;
   background-color: #fff;
   box-shadow: 0 2px 4px #333;
@@ -93,11 +95,11 @@ export default {
 }
 
 [aeris-ui-input]:focus-within {
-  border: 1px solid var(--primary);
+  border: 1px solid var(--primary, #333);
 }
 
 [aeris-ui-input] input:focus + i {
-  color: var(--primary);
+  color: var(--primary, #333);
 }
 
 [aeris-ui-input] input {

@@ -33,6 +33,13 @@
         @input="changeValue"
       ></aeris-ui-input>
     </div>
+    <aeris-ui-input
+      :title="$t('titleHelp')"
+      :placeholder="$t('keywords')"
+      icon="fa fa-pencil"
+      name="keywords"
+      @input="inputKeyword"
+    ></aeris-ui-input>
     <aeris-notifier></aeris-notifier>
   </section>
 </template>
