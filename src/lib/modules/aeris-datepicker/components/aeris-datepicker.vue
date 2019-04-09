@@ -128,11 +128,9 @@ export default {
 <style scoped>
 .aeris-input-group form {
   max-width: 300px;
-  display: inline-flex;
-  align-items: center;
-  flex-wrap: nowrap;
-  margin: 5px;
+  margin-bottom: 5px;
   line-height: 25px;
+  font-size: 25px;
   background-color: rgba(172, 220, 238, 0.3);
   border-radius: 5px;
 }
