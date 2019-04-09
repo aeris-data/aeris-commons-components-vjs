@@ -1,6 +1,5 @@
 <template>
-  <div aeris-ui-input>
-    <i v-if="icon" :class="icon" />
+  <div :style="getTheme" aeris-ui-input>
     <input
       :name="name"
       :aria-label="ariaLabel"
@@ -10,7 +9,10 @@
       autofocus
       @change.prevent="updateValue($event, false)"
       @keyup.enter="updateValue($event, true)"
+      @focus="focus"
+      @blur="blur"
     />
+    <i v-if="icon" :class="icon" />
   </div>
 </template>
 
@@ -34,6 +36,10 @@ export default {
     ariaLabel: {
       type: String,
       default: ""
+    },
+    theme: {
+      type: Object,
+      default: null
     }
   },
 
@@ -43,6 +49,14 @@ export default {
     };
   },
 
+  computed: {
+    getTheme() {
+      return {
+        "--primary": this.theme.primaryColor
+      };
+    }
+  },
+
   methods: {
     updateValue: _.debounce(function(event, isEnter) {
       this.$emit("input", { value: event.target.value, isEnter: isEnter });
@@ -50,6 +64,16 @@ export default {
 
     resetValue() {
       this.value = "";
+    },
+
+    focus() {
+      if (this.theme !== null) {
+        this.$el.style.border = "1px solid " + this.theme.primaryColor;
+      }
+    },
+
+    blur() {
+      this.$el.style.border = "none";
     }
   }
 };
@@ -62,7 +86,18 @@ export default {
   justify-content: space-between;
   align-items: center;
   margin-bottom: 10px;
-  border-bottom: 1px solid;
+  border-radius: 30px;
+  background-color: #fff;
+  box-shadow: 0 2px 4px #333;
+  padding: 0 10px;
+}
+
+[aeris-ui-input]:focus-within {
+  border: 1px solid var(--primary);
+}
+
+[aeris-ui-input] input:focus + i {
+  color: var(--primary);
 }
 
 [aeris-ui-input] input {
@@ -73,14 +108,12 @@ export default {
   padding: 12px;
   font-size: 1rem;
   background: transparent;
-}
-
-[aeris-ui-input] input:focus {
-  outline: none;
+  transition: transform 0.3s ease-in, box-shadow 0.3s ease-in;
 }
 
 [aeris-ui-input] i {
   padding: 10px;
   font-size: 1.1rem;
+  color: #666;
 }
 </style>

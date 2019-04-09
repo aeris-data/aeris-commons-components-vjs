@@ -17,18 +17,22 @@
     <aeris-ui-input
       :title="$t('titleHelp')"
       :placeholder="$t('keywords')"
+      :theme="theme"
       icon="fa fa-pencil"
       name="keywords"
       @input="inputKeyword"
     ></aeris-ui-input>
-    <aeris-ui-input
-      ref="uiInput"
-      :title="$t('titleHelp')"
-      :placeholder="$t('keywords')"
-      icon="fa fa-pencil"
-      name="keywords"
-      @input="changeValue"
-    ></aeris-ui-input>
+    <div class="small">
+      <aeris-ui-input
+        ref="uiInput"
+        :title="$t('titleHelp')"
+        :placeholder="$t('keywords')"
+        :theme="theme2"
+        icon="fa fa-search"
+        name="keywords"
+        @input="changeValue"
+      ></aeris-ui-input>
+    </div>
     <aeris-notifier></aeris-notifier>
   </section>
 </template>
@@ -42,8 +46,10 @@ export default {
   data() {
     return {
       theme: {
-        emphasis: "#f39c12",
-        color: "#fff"
+        primaryColor: "#009fde"
+      },
+      theme2: {
+        primaryColor: "#f39c12"
       },
       inputValue: "place holder message",
       notification: null
@@ -69,6 +75,11 @@ export default {
 
 <style scoped>
 section {
+  width: 80%;
+  margin: 0 auto;
+  margin-top: 40px;
+}
+/* section {
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -76,5 +87,8 @@ section {
 [aeris-ui-icon-button] {
   height: 50px;
   min-width: 80px;
+} */
+.small {
+  width: 300px;
 }
 </style>
