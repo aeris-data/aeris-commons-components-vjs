@@ -3,12 +3,11 @@
     :style="getTheme"
     :class="[type, 'tooltip']"
     :title="title"
-    aeris-ui-icon-button
     type="button"
     aria-hidden="true"
     @click.prevent="handleClick"
   >
-    <i v-if="icon" :style="getIconTheme" :class="['fa', icon]" /> {{ text }}
+    <i v-if="icon" :class="['fa', icon]" />{{ iconAndSpace }}
   </button>
 </template>
 
@@ -29,10 +28,6 @@ export default {
       type: Object,
       default: null
     },
-    iconTheme: {
-      type: Object,
-      default: null
-    },
     type: {
       type: String,
       default: "button"
@@ -46,27 +41,16 @@ export default {
   computed: {
     getTheme() {
       if (this.theme) {
-        let color = this.theme.color;
-        let emphasis = this.theme.emphasis;
         return {
-          color: color,
-          background: emphasis
+          "--bg-color": this.theme.primaryColor,
+          "--text-color": this.theme.secondaryColor
         };
-      } else {
-        return "";
       }
+      return "";
     },
-    getIconTheme() {
-      if (this.iconTheme) {
-        let color = this.iconTheme.color;
-        let emphasis = this.iconTheme.emphasis;
-        return {
-          color: color,
-          background: emphasis
-        };
-      } else {
-        return "";
-      }
+
+    iconAndSpace() {
+      return this.text && this.icon ? ` ${this.text}` : this.text;
     }
   },
 
@@ -79,42 +63,50 @@ export default {
 </script>
 
 <style scoped>
-.icon-button {
+.icon-button,
+.button {
+  white-space: pre;
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 0;
-  margin: 0;
   border: none;
   outline: none;
-  border-radius: 50%;
-  width: 42px;
-  height: 42px;
-  background: #e2e2e2;
-  color: #333;
+  background-color: var(--bg-color, #e2e2e2);
+  color: var(--text-color, #333);
+  transition: all 0.2s;
   font-size: 1rem;
   cursor: pointer;
+  padding: 10px;
+  border-radius: 2rem;
 }
 
-.button {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border: none;
-  outline: none;
-  border-radius: 0.5rem;
-  padding: 16px;
-  background: #ddd;
-  color: #444;
-  font-size: 1rem;
-  cursor: pointer;
+.icon-button {
+  width: 42px;
+  height: 42px;
+}
+
+.icon-button i,
+.button i {
+  color: var(--text-color, #333);
+}
+
+button:hover {
+  background-color: var(--text-color, #333);
+  color: var(--bg-color, #e2e2e2);
+  border: 1px solid var(--bg-color, #e2e2e2);
+}
+
+button:hover i {
+  color: var(--bg-color, #e2e2e2);
+}
+
+button:active {
+  position: relative;
+  top: 1px;
+  left: 1px;
 }
 
 button::-moz-focus-inner {
   border: 0;
-}
-
-button:hover {
-  filter: brightness(80%);
 }
 </style>
