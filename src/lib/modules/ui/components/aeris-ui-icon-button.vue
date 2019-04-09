@@ -69,7 +69,7 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  border: none;
+  border: 1px solid transparent;
   outline: none;
   background-color: var(--bg-color, #e2e2e2);
   color: var(--text-color, #333);
@@ -107,6 +107,6 @@ button:active {
 }
 
 button::-moz-focus-inner {
-  border: 0;
+  border: 1px solid transparent;
 }
 </style>
