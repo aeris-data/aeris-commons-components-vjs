@@ -1,14 +1,13 @@
 <i18n>
   {
-  "en": {
-  "keywords": "Full text search",
-  "titleHelp" : "To perform a search you can use the following operators:\\n '-' to exclude a term from the search\\n '+' to obtain results that must contain the terms\\nIf no operator is used, then the 'or' operator will be used\\nExample query: iagos+mistral -Menorca is equal to +iagos +mistral -Menorca"
-
-  },
-  "fr": {
-  "keywords": "Recherche texte libre",
-  "titleHelp" :"Pour effectuer une recherche vous pouvez utiliser les opérateurs suivant:\\n '-' pour exclure un terme de la recherche\\n '+' pour avoir des résultats qui contiennent obligatoirement les termes\\nSi aucun opérateur n'est utilisé, alors l'opérateur 'ou' sera utilisé\\nExemple de requête : iagos+mistral -Menorca est équivalent a +iagos +mistral -Menorca"
-  }
+    "en": {
+      "keywords": "Full text search",
+      "titleHelp" : "To perform a search you can use the following operators:\\n '-' to exclude a term from the search\\n '+' to obtain results that must contain the terms\\nIf no operator is used, then the 'or' operator will be used\\nExample query: iagos+mistral -Menorca is equal to +iagos +mistral -Menorca"
+    },
+    "fr": {
+      "keywords": "Recherche texte libre",
+      "titleHelp" :"Pour effectuer une recherche vous pouvez utiliser les opérateurs suivant:\\n '-' pour exclure un terme de la recherche\\n '+' pour avoir des résultats qui contiennent obligatoirement les termes\\nSi aucun opérateur n'est utilisé, alors l'opérateur 'ou' sera utilisé\\nExemple de requête : iagos+mistral -Menorca est équivalent a +iagos +mistral -Menorca"
+    }
   }
 </i18n>
 
@@ -86,15 +85,10 @@ section {
   margin: 0 auto;
   margin-top: 40px;
 }
-/* section {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
+
+[aeris-ui-input] {
+  margin-bottom: 10px;
 }
-[aeris-ui-icon-button] {
-  height: 50px;
-  min-width: 80px;
-} */
 .small {
   width: 300px;
 }

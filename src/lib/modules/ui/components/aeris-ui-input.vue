@@ -86,7 +86,6 @@ export default {
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 10px;
   border: 1px solid transparent;
   border-radius: 30px;
   background-color: #fff;
@@ -107,7 +106,6 @@ export default {
   border-style: none;
   border: none;
   outline: none;
-  padding: 12px;
   font-size: 1rem;
   background: transparent;
   transition: transform 0.3s ease-in, box-shadow 0.3s ease-in;
