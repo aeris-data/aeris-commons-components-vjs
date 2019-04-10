@@ -40,7 +40,7 @@ export default {
 <style scoped>
 .aeris-notifier-host {
   display: block;
-  position: absolute;
+  position: fixed;
   z-index: 9999;
   top: 0;
   left: 50%;
