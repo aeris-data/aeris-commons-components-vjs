@@ -3,6 +3,11 @@ import Vuex from "vuex";
 import VueI18n from "vue-i18n";
 import VueRouter from "vue-router";
 
+import axios from "axios";
+import VueAxios from "vue-axios";
+
+Vue.use(VueAxios, axios);
+
 import { VueColorPlugin, VueAerisLanguagePlugin } from "aeris-mixins";
 
 import app from "./app.vue";
@@ -14,6 +19,7 @@ import AerisOrcidTest from "./modules/orcid/orcid-test.vue";
 import AerisGalleryTest from "./modules/gallery/gallery-test.vue";
 import AerisUiInputTest from "./modules/ui/aeris-ui-input-test";
 import AerisUiIconButtonTest from "./modules/ui/aeris-ui-icon-button-test";
+import AerisDisplayJsonValue from "./modules/aeris-display-json-value/aeris-display-json-value-test.vue"
 
 import languageModule from "../lib/modules/aeris-language/store/aeris-language-store.js";
 import themeModule from "../lib/modules/aeris-theme/store/aeris-theme-store.js";
@@ -82,6 +88,10 @@ const router = new VueRouter({
     {
       path: "/input-test",
       component: AerisUiInputTest
+    },
+    {
+      path: "/display_json",
+      component: AerisDisplayJsonValue
     }
   ]
 });

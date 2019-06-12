@@ -9,6 +9,7 @@
       <li><router-link to="/gallery-test">gallery test</router-link></li>
       <li><router-link to="/icon-button-test">icon-button-test</router-link></li>
       <li><router-link to="/input-test">input-test</router-link></li>
+      <li><router-link to="/display_json"> display json</router-link></li>
     </ul>
     <div><router-view class="view"></router-view></div>
   </div>
