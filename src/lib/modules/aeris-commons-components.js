@@ -6,6 +6,7 @@ import AerisTheme from "./aeris-theme/components/aeris-theme";
 import AerisUiIconButton from "./ui/components/aeris-ui-icon-button";
 import AerisUiInput from "./ui/components/aeris-ui-input";
 import AerisGallery from "./aeris-gallery/components/aeris-gallery";
+import AerisDisplayJsonValue from "./aeris-display-json-value/aeris-display-json-value.vue";
 
 export {
   AerisDatepicker,
@@ -15,5 +16,6 @@ export {
   AerisTheme,
   AerisUiIconButton,
   AerisUiInput,
-  AerisGallery
+  AerisGallery,
+  AerisDisplayJsonValue
 };

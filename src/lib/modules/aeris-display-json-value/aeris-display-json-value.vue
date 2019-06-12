@@ -1,5 +1,5 @@
 <template>
-    <span>{{jsonValue}}</span>
+  <span>{{ jsonValue }}</span>
 </template>
 
 <script>
@@ -46,5 +46,4 @@ export default {
 };
 </script>
 
-<style >
-</style>
+<style></style>

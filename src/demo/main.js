@@ -19,7 +19,7 @@ import AerisOrcidTest from "./modules/orcid/orcid-test.vue";
 import AerisGalleryTest from "./modules/gallery/gallery-test.vue";
 import AerisUiInputTest from "./modules/ui/aeris-ui-input-test";
 import AerisUiIconButtonTest from "./modules/ui/aeris-ui-icon-button-test";
-import AerisDisplayJsonValue from "./modules/aeris-display-json-value/aeris-display-json-value-test.vue"
+import AerisDisplayJsonValue from "./modules/aeris-display-json-value/aeris-display-json-value-test.vue";
 
 import languageModule from "../lib/modules/aeris-language/store/aeris-language-store.js";
 import themeModule from "../lib/modules/aeris-theme/store/aeris-theme-store.js";
