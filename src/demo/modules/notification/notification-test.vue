@@ -3,7 +3,8 @@
     <aeris-notifier></aeris-notifier>
     <button id="error" @click="sendNotifError">error</button>
     <button id="success" @click="sendNotifSuccess">success</button>
-    <button id="notif" @click="sendNotif">Notification</button> <button id="wait" @click="sendNotifWait">Wait</button>
+    <button id="notif" @click="sendNotif">Notification</button>
+    <button id="wait" @click="sendNotifWait">Wait</button>
     <button id="create" @click="sendLongNotif">Create</button>
     <button id="destroy" @click="destroyLongNotif">Destroy</button>
   </div>
