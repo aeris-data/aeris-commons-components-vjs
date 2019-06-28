@@ -664,12 +664,10 @@ export default {
   transform: translate(5px);
   height: 1px;
   width: 20px;
-  border-bottom: 1px dashed #fff;
 }
 
 .dp-selectors [id="hourSelect"]::after,
 .dp-selectors [id="minSelect"]::after {
-  border-bottom: 1px dashed var(--emphasis);
   opacity: 1;
   left: 3px;
   width: 12px;

@@ -46,7 +46,7 @@ export default {
   methods: {
     updateValue: _.debounce(function(event, isEnter) {
       this.$emit("input", { value: event.target.value, isEnter: isEnter });
-    }, 100),
+    }, 1),
 
     resetValue() {
       this.value = "";
