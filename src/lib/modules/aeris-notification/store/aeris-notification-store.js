@@ -2,7 +2,8 @@ import { computeUuid } from "../utils/utils.js";
 
 export default {
   state: {
-    notifications: []
+    notifications: [],
+    DEFAULT_DURATION: 3
   },
   getters: {
     getNotifications: state => state.notifications
@@ -15,16 +16,12 @@ export default {
       notification["spinner"] = false;
       switch (notification.type) {
         case "notification":
+        case "error":
+        case "success":
           dispatch("addNotification", notification);
           break;
         case "wait":
           notification["spinner"] = true;
-          dispatch("addNotification", notification);
-          break;
-        case "error":
-          dispatch("addNotification", notification);
-          break;
-        case "success":
           dispatch("addNotification", notification);
           break;
         default:
@@ -33,9 +30,8 @@ export default {
     },
     addNotification({ state, dispatch }, notification) {
       state.notifications.push(notification);
-      if (notification.duration) {
-        dispatch("notificationTimer", notification);
-      }
+      notification.duration = notification.duration || state.DEFAULT_DURATION;
+      dispatch("notificationTimer", notification);
     },
     deleteNotification({ state }, uuid) {
       state.notifications = state.notifications.filter(notification => notification.uuid !== uuid);
