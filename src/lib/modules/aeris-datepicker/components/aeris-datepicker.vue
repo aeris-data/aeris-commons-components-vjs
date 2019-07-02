@@ -127,8 +127,9 @@ export default {
 
 <style scoped>
 .aeris-input-group form {
-  max-width: 300px;
-  display: inline-flex;
+  max-width: 200px;
+  display: flex;
+  justify-content: flex-start;
   align-items: center;
   flex-wrap: nowrap;
   margin: 5px;
@@ -145,10 +146,12 @@ export default {
   padding: 0 10px;
   line-height: 20px;
   border-right: 1px solid #fff;
+  min-width: 60px;
+  text-align: center;
 }
 
 [id="input__datepicker"] {
-  max-width: 150px;
+  width: 150px;
   background-color: transparent;
   border: none;
   padding-left: 10px;
