@@ -8,7 +8,7 @@
     aria-hidden="true"
     @click.prevent="handleClick"
   >
-    <i v-if="icon" :style="getIconTheme" :class="['fa', icon]" /> {{ text }}
+    <i v-if="icon" :style="getIconTheme" :class="['fa', icon, { iconText: text }]" /> {{ text }}
   </button>
 </template>
 
@@ -116,5 +116,9 @@ button::-moz-focus-inner {
 
 button:hover {
   filter: brightness(80%);
+}
+
+.iconText {
+  margin-right: 10px;
 }
 </style>
