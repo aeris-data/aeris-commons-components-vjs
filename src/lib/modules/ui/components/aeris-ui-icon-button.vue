@@ -8,7 +8,7 @@
     aria-hidden="true"
     @click.prevent="handleClick"
   >
-    <i v-if="icon" :style="getIconTheme" :class="['fa', icon]" /> {{ text }}
+    <i v-if="icon" :style="getIconTheme" :class="['fa', icon, { iconText: text }]" /> {{ text }}
   </button>
 </template>
 
@@ -79,23 +79,6 @@ export default {
 </script>
 
 <style scoped>
-.icon-button {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 0;
-  margin: 0;
-  border: none;
-  outline: none;
-  border-radius: 50%;
-  width: 42px;
-  height: 42px;
-  background: #e2e2e2;
-  color: #333;
-  font-size: 1rem;
-  cursor: pointer;
-}
-
 .button {
   display: flex;
   justify-content: center;
@@ -116,5 +99,9 @@ button::-moz-focus-inner {
 
 button:hover {
   filter: brightness(80%);
+}
+
+.iconText {
+  margin-right: 10px;
 }
 </style>
