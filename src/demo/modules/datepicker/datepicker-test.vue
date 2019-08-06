@@ -14,6 +14,7 @@
             }
           }"
           format="DD/MM/YYYY HH:mm"
+          language="en"
           @date="setFromDate"
         ></aeris-datepicker>
         <aeris-datepicker
@@ -27,6 +28,7 @@
             }
           }"
           format="DD/MM/YYYY"
+          language="fr"
           @date="setToDate"
         ></aeris-datepicker>
         <p>Date from : {{ fromDate }}</p>

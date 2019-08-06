@@ -31,7 +31,7 @@
       :format="format"
       :daymin="daymin"
       :daymax="daymax"
-      language="fr"
+      :language="language"
       @dateChange="setDate"
       @close="getInfo"
     ></aeris-datepicker-modal>
@@ -49,7 +49,7 @@ export default {
   props: {
     language: {
       type: String,
-      default: ""
+      default: "en"
     },
     theme: {
       type: Object,
@@ -83,19 +83,19 @@ export default {
   },
 
   watch: {
-    getLanguage(lang) {
-      this.$i18n.locale = lang;
+    language(language) {
+      this.$i18n.locale = language;
     }
   },
 
   computed: {
     getLanguage() {
-      return this.$store.getters.getLanguage;
+      return this.language || this.$store.getters.getLanguage;
     }
   },
 
   created() {
-    this.$i18n.locale = this.language || this.getLanguage;
+    this.$i18n.locale = this.getLanguage;
     if (this.label) {
       // add translation for label to i18n messages
       this.$i18n.mergeLocaleMessage(this.$i18n.locale, this.label.lang[this.$i18n.locale]);

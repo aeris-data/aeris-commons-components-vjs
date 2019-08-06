@@ -83,7 +83,7 @@ export default {
   props: {
     language: {
       type: String,
-      default: ""
+      default: "en"
     },
     dateFromInput: {
       type: String,
@@ -229,8 +229,8 @@ export default {
   },
 
   watch: {
-    getLanguage(value) {
-      this.$i18n.locale = value;
+    language(language) {
+      this.$i18n.locale = language;
     },
 
     getTheme(value) {
