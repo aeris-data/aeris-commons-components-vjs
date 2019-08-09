@@ -5,11 +5,10 @@
       :name="name"
       :aria-label="ariaLabel"
       :placeholder="placeholder"
-      v-model="value"
+      :value="value"
       type="text"
       autofocus
-      @change.prevent="updateValue($event, false)"
-      @keyup.enter="updateValue($event, true)"
+      @input="handleChange"
     />
   </div>
 </template>
@@ -19,6 +18,10 @@ export default {
   name: "aeris-ui-input",
 
   props: {
+    value: {
+      type: String,
+      required: true
+    },
     icon: {
       type: String,
       default: ""
@@ -37,19 +40,9 @@ export default {
     }
   },
 
-  data() {
-    return {
-      value: ""
-    };
-  },
-
   methods: {
-    updateValue: _.debounce(function(event, isEnter) {
-      this.$emit("input", { value: event.target.value, isEnter: isEnter });
-    }, 1),
-
-    resetValue() {
-      this.value = "";
+    handleChange(event) {
+      this.$emit("input", event.target.value);
     }
   }
 };

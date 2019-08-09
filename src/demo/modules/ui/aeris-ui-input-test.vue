@@ -17,17 +17,16 @@
     <aeris-ui-input
       :title="$t('titleHelp')"
       :placeholder="$t('keywords')"
+      v-model="value"
       icon="fa fa-pencil"
       name="keywords"
-      @input="inputKeyword"
     ></aeris-ui-input>
     <aeris-ui-input
-      ref="uiInput"
       :title="$t('titleHelp')"
       :placeholder="$t('keywords')"
+      v-model="value2"
       icon="fa fa-pencil"
       name="keywords"
-      @input="changeValue"
     ></aeris-ui-input>
     <aeris-notifier></aeris-notifier>
   </section>
@@ -46,22 +45,20 @@ export default {
         color: "#fff"
       },
       inputValue: "place holder message",
-      notification: null
+      notification: null,
+      value: "",
+      value2: ""
     };
   },
   created() {
     this.$i18n.locale = "en";
   },
-  methods: {
-    inputKeyword(text) {
-      let notification = {
-        message: text.value + "isEnter: " + text.isEnter,
-        type: "notification"
-      };
-      this.$store.dispatch("addNewNotification", notification);
+  watch: {
+    value(value) {
+      console.log(value);
     },
-    changeValue() {
-      this.$refs.uiInput.resetValue();
+    value2(value2) {
+      console.log(value2);
     }
   }
 };
