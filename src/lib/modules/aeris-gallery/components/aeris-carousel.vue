@@ -82,11 +82,10 @@ export default {
   },
 
   mounted() {
-    
-      this.slides = this.$children;
-      this.slides.forEach((slide, i) => {
-        slide.index = i;
-      })
+    this.slides = this.$children;
+    this.slides.forEach((slide, i) => {
+      slide.index = i;
+    });
     this.index = this.startImage;
     this.show = true;
   },

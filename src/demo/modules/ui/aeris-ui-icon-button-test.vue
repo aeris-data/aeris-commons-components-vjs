@@ -7,8 +7,13 @@
       type="icon-button"
       @click="clickHandle('test')"
     ></aeris-ui-icon-button>
-    <aeris-ui-icon-button icon="fa-expand" type="icon-button" @click="clickHandle('expand')"></aeris-ui-icon-button>
-    <aeris-ui-icon-button icon="fa-compress" type="icon-button"></aeris-ui-icon-button>
+    <aeris-ui-icon-button
+      :theme="theme"
+      icon="fa-expand"
+      type="icon-button"
+      @click="clickHandle('expand')"
+    ></aeris-ui-icon-button>
+    <aeris-ui-icon-button :theme="theme" icon="fa-compress" type="icon-button"></aeris-ui-icon-button>
     <aeris-ui-icon-button :theme="theme2" icon="fa-times" type="icon-button"></aeris-ui-icon-button>
     <aeris-ui-icon-button :theme="theme1" icon="fa-code" type="icon-button"></aeris-ui-icon-button>
     <aeris-ui-icon-button
@@ -40,23 +45,17 @@ export default {
   data() {
     return {
       theme: {
-        emphasis: "#f39c12",
-        color: "#fff"
+        primaryColor: "purple"
       },
-      theme1: {
-        emphasis: "#fff",
-        color: "navy"
-      },
+      theme1: {},
       theme2: {
-        emphasis: "#ddd",
-        color: "#fff"
+        primaryColor: "green"
       },
       theme3: {
-        emphasis: "#ddd",
-        color: "blue"
+        primaryColor: "red"
       },
       iconTheme: {
-        color: "green"
+        primaryColor: "blue"
       }
     };
   },

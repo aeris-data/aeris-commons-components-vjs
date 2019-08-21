@@ -12,7 +12,7 @@
       </div>
     </div>
 
-    <aeris-carousel v-if="showCarousel" :startImage="index" @closecarousel="showCarousel = false">
+    <aeris-carousel v-if="showCarousel" :start-image="index" @closecarousel="showCarousel = false">
       <aeris-carousel-slide
         v-for="item in images"
         :language="language"

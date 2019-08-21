@@ -8,7 +8,7 @@
     aria-hidden="true"
     @click.prevent="handleClick"
   >
-    <i v-if="icon" :style="getIconTheme" :class="['fa', icon, { iconText: text }]" /> {{ text }}
+    <i v-if="icon" :class="['fa', icon, { iconText: text }]" /> {{ text }}
   </button>
 </template>
 
@@ -29,10 +29,6 @@ export default {
       type: Object,
       default: null
     },
-    iconTheme: {
-      type: Object,
-      default: null
-    },
     type: {
       type: String,
       default: "button"
@@ -45,28 +41,7 @@ export default {
 
   computed: {
     getTheme() {
-      if (this.theme) {
-        let color = this.theme.color;
-        let emphasis = this.theme.emphasis;
-        return {
-          color: color,
-          background: emphasis
-        };
-      } else {
-        return "";
-      }
-    },
-    getIconTheme() {
-      if (this.iconTheme) {
-        let color = this.iconTheme.color;
-        let emphasis = this.iconTheme.emphasis;
-        return {
-          color: color,
-          background: emphasis
-        };
-      } else {
-        return "";
-      }
+      return this.theme ? { "--primaryColor": this.theme.primaryColor } : "";
     }
   },
 
@@ -79,35 +54,31 @@ export default {
 </script>
 
 <style scoped>
-.icon-button {
+.icon-button,
+.button {
+  border: none;
+  outline: none;
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 0;
+  color: #fff;
+  background: var(--primaryColor, #ddd);
+  font-size: 1rem;
+  cursor: pointer;
   margin: 0;
-  border: none;
-  outline: none;
+  padding: 0;
+}
+
+.icon-button {
   border-radius: 50%;
   width: 42px;
   height: 42px;
-  background: #e2e2e2;
-  color: #333;
-  font-size: 1rem;
-  cursor: pointer;
 }
 
 .button {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border: none;
-  outline: none;
   border-radius: 0.5rem;
   padding: 16px;
-  background: #ddd;
-  color: #444;
   font-size: 1rem;
-  cursor: pointer;
 }
 
 button::-moz-focus-inner {
