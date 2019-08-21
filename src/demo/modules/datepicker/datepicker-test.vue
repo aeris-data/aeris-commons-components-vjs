@@ -5,7 +5,7 @@
       <div id="criteria" class="criteria">
         <aeris-datepicker
           ref="datePicker1"
-          :theme="{ emphasis: '#f39c12' }"
+          :theme="{ primaryColor: '#f39c12' }"
           :label="{
             key: 'from',
             lang: {
@@ -19,7 +19,7 @@
         ></aeris-datepicker>
         <aeris-datepicker
           ref="datePicker2"
-          :theme="{ emphasis: '#6fbfb2' }"
+          :theme="{ primaryColor: '#6fbfb2' }"
           :label="{
             key: 'to',
             lang: {

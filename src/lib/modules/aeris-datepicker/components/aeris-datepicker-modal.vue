@@ -132,14 +132,9 @@ export default {
     getLanguage() {
       return this.language || this.$store.getters.getLanguage;
     },
-
-    getTheme() {
-      return this.theme.emphasis || this.$store.getters.getPrimaryColor;
-    },
-
     applyTheme() {
       return {
-        "--emphasis": this.theme.emphasis
+        "--primaryColor": this.theme.primaryColor
       };
     },
 
@@ -231,16 +226,11 @@ export default {
   watch: {
     language(language) {
       this.$i18n.locale = language;
-    },
-
-    getTheme(value) {
-      this.theme.emphasis = value;
     }
   },
 
   created() {
     this.$i18n.locale = this.getLanguage;
-    this.theme.emphasis = this.getTheme;
     this.allHours = this.timeRange(0, 24);
     this.allMins = this.timeRange(0, 60);
     // refresh date from parent
@@ -489,7 +479,7 @@ export default {
   display: flex;
   flex-flow: column nowrap;
   min-width: 17em;
-  border: var(--emphasis);
+  border: var(--primaryColor);
   box-shadow: 0 2px 10px 2px rgba(0, 0, 0, 0.1);
 }
 
@@ -499,7 +489,7 @@ export default {
   justify-content: space-between;
   align-items: center;
   padding: 10px;
-  background-color: var(--emphasis);
+  background-color: var(--primaryColor);
   color: #fff;
 }
 
@@ -582,18 +572,18 @@ export default {
   left: 0;
   bottom: 0;
   right: 0;
-  background-color: var(--emphasis);
+  background-color: var(--primaryColor);
   border-radius: 50%;
   opacity: 0.1;
 }
 
 .dp-main .is-today {
-  color: var(--emphasis);
+  color: var(--primaryColor);
   font-weight: 700;
 }
 
 .dp-main .day-selected {
-  border: 2px solid var(--emphasis);
+  border: 2px solid var(--primaryColor);
   border-radius: 50%;
 }
 
@@ -607,7 +597,7 @@ export default {
 
 .dp-main .dp-hours.dp-selectors {
   line-height: 24px;
-  color: var(--emphasis);
+  color: var(--primaryColor);
   margin-top: 5px;
 }
 
@@ -629,7 +619,7 @@ export default {
 
 .dp-hours.dp-selectors select {
   /* replace color because of the outline for firefox */
-  text-shadow: 0 0 0 var(--emphasis);
+  text-shadow: 0 0 0 var(--primaryColor);
   padding: 2px;
   text-align: center;
   text-align-last: center;
@@ -686,9 +676,9 @@ select::-ms-expand {
 .dp-footer [id="validate-btn"] {
   padding: 5px 10px;
   width: 100%;
-  border: 1px solid var(--emphasis);
+  border: 1px solid var(--primaryColor);
   text-align: center;
-  color: var(--emphasis);
+  color: var(--primaryColor);
   background-color: transparent;
 }
 
@@ -705,7 +695,7 @@ select::-ms-expand {
 .dp-footer [id="validate-btn"] {
   margin-top: 10px;
   border: none;
-  background-color: var(--emphasis);
+  background-color: var(--primaryColor);
   color: #fff;
 }
 
